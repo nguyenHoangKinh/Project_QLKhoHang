@@ -12,7 +12,7 @@ const StyleProfile = StyleSheet.create({
         padding: 10, 
     },
     email: {
-        fontSize: 15, 
+        fontSize: 20, 
         fontWeight: 'bold', 
         color: 'gray', 
     },
