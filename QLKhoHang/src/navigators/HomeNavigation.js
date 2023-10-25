@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
-import MoreScreen from "../components/MoreScreen";
+import ProfileScreen from "../components/ProfileScreen";
 import OrderScreen from "../components/OrderScreen";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const index = () => {
+const HomeNavigation = () => {
     const Tab = createBottomTabNavigator()
     const screenOptions = {
         tabBarShowLabel: false,
@@ -97,14 +97,14 @@ const index = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="More"
-                    component={MoreScreen}
+                    name="Profile"
+                    component={ProfileScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <FontAwesome name="list" size={24} color={focused ? "#16247d" : "#111"} />
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>More</Text>
+                                    <Entypo name="user" size={24} color={focused ? "#16247d" : "#111"} />
+                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Profile</Text> 
                                 </View>
                             )
                         }
@@ -115,4 +115,4 @@ const index = () => {
     )
 }
 
-export default index;
+export default HomeNavigation;
