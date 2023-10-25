@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "QLKhoHang",
-    "slug": "QLKhoHang",
+    "name": "app-ui",
+    "slug": "app-ui",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
