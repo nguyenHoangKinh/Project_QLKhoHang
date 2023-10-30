@@ -1,10 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import AppNavigation from './src/navigators/appNavigation';
+import Navigation from './src/navigators/Navigation';
+import Home from './src/components/HomeScreen';
+import {AuthProvider} from './src/context/AuthContext';
 
 
 export default function App() {
   return (
-    <AppNavigation />
+    <AuthProvider>
+    {/* <StatusBar backgroundColor="#06bcee" /> */}
+    <Navigation />
+  </AuthProvider>
+  // <>
+  // <Home/>
+  // </>
   );
 }
