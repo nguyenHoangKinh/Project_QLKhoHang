@@ -8,4 +8,3 @@ export default function HomeScreen() {
       <Text>Home Screen</Text>
     </SafeAreaView>
   )
-}
