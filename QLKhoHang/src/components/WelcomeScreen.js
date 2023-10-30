@@ -2,10 +2,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { themeColors } from '../theme'
-import { useNavigation } from '@react-navigation/native'
 
-export default function WelcomeScreen(props) {
-    // const navigation = useNavigation();
+export default function WelcomeScreen({navigation}) {
   return (
         <SafeAreaView className={`flex-1`} style={{backgroundColor: themeColors.bg}}>
         <View className="flex-1 flex justify-around my-4">
@@ -19,7 +17,7 @@ export default function WelcomeScreen(props) {
             </View>
             <View className="space-y-4">
                 <TouchableOpacity
-                    onPress={()=> props.navigation.navigate('SignUp')}
+                    onPress={()=> navigation.navigate('Register')}
                     className="py-3 bg-yellow-400 mx-7 rounded-xl">
                         <Text 
                             className="text-xl font-bold text-center text-gray-700"
@@ -29,7 +27,7 @@ export default function WelcomeScreen(props) {
                 </TouchableOpacity>
                 <View className="flex-row justify-center">
                     <Text className="text-white font-semibold">Already have an account?</Text>
-                    <TouchableOpacity onPress={()=> props.navigation.navigate('Login')}>
+                    <TouchableOpacity onPress={()=> navigation.navigate('Login')}>
                         <Text className="font-semibold text-yellow-400"> Log In</Text>
                     </TouchableOpacity>
                 </View>
