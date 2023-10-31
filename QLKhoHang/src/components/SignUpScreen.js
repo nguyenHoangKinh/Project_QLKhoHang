@@ -18,7 +18,7 @@ export default function SignUpScreen({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState(null);
     const [password, setPassword] = useState(null);
     // const [confirmPassword, setConfirmPassword] = useState(null);
-    const {isLoading, signUP} = useContext(AuthContext);
+    const {isLoading, signUP,checkValueSignUp} = useContext(AuthContext);
   return (
     <View
       className="flex-1 bg-white"
@@ -95,7 +95,8 @@ export default function SignUpScreen({navigation}) {
           <TouchableOpacity
             className="py-3 bg-yellow-400 rounded-x1 mt-3"
             onPress={() => {
-            signUP(username, password,confirmPassword, address, phone, email, checkValue )
+            
+              signUP(username, password,confirmPassword, address, phone, email, checkValue ), checkValueSignUp ? navigation.navigate("Login"): console.log("dang ky that bai")
           }}
             // type="TERTIARY"
           >
@@ -103,6 +104,9 @@ export default function SignUpScreen({navigation}) {
               Sign Up
             </Text>
           </TouchableOpacity>
+          
+          {/* <Text>{console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> check user",userInfo)}</Text> */}
+          <Text>{console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> check user",checkValueSignUp)}</Text>
         </View>
         <Text className="text-l text-gray-700 text-center">
           Or

@@ -39,11 +39,11 @@ const Navigation = () => {
               component={SignUpScreen}
               options={{ headerShown: false }}
             />
-            {/* <Stack.Screen
-              name="Home"
-              component={HomeScreen}
+            <Stack.Screen
+              name="AuthContext"
+              component={AuthContext}
               options={{ headerShown: false }}
-            /> */}
+            />
             {/* <Stack.Screen
               name="Home"
               component={HomeScreen}

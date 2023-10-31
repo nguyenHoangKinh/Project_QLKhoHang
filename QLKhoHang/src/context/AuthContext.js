@@ -2,13 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import { BASE_URL } from "../config";
-import  { Redirect } from 'react-router-dom'
+// import  { Redirect } from 'react-router-dom'
 // import {useNavigation} from "@react-navigation/native";
+// import { useNavigation } from '@react-navigation/native'; 
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children,navigation }) => {
+export const AuthProvider = ({ children }) => {
   // const navigation = useNavigation();
+  const [checkValueSignUp, setCheckValueSignUp] = useState(false);
 
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children,navigation }) => {
   ) => {
     // console.log(">>>>> check",username,password,confirmPassword,address,phone,email);
     setIsLoading(true);
+    setCheckValueSignUp(true);
     // console.log( username,
     //   password,
     //   confirmPassword,
@@ -54,13 +57,15 @@ export const AuthProvider = ({ children,navigation }) => {
         console.log(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
-        <Redirect to='/Login'/>
+        setCheckValueSignUp(true);
+        // <Redirect to='/Login'/>
         // window.location.href="/Login";
-        // navigation.navigate("Login");
+        // navigation.navigate("/Login");
       })
       .catch((e) => {
         console.log(`register error ${e.res}`);
         setIsLoading(false);
+        setCheckValueSignUp(false);
       });
   };
 
@@ -134,6 +139,7 @@ export const AuthProvider = ({ children,navigation }) => {
       value={{
         isLoading,
         userInfo,
+        checkValueSignUp,
         splashLoading,
         signUP,
         login,
