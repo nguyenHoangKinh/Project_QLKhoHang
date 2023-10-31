@@ -2,17 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import { BASE_URL } from "../config";
+import  { Redirect } from 'react-router-dom'
 // import {useNavigation} from "@react-navigation/native";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children,navigation }) => {
   // const navigation = useNavigation();
 
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
-  const [checkValue, setCheckValue] = useState(false);
 
   const signUP = (
     username,
@@ -20,26 +20,27 @@ export const AuthProvider = ({ children }) => {
     confirmPassword,
     address,
     phone,
-    email
+    email,
+    checkValue,
   ) => {
     // console.log(">>>>> check",username,password,confirmPassword,address,phone,email);
     setIsLoading(true);
-    // let acc = {
-    //   username,
+    // console.log( username,
     //   password,
     //   confirmPassword,
     //   address,
-    //   email,
     //   phone,
-    // };
-    console.log( username,
-      password,
-      confirmPassword,
-      address,
-      phone,
-      email);
+    //   email,checkValue);
+      let check ='';
+      if (checkValue) {
+        check= '1';
+      }else
+      {
+        check='2'
+      }
+      // console.log(">>>>>>>>>>>>>>>check",check)
     axios
-      .post(`${BASE_URL}/register?status=2`, {
+      .post(`${BASE_URL}/register?status=`+check, {
         username: username,
         password: password,
         confirmPassword: confirmPassword,
@@ -49,21 +50,18 @@ export const AuthProvider = ({ children }) => {
       })
       .then((res) => {
         console.log(res);
-        let userInfo = res.data;
+        let userInfo = res;
         console.log(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
+        <Redirect to='/Login'/>
+        // window.location.href="/Login";
+        // navigation.navigate("Login");
       })
       .catch((e) => {
         console.log(`register error ${e.res}`);
         setIsLoading(false);
       });
-      // console.log(`data `, username,
-      // password,
-      // confirmPassword,
-      // address,
-      // phone,
-      // email);
   };
 
   const login = (username, password) => {

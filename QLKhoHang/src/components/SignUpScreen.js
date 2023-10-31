@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen({navigation}) {
-
+  const [checkValue, setCheckValue] = useState(false);
     const [username, setUsername] = useState(null);
     const [address, setAddress] = useState(null);
     const [email, setEmail] = useState(null);
@@ -19,43 +19,6 @@ export default function SignUpScreen({navigation}) {
     const [password, setPassword] = useState(null);
     // const [confirmPassword, setConfirmPassword] = useState(null);
     const {isLoading, signUP} = useContext(AuthContext);
-//   const [credentials, setCredentials] = useState({});
-//   const handleChange = (e) => {
-//     setCredentials({
-//       ...credentials,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleLogin = () => {
-//     // perform the login request
-//     axios
-//       .post("https://warehouse-management-api.vercel.app/v1/auth/login", {
-//         username: username,
-//         password: password,
-//       })
-//       .then((response) => {
-//         if (response.data) {
-//           alert("dang nhap thanh cong");
-//           const token = response.data.accessToken;
-//           localStorage.setItem("token", token);
-//           setAuthenticationHeader(token);
-//           // set default headers
-//           console.log("token:", token);
-//           // console.log("token:",CategoryWarehouseService(token));
-
-//           // navigate("/registeraccount");
-//           // props.history.push('/registeraccount', token);
-//           localStorage.setItem("username", credentials.username);
-//           // props.onLoggedIn();
-//         //   window.location.href = "/CategoryWarehouse";
-//         }
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
-  // const navigation = useNavigation();
   return (
     <View
       className="flex-1 bg-white"
@@ -122,42 +85,29 @@ export default function SignUpScreen({navigation}) {
           />
           <Text className="text-gray-700 ml-1">confirm Password</Text>
           <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-5"
+            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2"
             value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}
             placeholder="Enter Password"
             secureTextEntry={true}
           />
-          {/* <CheckBox
-          value={checkValue ? '2': '1'}
-          onValueChange={setCheckValue}
-          // style={styles.checkbox}
-          // text="asjdkjasdja"
-        /> */}
-        {/* <CheckBox isChecked={checkValue } onClick={()=> setCheckValue(!checkValue)} rightText="dang nhap nguoi dung" rightTextStyle={{fontSize:13 ,color:'black',fontWeight:"bold"}}/> */}
-        {/* <Text>{checkValue ? '2' : '1'}</Text> */}
-        {/* <TouchableOpacity style={styles.CheckBox}/> */}
-        {/* <CheckBox
-          value={checkValue}
-          onValueChange={setCheckValue}
-          style={styles.checkbox}
-        /> */}
+        <CheckBox isChecked={checkValue } onClick={()=> setCheckValue(!checkValue)} rightText="đăng nhập bằng tài khoản chủ kho" rightTextStyle={{fontSize:13 ,color:'black',fontWeight:"bold"}}/>
           <TouchableOpacity
-            className="py-3 bg-yellow-400 rounded-xl"
+            className="py-3 bg-yellow-400 rounded-x1 mt-3"
             onPress={() => {
-            signUP(username, password,confirmPassword, address, phone, email )
+            signUP(username, password,confirmPassword, address, phone, email, checkValue )
           }}
             // type="TERTIARY"
           >
-            <Text className="font-xl font-bold text-center text-gray-700">
+            <Text className=" font-bold text-center text-gray-700">
               Sign Up
             </Text>
           </TouchableOpacity>
         </View>
-        {/* <Text className="text-xl text-gray-700 font-bold text-center py-5">
+        <Text className="text-l text-gray-700 text-center">
           Or
         </Text>
-        <View className="flex-row justify-center space-x-12">
+        {/* <View className="flex-row justify-center space-x-12">
           <TouchableOpacity className="p-2 bg-gray-100 rounded-2xl">
             <Image
               source={require("../assets/icons/google.png")}
@@ -177,7 +127,7 @@ export default function SignUpScreen({navigation}) {
             />
           </TouchableOpacity>
         </View> */}
-        <View className="flex-row justify-center mt-7">
+        <View className="flex-row justify-center mt-1">
           <Text className="text-gray-500 font-semibold">
             Already have an account?
           </Text>
