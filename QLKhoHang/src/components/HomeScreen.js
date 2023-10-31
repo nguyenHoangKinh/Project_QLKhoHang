@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {AuthContext} from '../context/AuthContext';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {userInfo, isLoading, logout} = useContext(AuthContext);
 
   return (
@@ -12,6 +12,9 @@ const HomeScreen = () => {
       <Spinner visible={isLoading} />
       <Text style={styles.welcome}>Welcome {userInfo.others.username}</Text>
       <Button title="Logout" color="red" onPress={logout} />
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text className="font-semibold text-yellow-500"> Sign Up</Text>
+          </TouchableOpacity>
     </View>
   );
 };

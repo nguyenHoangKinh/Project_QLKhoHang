@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import CheckBox from "react-native-check-box";
 import React, { useState,useContext } from "react";
 import { themeColors } from "../theme";
 import {AuthContext} from '../context/AuthContext';
@@ -9,12 +10,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen({navigation}) {
+
     const [username, setUsername] = useState(null);
     const [address, setAddress] = useState(null);
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
-    const [password, setPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
+    const [password, setPassword] = useState(null);
+    // const [confirmPassword, setConfirmPassword] = useState(null);
     const {isLoading, signUP} = useContext(AuthContext);
 //   const [credentials, setCredentials] = useState({});
 //   const handleChange = (e) => {
@@ -85,7 +88,6 @@ export default function SignUpScreen({navigation}) {
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
             // name="username"
             value={username}
-            setValue={setUsername}
             onChangeText={text => setUsername(text)}
             placeholder="Enter username..."
           />
@@ -126,10 +128,24 @@ export default function SignUpScreen({navigation}) {
             placeholder="Enter Password"
             secureTextEntry={true}
           />
+          {/* <CheckBox
+          value={checkValue ? '2': '1'}
+          onValueChange={setCheckValue}
+          // style={styles.checkbox}
+          // text="asjdkjasdja"
+        /> */}
+        {/* <CheckBox isChecked={checkValue } onClick={()=> setCheckValue(!checkValue)} rightText="dang nhap nguoi dung" rightTextStyle={{fontSize:13 ,color:'black',fontWeight:"bold"}}/> */}
+        {/* <Text>{checkValue ? '2' : '1'}</Text> */}
+        {/* <TouchableOpacity style={styles.CheckBox}/> */}
+        {/* <CheckBox
+          value={checkValue}
+          onValueChange={setCheckValue}
+          style={styles.checkbox}
+        /> */}
           <TouchableOpacity
             className="py-3 bg-yellow-400 rounded-xl"
             onPress={() => {
-            signUP(username, password, confirmPassword, address, phone, email );
+            signUP(username, password,confirmPassword, address, phone, email )
           }}
             // type="TERTIARY"
           >
