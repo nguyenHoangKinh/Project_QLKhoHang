@@ -7,10 +7,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
-export default function ProfileScreen() {
-  const navigation = useNavigation();
+export default function ProfileScreen({navigation}) {
 
   return (
     <View>

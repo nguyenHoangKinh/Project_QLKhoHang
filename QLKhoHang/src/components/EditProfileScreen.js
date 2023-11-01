@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function MoreScreen() {
+export default function MoreScreen({ navigation }) {
     return (
         <View>
             <ScrollView>
@@ -55,9 +55,14 @@ export default function MoreScreen() {
                         keyboardType="default"
                     />
                 </View>
-                <TouchableOpacity style={AppStyle.StyleProfile.btn_edit}>
+                <TouchableOpacity
+                    style={AppStyle.StyleProfile.btn_edit}
+                    onPress={
+                        () => navigation.navigate('ProfileScreen')
+                    }>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
+
                 </TouchableOpacity>
             </ScrollView>
         </View>
