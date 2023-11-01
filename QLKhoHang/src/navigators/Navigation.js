@@ -22,7 +22,7 @@ const Navigation = () => {
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName='Home'>
-        {userInfo.accessToken ? (
+        {userInfo.access_Token ? (
           <Stack.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
         ) : (
           <>
