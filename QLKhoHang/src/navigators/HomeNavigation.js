@@ -28,7 +28,6 @@ const HomeNavigation = () => {
         }
     }
     return (
-        <NavigationContainer>
             <Tab.Navigator screenOptions={screenOptions}>
                 <Tab.Screen
                     name="Warehouse"
@@ -110,7 +109,6 @@ const HomeNavigation = () => {
                     }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
     )
 }
 
