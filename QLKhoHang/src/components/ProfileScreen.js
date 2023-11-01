@@ -6,11 +6,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function MoreScreen() {
+export default function ProfileScreen({navigation}) {
+
   return (
     <View>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView>
         <View style={{ padding: 10, width: '100%', backgroundColor: '#000', height: 150 }}>
           <TouchableOpacity>
             <Image source={require('../assets/adaptive-icon.png')}
@@ -45,6 +47,15 @@ export default function MoreScreen() {
           <MaterialIcons name="house-siding" size={20} color="black" />
           <Text>Kho đang được thuê</Text>
         </View>
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_edit}
+          onPress={
+            ()=>navigation.navigate('EditProfileScreen')
+            }>
+          <AntDesign name="edit" size={20} color="#fff" />
+          <Text style={{ color: '#fff' }}>Cập nhật thông tin cá nhân</Text>
+
+        </TouchableOpacity>
         <TouchableOpacity style={AppStyle.StyleProfile.btn_logout}>
           <MaterialCommunityIcons name="logout" size={20} color="#fff" />
           <Text style={{ color: '#fff' }}>Đăng Xuất</Text>

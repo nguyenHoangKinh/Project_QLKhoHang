@@ -8,6 +8,9 @@ import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
 import SplashScreen from "../components/SplashScreen";
 import { AuthContext } from "../context/AuthContext";
+import HomeNavigation from "./HomeNavigation";
+import EditProfileScreen from '../components/EditProfileScreen';
+import ProfileScreen from "../components/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +22,8 @@ const Navigation = () => {
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName='Home'>
-        {userInfo.access_Token ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+        {userInfo.accessToken ? (
+          <Stack.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
         ) : (
           <>
             <Stack.Screen
@@ -44,13 +47,18 @@ const Navigation = () => {
               component={AuthContext}
               options={{ headerShown: false }}
             />
-            {/* <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            /> */}
           </>
         )}
+        <Stack.Screen
+          name="EditProfileScreen"
+          component={EditProfileScreen}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

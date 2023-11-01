@@ -19,7 +19,6 @@ const HomeNavigation = () => {
         tabBarShowLabel: false,
         headerShown: false,
         tabBarStyle: {
-            position: "absolute",
             bottom: 0,
             right: 0,
             left: 0,
@@ -29,7 +28,6 @@ const HomeNavigation = () => {
         }
     }
     return (
-        <NavigationContainer>
             <Tab.Navigator screenOptions={screenOptions}>
                 <Tab.Screen
                     name="Warehouse"
@@ -111,7 +109,6 @@ const HomeNavigation = () => {
                     }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
     )
 }
 
