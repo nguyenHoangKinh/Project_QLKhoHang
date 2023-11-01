@@ -58,11 +58,18 @@ export default function MoreScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={
-                        () => navigation.navigate('ProfileScreen')
+                        () => navigation.navigate('HomeNavigation')
                     }>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
+                </TouchableOpacity>
 
+                <TouchableOpacity
+                    style={AppStyle.StyleProfile.btn_logout}
+                    onPress={
+                        () => navigation.navigate('HomeNavigation')
+                    }>
+                    <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>
