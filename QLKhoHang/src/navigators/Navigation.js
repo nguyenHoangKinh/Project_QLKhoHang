@@ -17,7 +17,6 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => {
   const { userInfo, splashLoading } = useContext(AuthContext);
   // console.log(">>> hello",userInfo.accessToken);
-  // const accessToken;
   return (
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
@@ -40,11 +39,6 @@ const Navigation = () => {
             <Stack.Screen
               name="Register"
               component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AuthContext"
-              component={AuthContext}
               options={{ headerShown: false }}
             />
           </>

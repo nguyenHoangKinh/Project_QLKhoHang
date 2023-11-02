@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import {Alert} from "react-native";
 import { BASE_URL } from "../config";
 // import  { Redirect } from 'react-router-dom'
 // import {useNavigation} from "@react-navigation/native";
@@ -58,12 +59,9 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
         setCheckValueSignUp(true);
-        // <Redirect to='/Login'/>
-        // window.location.href="/Login";
-        // navigation.navigate("/Login");
       })
       .catch((e) => {
-        console.log(`register error ${e.res}`);
+        console.log(`register error ${e.response.data.message}`);
         setIsLoading(false);
         setCheckValueSignUp(false);
       });
@@ -77,6 +75,7 @@ export const AuthProvider = ({ children }) => {
         username,
         password,
       })
+
       .then((res) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
@@ -84,33 +83,35 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`login error ${e}`);
+        console.log(`login error ${e.response.data.message}`);
         setIsLoading(false);
       });
   };
 
-  // const logout = () => {
-  //   setIsLoading(true);
+  const logout = () => {
+    setIsLoading(true);
+    console.log("logout token",userInfo);
+    axios
+      .get(
+        `${BASE_URL}/logout`,
+        {
+          headers: {Token: `${userInfo.accessToken}`},
+        }
+      )
+      .then((res) => {
+        Alert.alert(e.response.data.message)
+        console.log(res);
+        AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      console.log("logout token thanh cong ",userInfo);
 
-  //   axios
-  //     .post(
-  //       `${BASE_URL}/logout`,
-  //       {},
-  //       {
-  //         headers: { accessToken: `Bearer ${userInfo.accessToken}` },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       AsyncStorage.removeItem("userInfo");
-  //       setUserInfo({});
-  //       setIsLoading(false);
-  //     })
-  //     .catch((e) => {
-  //       console.log(`logout error ${e}`);
-  //       setIsLoading(false);
-  //     });
-  // };
+      })
+      .catch((e) => {
+        console.log(`logout error ${e.response.data.message}`);
+        setIsLoading(false);
+      });
+  };
 
   const isLoggedIn = async () => {
     try {
@@ -143,7 +144,7 @@ export const AuthProvider = ({ children }) => {
         splashLoading,
         signUP,
         login,
-        // logout,
+        logout,
       }}
     >
       {children}
