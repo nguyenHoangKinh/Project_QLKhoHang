@@ -9,29 +9,34 @@ import WelcomeScreen from "../components/WelcomeScreen";
 import SplashScreen from "../components/SplashScreen";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
-import EditProfileScreen from '../components/EditProfileScreen';
+import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
-import HomeNavigationUser from "../navigators/HomeNavigationUser"
+import HomeNavigationUser from "../navigators/HomeNavigationUser";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, checkSignUp, splashLoading } = useContext(AuthContext);
   // console.log(">>> hello",userInfo.accessToken);
   return (
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName="Home">
         {userInfo.accessToken && userInfo.others.isOwner ? (
-          <Stack.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
-        ) : userInfo.accessToken && userInfo.others.isActive ?
-        (<Stack.Screen
-          name="HomeNavigationUser"
-          component={HomeNavigationUser}
-          options={{ headerShown: false }}
-        />) : (
+          <Stack.Screen
+            name="HomeNavigation"
+            component={HomeNavigation}
+            options={{ headerShown: false }}
+          />
+        ) : userInfo.accessToken && userInfo.others.isActive ? (
+          <Stack.Screen
+            name="HomeNavigationUser"
+            component={HomeNavigationUser}
+            options={{ headerShown: false }}
+          />
+        ) : (
           <>
             <Stack.Screen
               name="Login"
@@ -40,16 +45,28 @@ const Navigation = () => {
             />
           </>
         )}
-        <Stack.Screen
+        { checkSignUp ? (
+          <>
+          </>
+        ) : (
+          <>
+          <Stack.Screen
+            name="Register"
+            component={SignUpScreen}
+            options={{ headerShown: false }}
+          />
+          </>
+        )}
+        {/* <Stack.Screen
           name="WelcomeScreen"
           component={WelcomeScreen}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen
+        /> */}
+        {/* <Stack.Screen
           name="Register"
           component={SignUpScreen}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="AuthContext"
           component={AuthContext}
