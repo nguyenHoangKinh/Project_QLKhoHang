@@ -8,9 +8,9 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-    <Text>hello</Text>
+    <Text>Hello</Text>
       <Spinner visible={isLoading} />
-      <Text style={styles.welcome}>Welcome {userInfo.others.username}</Text>
+      <Text style={styles.welcome}>Welcome User {userInfo.others.username}</Text>
       <Button title="Logout" color="red" onPress={logout} />
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text className="font-semibold text-yellow-500"> Sign Up</Text>

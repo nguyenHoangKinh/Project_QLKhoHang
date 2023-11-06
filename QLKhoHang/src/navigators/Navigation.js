@@ -11,6 +11,8 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from '../components/EditProfileScreen';
 import ProfileScreen from "../components/ProfileScreen";
+import TotalProductScreen from "../components/TotalProductScreen";
+import ListProduct from "../components/ListProduct";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,36 +29,45 @@ const Navigation = () => {
         ) : (
           <>
             <Stack.Screen
-              name="WelcomeScreen"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name="Login"
               component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-
-            <Stack.Screen
-              name="Register"
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AuthContext"
-              component={AuthContext}
               options={{ headerShown: false }}
             />
           </>
         )}
         <Stack.Screen
+          name="WelcomeScreen"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={SignUpScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AuthContext"
+          component={AuthContext}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="EditProfileScreen"
           component={EditProfileScreen}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TotalProductScreen"
+          component={TotalProductScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListProduct"
+          component={ListProduct}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
