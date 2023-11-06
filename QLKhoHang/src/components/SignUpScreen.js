@@ -4,11 +4,10 @@ import React, { useState, useContext } from "react";
 import { themeColors } from "../theme";
 import { AuthContext } from "../context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeftIcon } from "react-native-heroicons/solid";
 import Spinner from "react-native-loading-spinner-overlay";
-// import axios from "axios";
+import { AntDesign,Feather } from '@expo/vector-icons';
 
-// subscribe for more videos like this :)
+
 export default function SignUpScreen({ navigation }) {
   const [checkValue, setCheckValue] = useState(false);
   const [username, setUsername] = useState(null);
@@ -17,9 +16,9 @@ export default function SignUpScreen({ navigation }) {
   const [phone, setPhone] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [password, setPassword] = useState(null);
-  // const [confirmPassword, setConfirmPassword] = useState(null);
-  const { formError, isLoading, signUP, checkValueSignUp } =
-    useContext(AuthContext);
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
+  const { formError, isLoading, signUP, checkValueSignUp } = useContext(AuthContext);
   return (
     <View
       className="flex-1 bg-white"
@@ -32,7 +31,7 @@ export default function SignUpScreen({ navigation }) {
             onPress={() => navigation.goBack()}
             className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
-            <ArrowLeftIcon size="20" color="black" />
+            <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
@@ -111,13 +110,23 @@ export default function SignUpScreen({ navigation }) {
               </Text>
             )}
           </View>
+          <View className="flex flex-row relative">
           <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
+            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 w-full"
             value={password}
             onChangeText={(text) => setPassword(text)}
             placeholder="Enter Password"
-            secureTextEntry={true}
+            secureTextEntry={isShowPassword ? false : true}
           />
+          <View className="absolute right-6 top-4">
+          <Feather
+           name={
+            isShowPassword === true
+                ? "eye"
+                : "eye-off"
+            } size={24} color="black" onPress={() => setIsShowPassword(!isShowPassword)}/>
+            </View>
+            </View>
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">ConfirmPassword</Text>
             {formError.confirmPassword && (
@@ -126,13 +135,23 @@ export default function SignUpScreen({ navigation }) {
               </Text>
             )}
           </View>
+          <View className="flex flex-row relative">
           <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2"
+            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2 w-full"
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
             placeholder="Enter Password"
-            secureTextEntry={true}
+            secureTextEntry={isShowPasswordConfirm ? false : true}
           />
+          <View className="absolute right-6 top-4">
+          <Feather
+           name={
+            isShowPasswordConfirm === true
+                ? "eye"
+                : "eye-off"
+            } size={24} color="black" onPress={() => setIsShowPasswordConfirm(!isShowPasswordConfirm)}/>
+            </View>
+            </View>
           <CheckBox
             isChecked={checkValue}
             onClick={() => setCheckValue(!checkValue)}
