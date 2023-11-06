@@ -11,7 +11,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({navigation}) {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, splashLoading, logout } = useContext(AuthContext);
+  console.log(userInfo.others.avatar)
   return (
     <View>
       <ScrollView>
@@ -24,7 +25,7 @@ export default function ProfileScreen({navigation}) {
           </TouchableOpacity>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Image source={require('../assets/z4808827650587_fafa60a0767258a5439166a29f8cdf0d.jpg')}
+          <Image source={{uri: `${userInfo.others.avatar}`}}
             style={AppStyle.StyleProfile.avatar}></Image>
           <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
           <Text style={AppStyle.StyleProfile.email}>{userInfo.others.email}</Text>
@@ -39,7 +40,7 @@ export default function ProfileScreen({navigation}) {
         </View>
         <View style={AppStyle.StyleProfile.items}>
           <Entypo name="address" size={20} color="black" />
-          <Text>Địa chỉ</Text>
+          <Text>{userInfo.others.address}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome5 name="warehouse" size={20} color="black" />
@@ -57,7 +58,7 @@ export default function ProfileScreen({navigation}) {
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: '#fff' }}>Cập nhật thông tin cá nhân</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={AppStyle.StyleProfile.btn_logout}>
+        <TouchableOpacity style={AppStyle.StyleProfile.btn_logout} onPress={logout}>
           <MaterialCommunityIcons name="logout" size={20} color="#fff" />
           <Text style={{ color: '#fff' }}>Đăng Xuất</Text>
         </TouchableOpacity>

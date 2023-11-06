@@ -13,6 +13,7 @@ import EditProfileScreen from '../components/EditProfileScreen';
 import ProfileScreen from "../components/ProfileScreen";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
+import HomeNavigationUser from "../navigators/HomeNavigationUser"
 
 const Stack = createNativeStackNavigator();
 
@@ -24,9 +25,14 @@ const Navigation = () => {
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName='Home'>
-        {userInfo.accessToken ? (
+        {userInfo.accessToken && userInfo.others.isOwner ? (
           <Stack.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
-        ) : (
+        ) : userInfo.accessToken && userInfo.others.isActive ?
+        (<Stack.Screen
+          name="HomeNavigationUser"
+          component={HomeNavigationUser}
+          options={{ headerShown: false }}
+        />) : (
           <>
             <Stack.Screen
               name="Login"
@@ -55,11 +61,11 @@ const Navigation = () => {
           component={EditProfileScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="TotalProductScreen"
           component={TotalProductScreen}
