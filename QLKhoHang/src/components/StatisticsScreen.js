@@ -1,11 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import AppStyle from '../theme';
 
-export default function StatisticsScreen() {
+export default function StatisticsScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text>StatisticsScreen</Text>
-      <StatusBar style="auto" />
+      <TouchableOpacity
+        style={AppStyle.StyleStatistics.btn_statistics}
+        onPress={
+          () => navigation.navigate('HomeNavigation')
+        }>
+        <Text style={AppStyle.StyleStatistics.btn_text}>THỐNG KÊ KHO HÀNG</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={AppStyle.StyleStatistics.btn_statistics}
+        onPress={
+          () => navigation.navigate('TotalProductScreen')
+        }>
+        <Text style={AppStyle.StyleStatistics.btn_text}>THỐNG KÊ HÀNG HÓA</Text>
+      </TouchableOpacity>
     </View>
   );
 }

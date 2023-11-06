@@ -91,7 +91,7 @@ export default function SignUpScreen({navigation}) {
             placeholder="Enter Password"
             secureTextEntry={true}
           />
-        <CheckBox isChecked={checkValue } onClick={()=> setCheckValue(!checkValue)} rightText="đăng nhập bằng tài khoản chủ kho" rightTextStyle={{fontSize:13 ,color:'black',fontWeight:"bold"}}/>
+        <CheckBox isChecked={checkValue } onClick={()=> setCheckValue(!checkValue)} rightText="Đăng ký bằng tài khoản nhân viên" rightTextStyle={{fontSize:13 ,color:'black',fontWeight:"bold"}}/>
           <TouchableOpacity
             className="py-3 bg-yellow-400 rounded-x1 mt-3"
             onPress={() => {

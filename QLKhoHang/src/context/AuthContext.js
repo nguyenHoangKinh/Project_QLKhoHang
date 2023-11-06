@@ -11,7 +11,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   // const navigation = useNavigation();
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
-
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -89,28 +88,26 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  // const logout = () => {
-  //   setIsLoading(true);
-
-  //   axios
-  //     .post(
-  //       `${BASE_URL}/logout`,
-  //       {},
-  //       {
-  //         headers: { accessToken: `Bearer ${userInfo.accessToken}` },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       AsyncStorage.removeItem("userInfo");
-  //       setUserInfo({});
-  //       setIsLoading(false);
-  //     })
-  //     .catch((e) => {
-  //       console.log(`logout error ${e}`);
-  //       setIsLoading(false);
-  //     });
-  // };
+  const logout = () => {
+    setIsLoading(true);
+    axios
+      .get(
+        `${BASE_URL}/logout`,
+        {
+          headers: { Authorization: `Token ${userInfo.accessToken}` }
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`logout error ${e}`);
+        setIsLoading(false);
+      });
+  };
 
   const isLoggedIn = async () => {
     try {
@@ -143,7 +140,7 @@ export const AuthProvider = ({ children }) => {
         splashLoading,
         signUP,
         login,
-        // logout,
+        logout,
       }}
     >
       {children}
