@@ -12,7 +12,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   // const navigation = useNavigation();
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
-
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
@@ -90,25 +89,21 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setIsLoading(true);
-    console.log("logout token",userInfo);
     axios
       .get(
         `${BASE_URL}/logout`,
         {
-          headers: {Token: `${userInfo.accessToken}`},
+          headers: { Authorization: `Token ${userInfo.accessToken}` }
         }
       )
       .then((res) => {
-        Alert.alert(e.response.data.message)
-        console.log(res);
+        console.log(res.data);
         AsyncStorage.removeItem("userInfo");
         setUserInfo({});
         setIsLoading(false);
-      console.log("logout token thanh cong ",userInfo);
-
       })
       .catch((e) => {
-        console.log(`logout error ${e.response.data.message}`);
+        console.log(`logout error ${e}`);
         setIsLoading(false);
       });
   };

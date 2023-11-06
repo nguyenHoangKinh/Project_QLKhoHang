@@ -4,17 +4,18 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {AuthContext} from '../context/AuthContext';
 
 const HomeScreen = ({navigation}) => {
-  const {userInfo, isLoading, logout} = useContext(AuthContext);
+  const {userInfo, isLoading, logout, token} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
     <Text>Hello</Text>
       <Spinner visible={isLoading} />
-      <Text style={styles.welcome}>Welcome User {userInfo.others.username}</Text>
+      <Text style={styles.welcome}>Welcome User {userInfo.others.username} </Text>
       <Button title="Logout" color="red" onPress={logout} />
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text className="font-semibold text-yellow-500"> Sign Up</Text>
           </TouchableOpacity>
+          
     </View>
   );
 };

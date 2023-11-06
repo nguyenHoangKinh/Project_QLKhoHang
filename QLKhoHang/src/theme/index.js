@@ -1,13 +1,15 @@
 export const themeColors = {
    bg: '#877dfa',
-}  
+}   
 import StyleHome from './StyleHome';
 import StyleProfile from './StyleProfile';
-import StyleOderList from './StyleOderList';
+import StyleStatistics from './StyleStatistics';
+import StyleListProduct from './StyleListProduct';
 
 const AppStyle = {
     StyleHome,
     StyleProfile,
-    StyleOderList,
+    StyleStatistics,
+    StyleListProduct
 }
 export default AppStyle;
