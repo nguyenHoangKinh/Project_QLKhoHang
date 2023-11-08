@@ -180,6 +180,8 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -193,6 +195,7 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         checkValueSignUp,
         splashLoading,
+        // OrderDetail,
         signUP,
         login,
         logout,
