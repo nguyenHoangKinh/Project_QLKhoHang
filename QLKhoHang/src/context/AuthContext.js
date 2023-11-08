@@ -3,14 +3,10 @@ import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import {Alert} from "react-native";
 import { BASE_URL } from "../config";
-// import  { Redirect } from 'react-router-dom'
-// import {useNavigation} from "@react-navigation/native";
-// import { useNavigation } from '@react-navigation/native'; 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // const navigation = useNavigation();
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -84,9 +80,7 @@ export const AuthProvider = ({ children }) => {
     axios
       .post(`${BASE_URL}/register?status=`+check, acc)
       .then((res) => {
-        // console.log(res);
         let userInfo = res;
-        // console.log(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
         setCheckValueSignUp(true);
