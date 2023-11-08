@@ -127,6 +127,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = (address, phone, email) => {
+    setIsLoading(true);
+    axios
+      .put(`${BASE_URL}/update-account`, {
+        address: address,
+        email: email,
+        phone: phone,
+      }, {
+        headers: { Authorization: `Token ${userInfo.accessToken}` }
+      })
+      .then((res) => {
+        let userInfo = res;
+        console.log(userInfo);
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.res}`);
+        setIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -141,6 +163,7 @@ export const AuthProvider = ({ children }) => {
         signUP,
         login,
         logout,
+        updateProfile,
       }}
     >
       {children}
