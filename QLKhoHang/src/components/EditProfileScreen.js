@@ -7,8 +7,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 
-export default function MoreScreen({ navigation }) {
-    const { userInfo, splashLoading, updateProfile} = useContext(AuthContext);
+export default function EditProfileScreen({ navigation }) {
+    const {userInfo, splashLoading, updateProfile, checkUpdate} = useContext(AuthContext);
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
@@ -62,7 +62,8 @@ export default function MoreScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        updateProfile(address, phone, email) ? console.log("Cap nhat that bai") : navigation.navigate("HomeNavigation")
+                        updateProfile(address, phone, email),
+                        checkUpdate ? navigation.navigate("HomeNavigation") : console.log("Cap nhat that bai")
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>

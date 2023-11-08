@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ScrollView, Text, Image, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({navigation}) {
-  const { userInfo, splashLoading, logout } = useContext(AuthContext);
+  const { userInfo, splashLoading, logout, updateProfile } = useContext(AuthContext);
+ 
   return (
     <View>
       <ScrollView>

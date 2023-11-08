@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
-
+  const [checkUpdate, setCheckUpdate] = useState(false);
 
   const signUP = (
     usernames,
@@ -136,6 +136,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((e) => {
         console.log(`logout error ${e}`);
+        userInfo.accessToken = null;
         setIsLoading(false);
       });
   };
@@ -150,12 +151,35 @@ export const AuthProvider = ({ children }) => {
       if (userInfo) {
         setUserInfo(userInfo);
       }
-
+      
       setSplashLoading(false);
     } catch (e) {
       setSplashLoading(false);
       console.log(`is logged in error ${e}`);
     }
+  };
+
+  const getProfile = () => {
+    axios
+      .get(`${BASE_URL}/account-by-id`,
+      {
+        headers: 
+        { 
+          Authorization: `Token ${userInfo.accessToken}` 
+        },
+        params: 
+        {
+          id: userInfo.others._id
+        },
+      })
+      .then((res) => {
+        let address = res.data.others.address;
+        userInfo.others.address = address;
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      })
+      .catch((e) => {
+        console.log(`get error ${e.res}`);
+      });
   };
 
   const updateProfile = (address, phone, email) => {
@@ -169,13 +193,14 @@ export const AuthProvider = ({ children }) => {
         headers: { Authorization: `Token ${userInfo.accessToken}` }
       })
       .then((res) => {
-        let userInfo = res;
-        console.log(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        console.log(res.data);
+        getProfile();
+        setCheckUpdate(true)
         setIsLoading(false);
       })
       .catch((e) => {
         console.log(`update error ${e.res}`);
+        setCheckUpdate(false)
         setIsLoading(false);
       });
   };
@@ -187,6 +212,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        getProfile,
         checkSignUp,
         formError,
         isLoading,
@@ -197,6 +223,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateProfile,
+        checkUpdate,
       }}
     >
       {children}

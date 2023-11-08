@@ -18,8 +18,8 @@ import HomeNavigationUser from "../navigators/HomeNavigationUser";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp, splashLoading } = useContext(AuthContext);
-  // console.log(">>> hello",userInfo.accessToken);
+  const { userInfo, checkSignUp, splashLoading, getProfile } = useContext(AuthContext);
+  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
@@ -77,11 +77,11 @@ const Navigation = () => {
           component={EditProfileScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="TotalProductScreen"
           component={TotalProductScreen}

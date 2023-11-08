@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const HomeNavigation = () => {
+export default function HomeNavigation() {
     const Tab = createBottomTabNavigator()
     const screenOptions = {
         tabBarShowLabel: false,
@@ -111,5 +111,3 @@ const HomeNavigation = () => {
             </Tab.Navigator>
     )
 }
-
-export default HomeNavigation;
