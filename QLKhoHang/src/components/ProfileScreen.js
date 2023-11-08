@@ -12,7 +12,6 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({navigation}) {
   const { userInfo, splashLoading, logout } = useContext(AuthContext);
-  console.log(userInfo.others.avatar)
   return (
     <View>
       <ScrollView>
@@ -31,24 +30,20 @@ export default function ProfileScreen({navigation}) {
           <Text style={AppStyle.StyleProfile.email}>{userInfo.others.email}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome name="bank" size={20} color="black" />
+          <FontAwesome name="bank" size={20} color="black" style={{marginRight: 10}}/>
           <Text>Số tài khoản</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <Entypo name="phone" size={20} color="black" />
+          <Entypo name="phone" size={20} color="black" style={{marginRight: 10}}/>
           <Text>{userInfo.others.phone}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <Entypo name="address" size={20} color="black" />
+          <Entypo name="address" size={20} color="black" style={{marginRight: 10}}/>
           <Text>{userInfo.others.address}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome5 name="warehouse" size={20} color="black" />
-          <Text>Tổng số kho</Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
-          <MaterialIcons name="house-siding" size={20} color="black" />
-          <Text>Kho đang được thuê</Text>
+          <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
+          <Text>{userInfo.others.warehouses.length}</Text>
         </View>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
