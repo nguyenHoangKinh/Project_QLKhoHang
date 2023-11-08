@@ -12,6 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import DataList from "../components/owners/DataList";
 
 const HomeNavigation = () => {
     const Tab = createBottomTabNavigator()
@@ -29,7 +30,9 @@ const HomeNavigation = () => {
     }
     return (
             <Tab.Navigator screenOptions={screenOptions}>
-                <Tab.Screen
+                <Tab.Screen                
+                    // name="DataList"
+                    // component={DataList}
                     name="Warehouse"
                     component={WarehouseScreen}
                     options={{

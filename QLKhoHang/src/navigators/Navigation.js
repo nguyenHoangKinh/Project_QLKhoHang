@@ -14,7 +14,7 @@ import ProfileScreen from "../components/ProfileScreen";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
-import ListWareHouse from "../components/owners/ListWareHouse";
+//import ListWareHouse from "../components/owners/ListWareHouse";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,16 +46,15 @@ const Navigation = () => {
             />
           </>
         )}
-        { checkSignUp ? (
-          <>
-          </>
+        {checkSignUp ? (
+          <></>
         ) : (
           <>
-          <Stack.Screen
-            name="Register"
-            component={SignUpScreen}
-            options={{ headerShown: false }}
-          />
+            <Stack.Screen
+              name="Register"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
         {/* <Stack.Screen
@@ -91,11 +90,6 @@ const Navigation = () => {
         <Stack.Screen
           name="ListProduct"
           component={ListProduct}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListWareHouse"
-          component={ListWareHouse}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

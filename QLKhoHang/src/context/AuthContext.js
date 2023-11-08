@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import {Alert} from "react-native";
-import { BASE_URL } from "../config";
+import { BASE_URL, BASE_URL_Owners } from "../config";
 
 export const AuthContext = createContext();
 
@@ -13,6 +13,9 @@ export const AuthProvider = ({ children }) => {
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
+  // const [listWareHouse, setlistWareHouse] = useState({});
+  // const [visible, setVisible] = useState(false);
+
 
 
   const signUP = (
@@ -135,6 +138,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
+        userInfo.accessToken = null
         console.log(`logout error ${e}`);
         setIsLoading(false);
       });
@@ -180,8 +184,11 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  
+
   useEffect(() => {
     isLoggedIn();
+
   }, []);
 
   return (
