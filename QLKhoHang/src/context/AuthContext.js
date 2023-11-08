@@ -1,71 +1,101 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import {Alert} from "react-native";
 import { BASE_URL } from "../config";
-// import  { Redirect } from 'react-router-dom'
-// import {useNavigation} from "@react-navigation/native";
-// import { useNavigation } from '@react-navigation/native'; 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // const navigation = useNavigation();
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [splashLoading, setSplashLoading] = useState(false);
+  const [splashLoading,setSplashLoading ] = useState(false);
+  const [checkSignUp, setCheckSignUp] = useState(false);
+  const [formError, setFormError] = useState({});
+
 
   const signUP = (
-    username,
-    password,
-    confirmPassword,
-    address,
-    phone,
-    email,
+    usernames,
+    passwords,
+    confirmPasswords,
+    addresses,
+    phones,
+    emails,
     checkValue,
   ) => {
-    // console.log(">>>>> check",username,password,confirmPassword,address,phone,email);
+    const isEmptyValue = (value) => {
+      return !value || value.trim().length < 1;
+    };
+    const validateForm = () => {
+      const error = {};
+  
+      if (isEmptyValue(usernames)) {
+        error["username"] = "Username is required";
+      }
+  
+      if (isEmptyValue(addresses)) {
+        error["address"] = "Address is required";
+      }
+  
+      if (isEmptyValue(emails)) {
+        error["email"] = "Email is required";
+      }
+  
+      if (isEmptyValue(phones)) {
+        error["phone"] = "Phone is required";
+      }
+  
+      if (isEmptyValue(passwords)) {
+        error["password"] = "Password is required";
+      }
+  
+      if (isEmptyValue(confirmPasswords)) {
+        error["confirmPassword"] = "Confirm Password is required";
+      } else if (confirmPasswords !== passwords) {
+        error["confirmPassword"] = "Confirm Password not match";
+      }
+      setFormError(error);
+  
+      return Object.keys(error).length === 0;
+    };
+    if (validateForm()) {
+      let acc = {
+        username: usernames,
+        password: passwords,
+        confirmPassword: confirmPasswords,
+        address: addresses,
+        phone: phones,
+        email: emails,
+      };
     setIsLoading(true);
     setCheckValueSignUp(true);
-    // console.log( username,
-    //   password,
-    //   confirmPassword,
-    //   address,
-    //   phone,
-    //   email,checkValue);
       let check ='';
       if (checkValue) {
         check= '1';
       }else
       {
-        check='2'
+        check='0'
       }
-      // console.log(">>>>>>>>>>>>>>>check",check)
     axios
-      .post(`${BASE_URL}/register?status=`+check, {
-        username: username,
-        password: password,
-        confirmPassword: confirmPassword,
-        address: address,
-        email: email,
-        phone: phone,
-      })
+      .post(`${BASE_URL}/register?status=`+check, acc)
       .then((res) => {
-        console.log(res);
         let userInfo = res;
-        console.log(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
         setCheckValueSignUp(true);
-        // <Redirect to='/Login'/>
-        // window.location.href="/Login";
-        // navigation.navigate("/Login");
+        setCheckSignUp(true);
       })
       .catch((e) => {
-        console.log(`register error ${e.res}`);
+        console.log(`register error ${e.response.data.message}`);
         setIsLoading(false);
         setCheckValueSignUp(false);
       });
+    }else{
+      setCheckSignUp(false);
+      Alert.alert("form invalid");
+      console.log("form invalid");
+    }
   };
 
   const login = (username, password) => {
@@ -76,6 +106,7 @@ export const AuthProvider = ({ children }) => {
         username,
         password,
       })
+
       .then((res) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
@@ -83,7 +114,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`login error ${e}`);
+        console.log(`login error ${e.response.data.message}`);
         setIsLoading(false);
       });
   };
@@ -134,6 +165,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        checkSignUp,
+        formError,
         isLoading,
         userInfo,
         checkValueSignUp,

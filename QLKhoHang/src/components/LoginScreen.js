@@ -1,14 +1,15 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeftIcon } from "react-native-heroicons/solid";
 import { themeColors } from "../theme";
 import {AuthContext} from '../context/AuthContext';
 import Spinner from "react-native-loading-spinner-overlay";
+import { AntDesign,Feather } from '@expo/vector-icons';
 
 export default function LoginScreen({navigation}) {
   const [username, setUsername] = useState (null);
   const [password, setPassword] = useState (null);
+  const [isShowPassword, setIsShowPassword] = useState(false);
   const { isLoading, login } = useContext(AuthContext);
   return (
     <View
@@ -22,7 +23,7 @@ export default function LoginScreen({navigation}) {
             onPress={() => navigation.goBack()}
             className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
-            <ArrowLeftIcon size="20" color="black" />
+            <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
@@ -47,13 +48,23 @@ export default function LoginScreen({navigation}) {
 
           />
           <Text className="text-gray-700 ml-4">Password</Text>
+          <View className="flex flex-row relative">
           <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl"
+            className="p-4 bg-gray-100 text-gray-700 rounded-2xl w-full"
             value={password}
             placeholder="Enter password"
             onChangeText={(text) => setPassword(text)}
-            secureTextEntry={true}
+            secureTextEntry={isShowPassword ? false : true}
           />
+           <View className="absolute right-6 top-4">
+          <Feather
+           name={
+            isShowPassword === true
+                ? "eye"
+                : "eye-off"
+            } size={24} color="black" onPress={() => setIsShowPassword(!isShowPassword)}/>
+            </View>
+            </View>
           <TouchableOpacity className="flex items-end">
             <Text className="text-gray-700 mb-5">Forgot Password?</Text>
           </TouchableOpacity>
