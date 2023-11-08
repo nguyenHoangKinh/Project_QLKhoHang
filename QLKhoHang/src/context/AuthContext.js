@@ -13,10 +13,29 @@ export const AuthProvider = ({ children }) => {
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
-  // const [listWareHouse, setlistWareHouse] = useState({});
-  // const [visible, setVisible] = useState(false);
+  const [list, setListWare] = useState([]);
+  const [visible, setViisble] = useState(false);
 
 
+
+  // const getList = () => {
+  //     axios
+  //       .get(
+  //         `${BASE_URL_Owners}/warehouse/listWarehouseUser`,
+  //         {
+  //           headers: { Authorization: `Token ${userInfo.accessToken}` }
+  //         },
+          
+  //       )
+  //       .then((res) => {
+  //         var response = res.data.warehouses;
+  //         setListWare(response.data.warehouses);
+  //       });
+  //   };
+    
+  //   const handleVisibleModal = () => {
+  //     setViisble(!visible);
+  //   };
 
   const signUP = (
     usernames,

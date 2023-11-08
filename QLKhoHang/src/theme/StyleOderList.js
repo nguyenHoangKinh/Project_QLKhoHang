@@ -6,7 +6,7 @@ const StyleOderList = StyleSheet.create({
       height: "100%",
     },
     text: {
-      fontSize: 16,
+      fontSize: 14,
       lineHeight: 21,
       fontWeight: "bold",
       letterSpacing: 0.25,
@@ -15,14 +15,14 @@ const StyleOderList = StyleSheet.create({
     //FlatList
     item: {
       flexDirection: "row",
-      height: 100,
+      height: 180,
       margin: 10,
       borderRadius: 10,
       backgroundColor: "#00feff",
     },
-    boxesList: {
-      // backgroundColor:"red"
-    },
+    // boxesList: {
+    //   // backgroundColor:"red"
+    // },
     //boxes
     leftItem: {
       width: "30%",

@@ -12,8 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-//import ListWareHouse from "../components/owners/ListWareHouse";
-//import DataList from "../components/owners/DataList";
+
 
 const HomeNavigation = () => {
     const Tab = createBottomTabNavigator()

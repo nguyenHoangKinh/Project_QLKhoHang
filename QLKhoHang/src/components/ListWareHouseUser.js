@@ -1,3 +1,5 @@
+import { StatusBar } from "expo-status-bar";
+
 import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -10,9 +12,16 @@ import {
   Modal,
 } from "react-native";
 import axios from "axios";
-const DataList = () => {
-  const [listWareHouse, setListWare] = useState([]);
-  const [visible, setViisble] = useState(false);
+import { BASE_URL_Owners } from "../config";
+
+export default function ListWareHouseUser() {
+  const [userInfo, setUserInfo] = useState({});
+  const [list, setListWare] = useState([]);
+//   const [visible, setViisble] = useState(false);
+  constructor= (props) => {
+    super(props);
+    this.state = {persons: []};
+  }
 
   useEffect(() => {
     getList();
@@ -20,71 +29,75 @@ const DataList = () => {
 
   const getList = () => {
     axios
-      .get(
-        `${BASE_URL_Owners}/warehouse/list`,
-        {},
-        {
-          headers: { Authorization: `Token ${userInfo.accessToken}` },
-          params: 
-        {
-          id: userInfo.others._id
-        },
-        },
+      .get(`${BASE_URL_Owners}/warehouse/listWarehouseUser/persons`, {
+        //headers: { Authorization: `Token ${userInfo.accessToken}` },
         
-      )
+      })
       .then((res) => {
-        var response = res.data.warehouses;
-        setListWare(response.data.warehouses.warehouses);
+        console.log(res.data);
+        this.setState({persons: res.data});
+       
+        // let userInfo = res.data;
+        // setUserInfo(userInfo);
+        // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        // console.log(userInfo.accessToken);
+        // var response = res.data;
+        // setListWare(res.data.warehouse);
+        //console.log(res.data.warehouse);
+
+      }).catch((error) => {
+        console.log(error);
+        // if (error.response && error.response.status === 401 ) {
+        //   // Handle 401 Unauthorized error
+        //   console.log("Unauthorized error:", error.response.data);
+        // } else {
+        //   // Handle other errors
+        //   console.error("Error:", error);
+        // }
       });
   };
-  
-  const handleVisibleModal = () => {
-    setViisble(!visible);
-  };
+  tabRow=()=> {
+    return this.state.persons.map(function (object, i) {
+        return <TableRow obj={object} key={i}/>;
+    });
+}
 
+//   const handleVisibleModal = () => {
+//     setViisble(!visible);
+//   };
   return (
     <SafeAreaView>
-      <View style={styles.header_container}>
+      {/* <View style={styles.header_container}>
         <Text style={styles.txt_main}>Course {list && list.length}</Text>
         <TouchableOpacity onPress={handleVisibleModal}>
           <Text style={styles.txt_name}>New Course</Text>
         </TouchableOpacity>
-      </View>
-      
+      </View> */}
+
       <ScrollView>
-        {listWareHouse &&
-          listWareHouse.map((item, index) => {
+        {list &&
+          list.map((item, index) => {
             return (
               <View style={styles.item_course} key={index}>
-                <View>
-                  <Text>
-                    Ten: {item.wareHoseName}
-                  </Text>
-                  <Text> Dia chi: {item.address}</Text>
-                  <Text> Danh muc: {item.category}</Text>
-                  <Text> Dung tich: {item.capacity}</Text>
-                  <Text> Gia tien: {item.monney}</Text>
-                  <Text> TrangThai: {item.status}</Text>
-                  <Text> Mo ta:{item.description}</Text>
+                <View >
+                    {this.tabRow}
                   
                 </View>
-                <View>
-                  <TouchableOpacity onPress={() => handelDetete(item)}>
-                    <Text style={styles.txt_del}>Delete</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleEdit(item)}>
-                    <Text style={styles.txt_edit}>Edit</Text>
-                  </TouchableOpacity>
-                </View>
+                {/* <View>
+                    <TouchableOpacity onPress={() => handelDetete(item)}>
+                      <Text style={styles.txt_del}>Delete</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleEdit(item)}>
+                      <Text style={styles.txt_edit}>Edit</Text>
+                    </TouchableOpacity>
+                  </View> */}
               </View>
             );
           })}
       </ScrollView>
     </SafeAreaView>
   );
-};
-
-export default DataList;
+}
 
 const styles = StyleSheet.create({
   form: {

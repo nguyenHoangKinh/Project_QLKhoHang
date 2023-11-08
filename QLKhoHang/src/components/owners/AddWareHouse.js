@@ -3,6 +3,7 @@ import { View, Text, Button, TextInput } from "react-native";
 import st from "../../theme/styles";
 
 
+
 const AddWareHouse = () => {
   const [tenKho, settenKho] = useState('');
   const [trangthai, settrangThai] = useState(0);

@@ -10,10 +10,12 @@ const StyleListWareHouse = StyleSheet.create({
     },
 
     item: {
-        backgroundColor: '#f9c2ff',
+        backgroundColor: 'yellow',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 
     warehouse_count: {
@@ -28,7 +30,7 @@ const StyleListWareHouse = StyleSheet.create({
     },
 
     nameProduct: {
-        fontSize: 20,
+        fontSize: 15,
     },
 
     searchBar: {
