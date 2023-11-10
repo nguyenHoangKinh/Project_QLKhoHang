@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
@@ -151,7 +152,7 @@ export const AuthProvider = ({ children }) => {
       if (userInfo) {
         setUserInfo(userInfo);
       }
-      
+
       setSplashLoading(false);
     } catch (e) {
       setSplashLoading(false);
@@ -194,7 +195,7 @@ export const AuthProvider = ({ children }) => {
       })
       .then((res) => {
         console.log(res.data);
-        getProfile();
+        getWarehouse();
         setCheckUpdate(true)
         setIsLoading(false);
       })
@@ -224,6 +225,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateProfile,
         checkUpdate,
+        warehouse,
       }}
     >
       {children}

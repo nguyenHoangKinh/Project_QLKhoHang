@@ -1,20 +1,165 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { IconButton } from "react-native-paper";
+import { uuid } from "react-native-uuid";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+import AppStyle from '../theme';
 
-export default function WarehouseScreen() {
+const TodoScreen = ({ navigation }) => {
+  // Init local states
+  const [warehouse, setWarehouse] = useState({});
+  const [searchWarehouse, setSearchWarehouse] = useState({});
+  const { userInfo } = useContext(AuthContext);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+    .get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`,
+      {
+        headers:
+        {
+          Authorization: `Bearer ${userInfo.accessToken}`
+        },
+        params:
+        {
+          id_owner: userInfo.others._id
+        },
+      })
+    .then((res) => {
+      let warehouses = res.data;
+      setWarehouse(warehouses);
+      setSearchWarehouse(warehouses)
+    })
+    .catch((e) => {
+      console.log(`get warehouse error ${e.res}`);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
+        {
+          headers:
+          {
+            Authorization: `Bearer ${userInfo.accessToken}`
+          },
+        })
+      .then((res) => {
+        let categorie = res.data.categories;
+        setCategories(categorie);
+      })
+      .catch((e) => {
+        console.log(`get categories error ${e.res}`);
+      });
+  }, []);
+
+  // Handle Delete
+  const handleDeleteTodo = (id) => {
+    axios
+      .delete(`https://warehouse-management-api.vercel.app/v1/warehouse/deleteWarehouse/${id}`,
+        {
+          headers:
+          {
+            Authorization: `Bearer ${userInfo.accessToken}`
+          },
+          params:
+          {
+            id_owner: userInfo.others._id
+          },
+        })
+      .then((res) => {
+        console.log(res.data)
+        navigation.navigate("Home")
+      })
+      .catch((e) => {
+        console.log(`delete warehouse error ${e.res}`);
+      });
+  };
+
+  // Render items
+  const renderTodos = ({ item, index }) => {
+    const categorie = [];
+    for (let i = 0; i < categories.length; i++) {
+      {
+        categories[i]._id.includes(item.category) &&
+        categorie.push(
+          <Text key={i}>
+            {categories[i].name}
+          </Text>
+        )
+      }
+    }
+    return (
+      <View style={AppStyle.StyleWarehouse.warehouse_view}>
+        <TouchableOpacity
+          style={AppStyle.StyleWarehouse.name_warehouse}
+          onPress={() => navigation.navigate("DetailWarehouseScreem", { idWarehouse: item._id })}>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Tên Kho Hàng: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.wareHouseName}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Loại kho: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {categorie}
+            </Text>
+          </Text>
+        </TouchableOpacity>
+
+        <IconButton
+          icon="pencil"
+          iconColor="#fff"
+          onPress={() => {
+            navigation.navigate("UpdateWarehouseScreen", { idWarehouse: item._id })
+          }}
+        />
+        <IconButton
+          icon="trash-can"
+          iconColor="#fff"
+          onPress={() => handleDeleteTodo(item._id)}
+        />
+      </View>
+    );
+  };
+
+  const handleSearch = (text) => {
+    if (text) {
+      let searchList = warehouse.filter((searchWarehouse) =>
+        searchWarehouse.wareHouseName.toLowerCase().includes(text.toLowerCase())
+      );
+ 
+      setSearchWarehouse(searchList)
+    } else {
+      setSearchWarehouse(warehouse)
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>WarehouseScreen</Text>
-      <StatusBar style="auto" />
+    <View style={{ marginHorizontal: 16, marginTop: 40 }}>
+      <TextInput
+        style={AppStyle.StyleWarehouse.search}
+        placeholder="Tìm kiếm"
+        // value={userInput}
+        onChangeText={(text) => {
+          handleSearch(text);
+        }}
+      />
+
+      <TouchableOpacity
+        style={AppStyle.StyleWarehouse.btn_add}
+        onPress={() => navigation.navigate("AddWarehouseScreen")}>
+        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 20 }}>
+          Thêm Kho Hàng
+        </Text>
+      </TouchableOpacity>
+
+      {/* Render todo list */}
+      <FlatList data={searchWarehouse} renderItem={renderTodos} />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default TodoScreen;
