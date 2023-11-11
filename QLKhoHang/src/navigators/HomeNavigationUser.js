@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import ListWareUser from '../components/user/ListWareUser';
+import ProfileUserScreen from "../components/user/FrofileUser";
 
 const HomeNavigation = () => {
     const Tab = createBottomTabNavigator()
@@ -30,11 +31,11 @@ const HomeNavigation = () => {
     }
     return (
             <Tab.Navigator screenOptions={screenOptions}>
-                <Tab.Screen                
-                    // name="DataList"
-                    // component={DataList}
-                    name="ListWareUser"
-                    component={ListWareUser}
+                <Tab.Screen                                 
+                    // name="ListWareUser"
+                    // component={ListWareUser}
+                    name="Warehouse"
+                    component={WarehouseScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
@@ -98,8 +99,8 @@ const HomeNavigation = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Profile"
-                    component={ProfileScreen}
+                    name="ProfileUser"
+                    component={ProfileUserScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
