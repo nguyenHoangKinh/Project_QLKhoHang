@@ -6,7 +6,7 @@ import HomeScreen from "../components/HomeScreen";
 import LoginScreen from "../components/LoginScreen";
 import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
-import SplashScreen from "../components/SplashScreen";
+import SeeOrderDetails from "../components/SeeOrderDetails";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";

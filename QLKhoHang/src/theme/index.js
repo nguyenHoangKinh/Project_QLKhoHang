@@ -5,11 +5,13 @@ import StyleHome from './StyleHome';
 import StyleProfile from './StyleProfile';
 import StyleStatistics from './StyleStatistics';
 import StyleListProduct from './StyleListProduct';
+import StyleOderList from './StyleOderList';
 
 const AppStyle = {
     StyleHome,
     StyleProfile,
     StyleStatistics,
-    StyleListProduct
+    StyleListProduct,
+    StyleOderList
 }
 export default AppStyle;

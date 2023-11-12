@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreen from "../components/OrderScreen";
+import OrderScreenOwner from "../components/OrderScreenOwner";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -44,8 +44,8 @@ const HomeNavigation = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Order"
-                    component={OrderScreen}
+                    name="OrderScreenOwner"
+                    component={OrderScreenOwner}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
