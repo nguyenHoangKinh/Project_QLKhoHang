@@ -15,7 +15,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import ListWareUser from '../components/user/ListWareUser';
 import ProfileUserScreen from "../components/user/FrofileUser";
 
-const HomeNavigation = () => {
+const HomeNavigationUser = () => {
     const Tab = createBottomTabNavigator()
     const screenOptions = {
         tabBarShowLabel: false,
@@ -116,4 +116,4 @@ const HomeNavigation = () => {
     )
 }
 
-export default HomeNavigation;
+export default HomeNavigationUser;
