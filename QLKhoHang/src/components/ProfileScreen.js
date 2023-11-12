@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { useContext } from 'react';
 import { ScrollView, Text, Image, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
@@ -7,9 +8,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({navigation}) {
-
+  const { userInfo, splashLoading, logout } = useContext(AuthContext);
   return (
     <View>
       <ScrollView>
@@ -22,30 +24,26 @@ export default function ProfileScreen({navigation}) {
           </TouchableOpacity>
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Image source={require('../assets/z4808827650587_fafa60a0767258a5439166a29f8cdf0d.jpg')}
+          <Image source={{uri: `${userInfo.others.avatar}`}}
             style={AppStyle.StyleProfile.avatar}></Image>
-          <Text style={AppStyle.StyleProfile.name}>Tên Chủ Kho</Text>
-          <Text style={AppStyle.StyleProfile.email}>Email</Text>
+          <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
+          <Text style={AppStyle.StyleProfile.email}>{userInfo.others.email}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome name="bank" size={20} color="black" />
+          <FontAwesome name="bank" size={20} color="black" style={{marginRight: 10}}/>
           <Text>Số tài khoản</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <Entypo name="phone" size={20} color="black" />
-          <Text>Số điện thoại</Text>
+          <Entypo name="phone" size={20} color="black" style={{marginRight: 10}}/>
+          <Text>{userInfo.others.phone}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <Entypo name="address" size={20} color="black" />
-          <Text>Địa chỉ</Text>
+          <Entypo name="address" size={20} color="black" style={{marginRight: 10}}/>
+          <Text>{userInfo.others.address}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome5 name="warehouse" size={20} color="black" />
-          <Text>Tổng số kho</Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
-          <MaterialIcons name="house-siding" size={20} color="black" />
-          <Text>Kho đang được thuê</Text>
+          <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
+          <Text>{userInfo.others.warehouses.length}</Text>
         </View>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
@@ -54,9 +52,8 @@ export default function ProfileScreen({navigation}) {
             }>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: '#fff' }}>Cập nhật thông tin cá nhân</Text>
-
         </TouchableOpacity>
-        <TouchableOpacity style={AppStyle.StyleProfile.btn_logout}>
+        <TouchableOpacity style={AppStyle.StyleProfile.btn_logout} onPress={logout}>
           <MaterialCommunityIcons name="logout" size={20} color="#fff" />
           <Text style={{ color: '#fff' }}>Đăng Xuất</Text>
         </TouchableOpacity>

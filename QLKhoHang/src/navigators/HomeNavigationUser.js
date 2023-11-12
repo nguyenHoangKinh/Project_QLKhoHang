@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreenOwner from "../components/OrderScreenOwner";
+import OrderScreenUser from "../components/OrderScreenUser";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -44,8 +44,8 @@ const HomeNavigation = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="OrderScreenOwner"
-                    component={OrderScreenOwner}
+                    name="OrderScreenUser"
+                    component={OrderScreenUser}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
@@ -87,7 +87,7 @@ const HomeNavigation = () => {
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <Ionicons name="stats-chart" size={24} color={focused ? "#16247d" : "#111"} />
+                                    {/* <Ionicons name="stats-chart" size={24} color={focused ? "#16247d" : "#111"} /> */}
                                     <Text style={{ fontSize: 12, color: "#16247d" }}>Statistics</Text>
                                 </View>
                             )
