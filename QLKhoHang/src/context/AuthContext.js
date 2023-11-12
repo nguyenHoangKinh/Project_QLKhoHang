@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [formError, setFormError] = useState({});
   const [list, setListWare] = useState([]);
   const [visible, setViisble] = useState(false);
-
+console.log(list);
 
 
   // const getList = () => {
@@ -219,6 +219,8 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         checkValueSignUp,
         splashLoading,
+        list,
+        setListWare,
         signUP,
         login,
         logout,

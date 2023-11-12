@@ -32,10 +32,10 @@ const HomeNavigationUser = () => {
     return (
             <Tab.Navigator screenOptions={screenOptions}>
                 <Tab.Screen                                 
-                    // name="ListWareUser"
-                    // component={ListWareUser}
-                    name="Warehouse"
-                    component={WarehouseScreen}
+                    name="ListWareUser"
+                    component={ListWareUser}
+                    // name="Warehouse"
+                    // component={WarehouseScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
