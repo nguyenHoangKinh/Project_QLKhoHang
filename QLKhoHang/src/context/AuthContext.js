@@ -2,12 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import {Alert} from "react-native";
-import { BASE_URL } from "../config";
+import { BASE_URL,ORDER_URL } from "../config";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
+  const [check, setCheck] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +16,10 @@ export const AuthProvider = ({ children }) => {
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
   const [checkUpdate, setCheckUpdate] = useState(false);
-
+  const [ListOrder, setListOrder] = useState({});
+  const [IdOrder, setIdOrder] = useState({});
+  const [DetailOrder, setDetailOrder] = useState({});
+// console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -126,7 +130,7 @@ export const AuthProvider = ({ children }) => {
       .get(
         `${BASE_URL}/logout`,
         {
-          headers: { Authorization: `Token ${userInfo.accessToken}` }
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` }
         }
       )
       .then((res) => {
@@ -136,8 +140,8 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`logout error ${e}`);
         userInfo.accessToken = null;
+        console.log(`logout error ${e.response.data.message}`);
         setIsLoading(false);
       });
   };
@@ -206,8 +210,114 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-
-
+  const orderListUser = (Token) => {
+    setListOrder({});
+    setIsLoading(true);
+    axios
+      .get(`${ORDER_URL}/order/listOrderByUser?id_user=${userInfo.others._id}`,  {
+        headers: { Authorization: `Bearer ${Token}` }
+      })
+      .then((res) => {
+        if (res && res.data) {
+          let order = res.data;
+          setListOrder(order);
+        }
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.response.data.message}`);
+        setIsLoading(false);
+      });
+  }
+  const orderListOwner = (Token) => {
+    setListOrder({});
+    // console.log(userInfo.others._id);
+    // console.log(Token);
+    setIsLoading(true);
+    axios
+      .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}`,  {
+        headers: { Authorization: `Bearer ${Token}` }
+      })
+      .then((res) => {
+        if (res && res.data) {
+          let order = res.data;
+          // console.log(order);
+          setListOrder(order);
+        }
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.response.data.message}`);
+        setIsLoading(false);
+      });
+  }
+  // const deleteOrderListOwner = (Token) => {
+  //   setListOrder({});
+  //   setIsLoading(true);
+  //   axios
+  //     .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}&id_order`,  {
+  //       headers: { Authorization: `Bearer ${Token}` }
+  //     })
+  //     .then((res) => {
+  //       if (res && res.data) {
+  //         let order = res.data;
+  //         // console.log(order);
+  //         setListOrder(order);
+  //       }
+  //       setIsLoading(false);
+  //     })
+  //     .catch((e) => {
+  //       console.log(`update error ${e.response.data.message}`);
+  //       setIsLoading(false);
+  //     });
+  // }
+  const OrderDetail = () => {
+    // console.log(IdOrder);
+    setIsLoading(true);
+    axios
+      .get(ORDER_URL+`/order/getAOrder?id=${IdOrder}`,{
+        headers: {
+           Authorization: `Bearer ${userInfo.accessToken} ` 
+          }
+      })
+      .then((res) => {
+        if (res && res.data) {          
+          let Detail = res.data;
+          // console.log(Detail);
+          setDetailOrder(Detail);
+          setCheck(true);
+        }
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.response.data.message}`);
+        setIsLoading(false);
+        setCheck(false);
+      });
+  }
+  const SearchOrder = (Name) => {
+    setListOrder({});
+    setIsLoading(true);
+    axios
+      .get(ORDER_URL+`/order/searchOrder?name=${Name}`,{
+        headers: {
+           Authorization: `Bearer ${userInfo.accessToken} ` 
+          }
+      })
+      .then((res) => {
+        if (res && res.data) {          
+          let Detail = res.data.Order;
+          setListOrder(Detail);
+          setCheck(true);
+        }
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.response.data.message}`);
+        setIsLoading(false);
+        setCheck(false);
+      });
+  }
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -216,13 +326,23 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         getProfile,
+        DetailOrder,
         checkSignUp,
+        ListOrder,
         formError,
         isLoading,
         userInfo,
         checkValueSignUp,
         splashLoading,
-        // OrderDetail,
+        IdOrder,
+        check,
+        SearchOrder,
+        setCheck,
+        setDetailOrder,
+        setIdOrder,
+        OrderDetail,
+        orderListUser,
+        orderListOwner,
         signUP,
         login,
         logout,
