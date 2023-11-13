@@ -4,6 +4,7 @@ import { ScrollView, Text, Image, TouchableOpacity, View } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
@@ -40,7 +41,7 @@ export default function ProfileScreen({navigation}) {
           <Text>{userInfo.others.address}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
+          <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
           <Text>{userInfo.others.warehouses.length}</Text>
         </View>
         <TouchableOpacity 
