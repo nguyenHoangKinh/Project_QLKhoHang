@@ -45,6 +45,11 @@ export default function ProfileScreen({navigation}) {
           <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
           <Text>{userInfo.others.warehouses.length}</Text>
         </View>
+        <TouchableOpacity 
+        onPress={() => navigation.navigate('/ChangePassword')}
+        className="flex items-end">
+            <Text className="text-gray-700 mb-5">Change Password?</Text>
+          </TouchableOpacity>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={

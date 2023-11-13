@@ -7,6 +7,7 @@ import LoginScreen from "../components/LoginScreen";
 import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
 import SplashScreen from "../components/SplashScreen";
+import ChangePassword from "../components/ChangePassword";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
@@ -90,6 +91,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ListProduct"
           component={ListProduct}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

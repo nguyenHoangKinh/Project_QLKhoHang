@@ -179,6 +179,25 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       });
   };
+  const changePassword = (passwords, confirmPasswords) => {
+    axios.put(`${BASE_URL}/change-password`, {
+      headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      },
+      body:{
+        password:passwords,
+        confirmPassword:confirmPasswords
+      }
+    }).then((res) => {
+      let userInfo = res.data;
+      setUserInfo(userInfo);
+      AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      setIsLoading(false);
+    }).catch((e) =>{
+      console.log(`error ${e.response.data.message}`);
+      setIsLoading(false);
+    });
+  }
 
   useEffect(() => {
     isLoggedIn();
@@ -193,6 +212,7 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         checkValueSignUp,
         splashLoading,
+        changePassword,
         signUP,
         login,
         logout,
