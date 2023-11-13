@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
-  const [check, setCheck] = useState(false);
   const [formError, setFormError] = useState({});
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [ListOrder, setListOrder] = useState({});

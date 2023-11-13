@@ -146,7 +146,7 @@ const Navigation = () => {
         />
         <Stack.Screen
           name="AddOrderScreen"
-          component={AddOrderScreen}
+          component={AddOrderScreen}/>
         <Stack.Screen
           name="ChangePasswordScreen"
           component={ChangePasswordScreen}

@@ -40,7 +40,7 @@ export default function ProfileScreen({navigation}) {
           <Text>{userInfo.others.address}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
+          <FontAwesome name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
           <Text>{userInfo.others.warehouses.length}</Text>
         </View>
         <TouchableOpacity 

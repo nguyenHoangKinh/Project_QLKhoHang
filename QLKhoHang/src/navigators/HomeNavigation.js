@@ -117,5 +117,3 @@ export default function HomeNavigation() {
             </Tab.Navigator>
     )
 }
-
-export default HomeNavigation;
