@@ -193,7 +193,6 @@ export const AuthProvider = ({ children }) => {
       .then((res) => {
         if (res && res.data) {
           let order = res.data;
-          console.log(order);
           setListOrder(order);
         }
         setIsLoading(false);
@@ -205,7 +204,7 @@ export const AuthProvider = ({ children }) => {
   }
   const orderListOwner = (Token) => {
     setListOrder({});
-    // console.log(userInfo);
+    // console.log(userInfo.others._id);
     // console.log(Token);
     setIsLoading(true);
     axios
@@ -225,28 +224,26 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       });
   }
-  const deleteOrderListOwner = (Token) => {
-    setListOrder({});
-    // console.log(userInfo);
-    // console.log(Token);
-    setIsLoading(true);
-    axios
-      .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}&id_order`,  {
-        headers: { Authorization: `Bearer ${Token}` }
-      })
-      .then((res) => {
-        if (res && res.data) {
-          let order = res.data;
-          // console.log(order);
-          setListOrder(order);
-        }
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(`update error ${e.response.data.message}`);
-        setIsLoading(false);
-      });
-  }
+  // const deleteOrderListOwner = (Token) => {
+  //   setListOrder({});
+  //   setIsLoading(true);
+  //   axios
+  //     .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}&id_order`,  {
+  //       headers: { Authorization: `Bearer ${Token}` }
+  //     })
+  //     .then((res) => {
+  //       if (res && res.data) {
+  //         let order = res.data;
+  //         // console.log(order);
+  //         setListOrder(order);
+  //       }
+  //       setIsLoading(false);
+  //     })
+  //     .catch((e) => {
+  //       console.log(`update error ${e.response.data.message}`);
+  //       setIsLoading(false);
+  //     });
+  // }
   const OrderDetail = () => {
     // console.log(IdOrder);
     setIsLoading(true);
@@ -271,20 +268,19 @@ export const AuthProvider = ({ children }) => {
         setCheck(false);
       });
   }
-  const AddOrder = () => {
-    // console.log(IdOrder);
+  const SearchOrder = (Name) => {
+    setListOrder({});
     setIsLoading(true);
     axios
-      .get(ORDER_URL+`/order/create?id=${IdOrder}`,{
+      .get(ORDER_URL+`/order/searchOrder?name=${Name}`,{
         headers: {
            Authorization: `Bearer ${userInfo.accessToken} ` 
           }
       })
       .then((res) => {
         if (res && res.data) {          
-          let Detail = res.data;
-          // console.log(Detail);
-          setDetailOrder(Detail);
+          let Detail = res.data.Order;
+          setListOrder(Detail);
           setCheck(true);
         }
         setIsLoading(false);
@@ -312,7 +308,7 @@ export const AuthProvider = ({ children }) => {
         splashLoading,
         IdOrder,
         check,
-        deleteOrderListOwner,
+        SearchOrder,
         setCheck,
         setDetailOrder,
         setIdOrder,

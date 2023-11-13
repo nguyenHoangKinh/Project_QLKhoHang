@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 export default function OrderScreenOwner({navigation}) {
-  const { orderListOwner, ListOrder,setIdOrder, userInfo,deleteOrderListOwner } = useContext(AuthContext);
+  const { orderListOwner, ListOrder,setIdOrder, userInfo,SearchOrder } = useContext(AuthContext);
   // console.log(ListOrder);
   useEffect(() => {
     //call api
@@ -24,17 +24,19 @@ export default function OrderScreenOwner({navigation}) {
   }, []);
 
   const FlatListData = (item) => {
+    
     // if (
     //   ListOrder === "" ||
     //   item.TenKhoHang.toLowerCase().includes(ListOrder.toLowerCase())
     // ) {
     return (
       <Pressable
-      
-      onPress={() => {setIdOrder(item._id),navigation.navigate("SeeOrderDetails")}}
-       style={AppStyle.StyleOderList.boxesList}>
-       {/* <Text>{console.log(item._id)}</Text> */}
-        <View style={AppStyle.StyleOderList.item}>
+        onPress={() => {
+          setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
+        }}
+      >
+        {/* <Text>{console.log(item._id)}</Text> */}
+        <View className="bg-blue-500" style={AppStyle.StyleOderList.item}>
           {/* <View style={AppStyle.StyleOderList.leftItem}>
               <Text style={AppStyle.StyleOderList.text}>{item.TenKhoHang}</Text>
               <Image
@@ -48,9 +50,18 @@ export default function OrderScreenOwner({navigation}) {
                 className="flex-initial"
                 style={AppStyle.StyleOderList.text}
               >
+                Ten Hoa Don:
+              </Text>
+              <Text className="flex-initial"> {item.name}</Text>
+            </View>
+            <View className="flex flex-row">
+              <Text
+                className="flex-initial"
+                style={AppStyle.StyleOderList.text}
+              >
                 Ten Chu Kho:
               </Text>
-              <Text className="flex-initial"> {item.owner}</Text>
+              <Text className="flex-initial"> {item.owner.username}</Text>
             </View>
             <View className="flex flex-row">
               <Text
@@ -59,7 +70,7 @@ export default function OrderScreenOwner({navigation}) {
               >
                 Ten Khach Hang:{" "}
               </Text>
-              <Text className="flex-initial">{item.user}</Text>
+              <Text className="flex-initial">{item.user.username}</Text>
             </View>
             <View className="flex flex-row">
               <Text
@@ -83,6 +94,9 @@ export default function OrderScreenOwner({navigation}) {
             </Text>
           </TouchableOpacity> */}
         </View>
+        {/* <Pressable className="absolute right-0 ">
+        <MaterialCommunityIcons name="delete-circle-outline" size={24} color="black" />
+        </Pressable> */}
       </Pressable>
     );
     // }
@@ -90,119 +104,132 @@ export default function OrderScreenOwner({navigation}) {
 
   return (
     <>
-    <View className=" flex static ">
-      <View className="w-full" style={AppStyle.StyleOderList.header} >
-        <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
-          <Ionicons
-            style={AppStyle.StyleOderList.iconSearch}
-            name="search"
-            size={23}
-            color="black"
-          />
-          <TextInput
-            placeholder="nhap ten kho "
-            clearButtonMode="always"
-            style={AppStyle.StyleOderList.search}
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(text) => {
-              setUserInput(text);
-            }}
-          />
-        </View>
-        {/* <Pressable style={AppStyle.StyleOderList.listFilter}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={AppStyle.StyleOderList.centeredView}>
-          <Pressable
-            style={[AppStyle.StyleOderList.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}
-          >
+      <View className=" flex static ">
+        <View className="w-full" style={AppStyle.StyleOderList.header}>
+          <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
             <Ionicons
-              name="close-outline"
-              size={35}
-              color="#000"
-              style={AppStyle.StyleOderList.textStyle}
+              style={AppStyle.StyleOderList.iconSearch}
+              name="search"
+              size={23}
+              color="black"
             />
-          </Pressable>
-          <View style={AppStyle.StyleOderList.modalView}>
-            <View style={AppStyle.StyleOderList.modalView_1}>
-              <Text>Loc Don Hang Theo Kho Hang</Text>
-              <FlatList
-                data={warehouseList}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => (
-                  <TouchableOpacity
-                    onChange={() => {
-                      warehouseFilter(item.id);
-                    }}
-                    style={[AppStyle.StyleOderList.text, { margin: 5 }]}
-                  >
-                    <Text>{AppStyle.StyleOderList.kho}</Text>
-                  </TouchableOpacity>
-                )}
+            <TextInput
+              placeholder="nhap ten kho "
+              clearButtonMode="always"
+              style={AppStyle.StyleOderList.search}
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => {
+                if(text.length > 0){
+                  SearchOrder(text);
+                }else{
+                  orderListOwner(userInfo.accessToken);
+                }
+              }}
+            />
+          </View>
+          {/* <Pressable style={AppStyle.StyleOderList.listFilter}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={AppStyle.StyleOderList.centeredView}>
+            <Pressable
+              style={[AppStyle.StyleOderList.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Ionicons
+                name="close-outline"
+                size={35}
+                color="#000"
+                style={AppStyle.StyleOderList.textStyle}
               />
-            </View>
-            <View style={AppStyle.StyleOderList.modalView_2}>
-              <Text>Loc Don Hang Theo Thang - tuan</Text>
+            </Pressable>
+            <View style={AppStyle.StyleOderList.modalView}>
+              <View style={AppStyle.StyleOderList.modalView_1}>
+                <Text>Loc Don Hang Theo Kho Hang</Text>
+                <FlatList
+                  data={warehouseList}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      onChange={() => {
+                        warehouseFilter(item.id);
+                      }}
+                      style={[AppStyle.StyleOderList.text, { margin: 5 }]}
+                    >
+                      <Text>{AppStyle.StyleOderList.kho}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+              <View style={AppStyle.StyleOderList.modalView_2}>
+                <Text>Loc Don Hang Theo Thang - tuan</Text>
 
-              <TouchableOpacity>
-                <Text
-                  style={AppStyle.StyleOderList.Fliter}
-                  >Loc Theo Thang</Text>
-              </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text
+                    style={AppStyle.StyleOderList.Fliter}
+                    >Loc Theo Thang</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity style={AppStyle.StyleOderList.Fliter}>
-                <Text>Loc Theo Tuan </Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={AppStyle.StyleOderList.Fliter}>
+                  <Text>Loc Theo Tuan </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-      <Ionicons
-        style={AppStyle.StyleOderList.iconFilter}
-        name="options-outline"
-        size={30}
-        color="#000"
-        onPress={() => setModalVisible(true)}
-      />
-    </Pressable> */}
-      </View>
-      <View className=" w-full h-12 top-2 bg-black" style={AppStyle.StyleOderList.boxes}>
-        <Pressable
-          accessibilityRole="search"
-          style={AppStyle.StyleOderList.button}
-          onPress={() => Alert.alert("Left button pressed")}
-        >
-          <Text style={AppStyle.StyleOderList.text}>
-            Don Chua Hoan Thanh
-          </Text>
-        </Pressable>
-        <Text style={{ borderWidth: 0.5 }}></Text>
-        <Pressable
-          style={AppStyle.StyleOderList.button}
-          onPress={() => Alert.alert("Left button pressed")}
-        >
-          <Text style={AppStyle.StyleOderList.text}>Don Da Hoan Thanh</Text>
-        </Pressable>
-      </View>
-      {/* <View
-        className=" flex-auto h-full"
-        style={AppStyle.StyleOderList.boxesList}
-      >
-        <FlatList
-          data={ListOrder}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item, index }) => FlatListData(item)}
+        </Modal>
+        <Ionicons
+          style={AppStyle.StyleOderList.iconFilter}
+          name="options-outline"
+          size={30}
+          color="#000"
+          onPress={() => setModalVisible(true)}
         />
-      </View> */}
-    </View>
-  </>
+      </Pressable> */}
+        </View>
+        <View
+          className=" w-full h-12  bg-black"
+          style={AppStyle.StyleOderList.boxes}
+        >
+          <Pressable
+            accessibilityRole="search"
+            style={AppStyle.StyleOderList.button}
+            onPress={() => Alert.alert("Left button pressed")}
+          >
+            <Text style={AppStyle.StyleOderList.text}>Don Chua Hoan Thanh</Text>
+          </Pressable>
+          <Text style={{ borderWidth: 0.5 }}></Text>
+          <Pressable
+            style={AppStyle.StyleOderList.button}
+            onPress={() => Alert.alert("Left button pressed")}
+          >
+            <Text style={AppStyle.StyleOderList.text}>Don Da Hoan Thanh</Text>
+          </Pressable>
+        </View>
+        <View
+          className=" flex-auto h-full"
+          style={AppStyle.StyleOderList.boxesList}
+        >
+          <FlatList
+            data={ListOrder}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item, index }) => FlatListData(item)}
+          />
+        </View>
+      </View>
+      <TouchableOpacity
+        className="absolute bottom-10 right-8 rounded-full"
+        onPress={() => {
+          navigation.navigate("AddOrderScreen");
+        }}
+      >
+        <AntDesign name="pluscircleo" size={48} color="black" />
+      </TouchableOpacity>
+    </>
   );
 }
