@@ -157,7 +157,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('WarehouseScreem')
+                        () => navigation.navigate('HomeNavigation')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>
