@@ -12,8 +12,10 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
+  const [check, setCheck] = useState(false);
   const [formError, setFormError] = useState({});
-
+  const [formErrorChangePass, setFormErrorChangePass] = useState("");
+  // console.log(userInfo);
 
   const signUP = (
     usernames,
@@ -125,7 +127,7 @@ export const AuthProvider = ({ children }) => {
       .get(
         `${BASE_URL}/logout`,
         {
-          headers: { Authorization: `Token ${userInfo.accessToken}` }
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` }
         }
       )
       .then((res) => {
@@ -179,6 +181,31 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       });
   };
+  const changePassword = (passwords, confirmPasswords) => {
+    setFormErrorChangePass("");
+    setIsLoading(true);
+    axios.put(`${BASE_URL}/change-password?id=${userInfo._id}`,
+    {
+      password:passwords,
+      confirmPassword:confirmPasswords
+    }, {
+      headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      }
+    }).then((res) => {
+      let password = res.data;
+      console.log(password);
+      alert(password.message);
+      setCheck(true);
+      setFormErrorChangePass("");
+      setIsLoading(false);
+    }).catch((e) =>{
+      console.log(`error ${e.response.data.message}`);
+      setFormErrorChangePass(e.response.data.message);
+      setCheck(false);
+      setIsLoading(false);
+    });
+  }
 
   useEffect(() => {
     isLoggedIn();
@@ -187,12 +214,17 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        formErrorChangePass,
         checkSignUp,
         formError,
         isLoading,
         userInfo,
         checkValueSignUp,
         splashLoading,
+        check,
+        setFormErrorChangePass,
+        setCheck,
+        changePassword,
         signUP,
         login,
         logout,

@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Navigation from "./src/navigators/Navigation";
-import Home from "./src/components/HomeScreen";
+import Home from "./src/components/ChangePasswordScreen";
 import { AuthProvider } from "./src/context/AuthContext";
 
 
