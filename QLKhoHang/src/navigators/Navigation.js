@@ -105,11 +105,12 @@ const Navigation = () => {
           component={ListProduct}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SeeOrderDetails"
           component={SeeOrderDetails}
           options={{ headerShown: false }}
-        />
+        /> */}
+        <Stack.Screen
           name="AddWarehouseScreen"
           component={AddWarehouseScreen}
           options={{ headerShown: false }}

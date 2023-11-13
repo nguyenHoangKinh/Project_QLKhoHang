@@ -8,11 +8,8 @@ import { AuthProvider } from "./src/context/AuthContext";
 
 export default function App() {
   return (
-    // <AuthProvider>
-    //   <Navigation />
-    // </AuthProvider>
-    <>
-    <Test/>
-    </>
+    <AuthProvider>
+      <Navigation />
+    </AuthProvider>
   );
 }
