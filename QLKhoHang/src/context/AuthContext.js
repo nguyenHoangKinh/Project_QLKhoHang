@@ -168,10 +168,6 @@ export const AuthProvider = ({ children }) => {
         { 
           Authorization: `Token ${userInfo.accessToken}` 
         },
-        params: 
-        {
-          id: userInfo.others._id
-        },
       })
       .then((res) => {
         let address = res.data.others.address;

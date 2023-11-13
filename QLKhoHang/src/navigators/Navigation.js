@@ -18,6 +18,8 @@ import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import WarehouseScreem from "../components/WarehouseScreen";
+import ListAccountActive from "../components/Admin/ListAccountActive"
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +34,12 @@ const Navigation = () => {
           <Stack.Screen
             name="HomeNavigation"
             component={HomeNavigation}
+            options={{ headerShown: false }}
+          />
+        ) : userInfo.accessToken && userInfo.others.isAdmin ? (
+          <Stack.Screen
+            name="HomeNavigationAdmin"
+            component={HomeNavigationAdmin}
             options={{ headerShown: false }}
           />
         ) : userInfo.accessToken && userInfo.others.isActive ? (
@@ -114,6 +122,11 @@ const Navigation = () => {
         <Stack.Screen
           name="WarehouseScreem"
           component={WarehouseScreem}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="ListAccountActive"
+          component={ListAccountActive}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

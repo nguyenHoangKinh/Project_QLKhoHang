@@ -2,12 +2,13 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreen from "../components/OrderScreen";
+import ListAccountNotActive from "../components/Admin/ListAccountNotActive";
 import StatisticsScreen from "../components/StatisticsScreen";
-import WarehouseScreen from "../components/WarehouseScreen";
+import ListAccountActive from "../components/Admin/ListAccountActive";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -30,28 +31,28 @@ const HomeNavigation = () => {
     return (
             <Tab.Navigator screenOptions={screenOptions}>
                 <Tab.Screen
-                    name="WarehouseScreen"
-                    component={WarehouseScreen}
+                    name="ListAccountActive"
+                    component={ListAccountActive}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <FontAwesome5 name="warehouse" size={24} color={focused ? "#16247d" : "#111"} />
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Warehouse</Text>
+                                    <MaterialCommunityIcons name="account-check" size={24} color={focused ? "#16247d" : "#111"} />
+                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Acc Active</Text>
                                 </View>
                             )
                         }
                     }}
                 />
                 <Tab.Screen
-                    name="Order"
-                    component={OrderScreen}
+                    name="ListAccountNotActive"
+                    component={ListAccountNotActive}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <Entypo name="text-document" size={24} color={focused ? "#16247d" : "#111"} />
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Order</Text>
+                                    <MaterialCommunityIcons name="account-cancel" size={24} color={focused ? "#16247d" : "#111"} />
+                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Acc Not Active</Text>
                                 </View>
                             )
                         }

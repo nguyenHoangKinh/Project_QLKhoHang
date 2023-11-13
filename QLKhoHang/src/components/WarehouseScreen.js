@@ -28,6 +28,7 @@ const TodoScreen = ({ navigation }) => {
       })
     .then((res) => {
       let warehouses = res.data;
+      console.log(warehouses)
       setWarehouse(warehouses);
       setSearchWarehouse(warehouses)
     })
