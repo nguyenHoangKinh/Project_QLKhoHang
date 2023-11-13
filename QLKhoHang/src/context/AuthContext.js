@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [check, setCheck] = useState(false);
   const [formError, setFormError] = useState({});
+  const [formErrorChangePass, setFormErrorChangePass] = useState("");
   // console.log(userInfo);
 
   const signUP = (
@@ -181,9 +182,8 @@ export const AuthProvider = ({ children }) => {
       });
   };
   const changePassword = (passwords, confirmPasswords) => {
-    setCheck(false);
+    setFormErrorChangePass("");
     setIsLoading(true);
-    console.log(userInfo._id);
     axios.put(`${BASE_URL}/change-password?id=${userInfo._id}`,
     {
       password:passwords,
@@ -195,15 +195,14 @@ export const AuthProvider = ({ children }) => {
     }).then((res) => {
       let password = res.data;
       console.log(password);
-      setUserInfo(password);
-      AsyncStorage.setItem("userInfo", JSON.stringify(password));
-      setCheck(false);
-      setFormError({});
+      alert(password.message);
+      setCheck(true);
+      setFormErrorChangePass("");
       setIsLoading(false);
     }).catch((e) =>{
       console.log(`error ${e.response.data.message}`);
-      setFormError(e.response.data.message);
-      setCheck(true);
+      setFormErrorChangePass(e.response.data.message);
+      setCheck(false);
       setIsLoading(false);
     });
   }
@@ -215,6 +214,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        formErrorChangePass,
         checkSignUp,
         formError,
         isLoading,
@@ -222,6 +222,7 @@ export const AuthProvider = ({ children }) => {
         checkValueSignUp,
         splashLoading,
         check,
+        setFormErrorChangePass,
         setCheck,
         changePassword,
         signUP,

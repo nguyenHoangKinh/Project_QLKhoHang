@@ -11,8 +11,9 @@ export default function ChangePasswordScreen({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
-  const { isLoading, changePassword, formError, check, setCheck } = useContext(AuthContext);
-console.log(check);
+  const { isLoading, changePassword, formErrorChangePass, check,setCheck } =
+    useContext(AuthContext);
+  // console.log(check);
   return (
     <View
       className="flex-1 bg-white"
@@ -42,9 +43,11 @@ console.log(check);
         className="flex-1 bg-white px-8 pt-8"
       >
         <Spinner visible={isLoading} />
-        {formError && (
-          <Text className="text-yellow-950  mr-3">{formError}</Text>
-        ) }
+        {formErrorChangePass && (
+          <Text className="text-yellow-950  mr-3">{formErrorChangePass}</Text>
+        )}
+        {check
+          ? navigation.navigate("ProfileScreen") : ("")}
         <View className="form space-y-2">
           <Text className="text-gray-700 ml-2 w-55 ">Password</Text>
           <View className="flex flex-row relative">
@@ -78,19 +81,18 @@ console.log(check);
                 name={isShowPasswordConfirm === true ? "eye" : "eye-off"}
                 size={24}
                 color="black"
-                onPress={() => setIsShowPasswordConfirm(!isShowPasswordConfirm)}
+                onPress={() => {setIsShowPasswordConfirm(!isShowPasswordConfirm)}}
               />
             </View>
           </View>
 
           <TouchableOpacity
             onPress={() => {
-              changePassword(password, confirmPassword)
+              changePassword(password, confirmPassword),setCheck(false),setPassword(""),setConfirmPassword("")
             }}
-            
             className="py-3 bg-yellow-400 rounded-xl"
           >
-          {/* {check ? (setCheck(false),alert("doi mat khau ko thanh cong")) : } */}
+            {/* {check ? (setCheck(false),alert("doi mat khau ko thanh cong")) : } */}
             <Text className="text-xl font-bold text-center text-gray-700">
               ChangePassword
             </Text>
