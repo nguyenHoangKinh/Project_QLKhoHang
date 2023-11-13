@@ -12,8 +12,9 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
+  const [check, setCheck] = useState(false);
   const [formError, setFormError] = useState({});
-
+  // console.log(userInfo);
 
   const signUP = (
     usernames,
@@ -125,7 +126,7 @@ export const AuthProvider = ({ children }) => {
       .get(
         `${BASE_URL}/logout`,
         {
-          headers: { Authorization: `Token ${userInfo.accessToken}` }
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` }
         }
       )
       .then((res) => {
@@ -180,21 +181,29 @@ export const AuthProvider = ({ children }) => {
       });
   };
   const changePassword = (passwords, confirmPasswords) => {
-    axios.put(`${BASE_URL}/change-password`, {
+    setCheck(false);
+    setIsLoading(true);
+    console.log(userInfo._id);
+    axios.put(`${BASE_URL}/change-password?id=${userInfo._id}`,
+    {
+      password:passwords,
+      confirmPassword:confirmPasswords
+    }, {
       headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
-      },
-      body:{
-        password:passwords,
-        confirmPassword:confirmPasswords
       }
     }).then((res) => {
-      let userInfo = res.data;
-      setUserInfo(userInfo);
-      AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      let password = res.data;
+      console.log(password);
+      setUserInfo(password);
+      AsyncStorage.setItem("userInfo", JSON.stringify(password));
+      setCheck(false);
+      setFormError({});
       setIsLoading(false);
     }).catch((e) =>{
       console.log(`error ${e.response.data.message}`);
+      setFormError(e.response.data.message);
+      setCheck(true);
       setIsLoading(false);
     });
   }
@@ -212,6 +221,8 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         checkValueSignUp,
         splashLoading,
+        check,
+        setCheck,
         changePassword,
         signUP,
         login,
