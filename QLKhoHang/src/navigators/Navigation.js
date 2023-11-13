@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -104,6 +105,11 @@ const Navigation = () => {
           component={ListProduct}
           options={{ headerShown: false }}
         />
+        {/* <Stack.Screen
+          name="SeeOrderDetails"
+          component={SeeOrderDetails}
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
           name="AddWarehouseScreen"
           component={AddWarehouseScreen}
