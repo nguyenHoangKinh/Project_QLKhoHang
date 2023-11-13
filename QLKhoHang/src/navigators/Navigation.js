@@ -7,6 +7,7 @@ import LoginScreen from "../components/LoginScreen";
 import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
 import SplashScreen from "../components/SplashScreen";
+import ChangePasswordScreen from "../components/ChangePasswordScreen";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
@@ -77,11 +78,11 @@ const Navigation = () => {
           component={EditProfileScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="TotalProductScreen"
           component={TotalProductScreen}
@@ -90,6 +91,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ListProduct"
           component={ListProduct}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePasswordScreen"
+          component={ChangePasswordScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
