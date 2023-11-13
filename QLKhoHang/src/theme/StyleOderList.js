@@ -38,7 +38,7 @@ const StyleOderList = StyleSheet.create({
     boxes: {
       marginTop: 15,
       width: "100%",
-      height: "6%",
+      // height: "6%",
       flexDirection: "row",
     },
     button: {
@@ -71,6 +71,7 @@ const StyleOderList = StyleSheet.create({
       flexDirection: "row",
       alignSelf: "center",
       width: "80%",
+      // height:"22px",
       marginLeft: 10,
       paddingHorizontal: 1,
       paddingVertical: 2,

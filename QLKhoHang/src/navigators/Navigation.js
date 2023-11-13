@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -6,6 +7,7 @@ import HomeScreen from "../components/HomeScreen";
 import LoginScreen from "../components/LoginScreen";
 import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
+import AddOrderScreen from "../components/AddOrderScreen";
 import SeeOrderDetails from "../components/SeeOrderDetails";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
@@ -96,6 +98,11 @@ const Navigation = () => {
         <Stack.Screen
           name="SeeOrderDetails"
           component={SeeOrderDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddOrderScreen"
+          component={AddOrderScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

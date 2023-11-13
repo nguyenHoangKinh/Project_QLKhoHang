@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
-console.log(userInfo);
+// console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -192,7 +192,8 @@ console.log(userInfo);
       })
       .then((res) => {
         if (res && res.data) {
-          let order = res;
+          let order = res.data;
+          // console.log(order);
           setListOrder(order);
         }
         setIsLoading(false);

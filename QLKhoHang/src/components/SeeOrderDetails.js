@@ -58,7 +58,7 @@ export default function SeeOrderDetails({navigation}) {
                 ten kho:
               </Text>
               <Text className="text-yellow-950  mr-3 p-4">
-                thoi gian thue:{check ? (DetailOrder.Order.rentalTime) : ""}
+                thoi gian thue: {check ? (DetailOrder.Order.rentalTime) : ""}
               </Text>
 
           </View>
@@ -68,7 +68,7 @@ export default function SeeOrderDetails({navigation}) {
             </Text>
             <View className="flex flex-row justify-between pt-5 pb-5">
             <Text className="text-gray-700 ml-2 w-55 ">
-                ten khach hang:{check ? (DetailOrder.Order.user.username) : ""}
+                ten khach hang: {check ? (DetailOrder.Order.user.username) : ""}
             </Text>
               <Text className="text-yellow-400  mr-3 text-base">
               xem
