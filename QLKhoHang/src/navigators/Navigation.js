@@ -9,6 +9,8 @@ import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
 import AddOrderScreen from "../components/AddOrderScreen";
 import SeeOrderDetails from "../components/SeeOrderDetails";
+import SplashScreen from "../components/SplashScreen";
+import ChangePasswordScreen from "../components/ChangePasswordScreen";
 import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
@@ -145,6 +147,9 @@ const Navigation = () => {
         <Stack.Screen
           name="AddOrderScreen"
           component={AddOrderScreen}
+        <Stack.Screen
+          name="ChangePasswordScreen"
+          component={ChangePasswordScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

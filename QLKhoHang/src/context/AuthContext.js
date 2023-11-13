@@ -14,12 +14,15 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
+  const [check, setCheck] = useState(false);
   const [formError, setFormError] = useState({});
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
 // console.log(userInfo);
+  const [formErrorChangePass, setFormErrorChangePass] = useState("");
+  // console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -209,6 +212,31 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       });
   };
+  const changePassword = (passwords, confirmPasswords) => {
+    setFormErrorChangePass("");
+    setIsLoading(true);
+    axios.put(`${BASE_URL}/change-password?id=${userInfo._id}`,
+    {
+      password:passwords,
+      confirmPassword:confirmPasswords
+    }, {
+      headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      }
+    }).then((res) => {
+      let password = res.data;
+      console.log(password);
+      alert(password.message);
+      setCheck(true);
+      setFormErrorChangePass("");
+      setIsLoading(false);
+    }).catch((e) =>{
+      console.log(`error ${e.response.data.message}`);
+      setFormErrorChangePass(e.response.data.message);
+      setCheck(false);
+      setIsLoading(false);
+    });
+  }
 
   const orderListUser = (Token) => {
     setListOrder({});
@@ -327,6 +355,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         getProfile,
         DetailOrder,
+        formErrorChangePass,
         checkSignUp,
         ListOrder,
         formError,
@@ -343,6 +372,10 @@ export const AuthProvider = ({ children }) => {
         OrderDetail,
         orderListUser,
         orderListOwner,
+        check,
+        setFormErrorChangePass,
+        setCheck,
+        changePassword,
         signUP,
         login,
         logout,
