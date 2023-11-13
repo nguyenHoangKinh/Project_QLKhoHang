@@ -6,14 +6,16 @@ const StyleOderList = StyleSheet.create({
       height: "100%",
     },
     text: {
-      fontSize: 16,
+      color: "#06bcee",
+      fontSize: 18,
+      fontWeight: "600",
       lineHeight: 21,
-      fontWeight: "bold",
       letterSpacing: 0.25,
-      color: "balck",
+      opacity:0.7
     },
     //FlatList
     item: {
+      backgroundColor: "#2a53c5",
       flexDirection: "row",
       height: 100,
       margin: 10,

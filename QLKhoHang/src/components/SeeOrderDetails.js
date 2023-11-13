@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function SeeOrderDetails({navigation}) {
   const { OrderDetail,DetailOrder,setDetailOrder,setIdOrder,check,setCheck } = useContext(AuthContext);
-  // console.log(DetailOrder.Order.money);
+  console.log(DetailOrder.Order);
   useEffect(() => {
     OrderDetail()
   }, []);
@@ -23,12 +23,12 @@ export default function SeeOrderDetails({navigation}) {
         <View className="flex-row justify-start top-5">
           <TouchableOpacity
             onPress={() => {navigation.goBack(), setDetailOrder({}),setIdOrder({}),setCheck(false)}}
-            className="bg-white p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
           <Text className="text-2xl text-center font-semibold left-28" >
-            Hoa Don
+            Hóa Đơn
         </Text>
         </View>
         <View className="flex-row justify-center mt-3 mb-3" style={{ width: 390, height: 70 }}>
@@ -44,7 +44,7 @@ export default function SeeOrderDetails({navigation}) {
         className="flex-1 bg-white px-8 pt-8 ">
         <View className=" bg-slate-300 top-12">
             <Text className="text-gray-700 ml-2 w-55 text-lg p-2 ">
-            Thong tin hoa don
+            Thông Tin Hàng Hóa
             </Text>
 
             <Text className="text-yellow-950  mr-3 pt-4 pb-4 text-center text-2xl">
@@ -52,38 +52,38 @@ export default function SeeOrderDetails({navigation}) {
               </Text>
 
               <Text className="text-yellow-950  mr-3 p-4">
-                ten chu kho: {check ? (DetailOrder.Order.owner.username): ""}
+                Tên chủ kho: {check ? (DetailOrder.Order.owner.username): ""}
               </Text>
               <Text className="text-yellow-950  mr-3 p-4">
-                ten kho:
+                Tên kho: {check ? (DetailOrder.Order.name) : ""}
               </Text>
               <Text className="text-yellow-950  mr-3 p-4">
-                thoi gian thue: {check ? (DetailOrder.Order.rentalTime) : ""}
+                Thời gian thuê: {check ? (DetailOrder.Order.rentalTime) : ""}
               </Text>
 
           </View>
         <View className=" bg-slate-300 mt-16">
             <Text className="text-gray-700 ml-2 w-55 text-lg">
-            Thong tin ben mua 
+            Thông tin bên mua 
             </Text>
             <View className="flex flex-row justify-between pt-5 pb-5">
             <Text className="text-gray-700 ml-2 w-55 ">
-                ten khach hang: {check ? (DetailOrder.Order.user.username) : ""}
+                Tên khách hàng: {check ? (DetailOrder.Order.user.username) : ""}
             </Text>
-              <Text className="text-yellow-400  mr-3 text-base">
+              {/* <Text className="text-yellow-400  mr-3 text-base">
               xem
-              </Text>
+              </Text> */}
 
           </View>
           </View>
           <TouchableOpacity
-            className="py-3 bg-yellow-400 rounded-xl top-5"
+            className="py-3 bg-blue-300 rounded-xl top-5"
             // onPress={() => {
             //   OrderDetail()
             // }}
           >
             <Text className="text-xl font-bold text-center text-gray-700">
-              Hủy Don 
+              Hủy Đơn 
             </Text>
           </TouchableOpacity>
       </View>

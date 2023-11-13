@@ -371,7 +371,6 @@ export const AuthProvider = ({ children }) => {
         OrderDetail,
         orderListUser,
         orderListOwner,
-        check,
         setFormErrorChangePass,
         setCheck,
         changePassword,

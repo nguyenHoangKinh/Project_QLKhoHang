@@ -36,7 +36,7 @@ export default function OrderScreenOwner({navigation}) {
         }}
       >
         {/* <Text>{console.log(item._id)}</Text> */}
-        <View className="bg-blue-500" style={AppStyle.StyleOderList.item}>
+        <View  style={AppStyle.StyleOderList.item}>
           {/* <View style={AppStyle.StyleOderList.leftItem}>
               <Text style={AppStyle.StyleOderList.text}>{item.TenKhoHang}</Text>
               <Image
@@ -50,36 +50,36 @@ export default function OrderScreenOwner({navigation}) {
                 className="flex-initial"
                 style={AppStyle.StyleOderList.text}
               >
-                Ten Hoa Don:
+                Tên Đơn Hàng:
               </Text>
-              <Text className="flex-initial"> {item.name}</Text>
+              <Text className="flex-initial text-white text-base"> {item.name}</Text>
             </View>
             <View className="flex flex-row">
               <Text
                 className="flex-initial"
                 style={AppStyle.StyleOderList.text}
               >
-                Ten Chu Kho:
+                Tên Chủ Kho:
               </Text>
-              <Text className="flex-initial"> {item.owner.username}</Text>
+              <Text className="flex-initial text-white text-base"> {item.owner.username}</Text>
             </View>
             <View className="flex flex-row">
               <Text
                 className="flex-initial"
                 style={AppStyle.StyleOderList.text}
               >
-                Ten Khach Hang:{" "}
+                Tên Khách Hàng:{" "}
               </Text>
-              <Text className="flex-initial">{item.user.username}</Text>
+              <Text className="flex-initial text-white text-base">{item.user.username}</Text>
             </View>
             <View className="flex flex-row">
               <Text
                 className="flex-initial"
                 style={AppStyle.StyleOderList.text}
               >
-                Thoi Gian Thue:{" "}
+                Thời Gian Thuê:{" "}
               </Text>
-              <Text className="flex-initial">{item.rentalTime}</Text>
+              <Text className="flex-initial text-white text-base">{item.rentalTime}</Text>
             </View>
             {/* <Text style={AppStyle.StyleOderList.text}>LuuLuong: {item.LuuLuongHangHoa}</Text> */}
           </View>
@@ -201,14 +201,14 @@ export default function OrderScreenOwner({navigation}) {
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
           >
-            <Text style={AppStyle.StyleOderList.text}>Don Chua Hoan Thanh</Text>
+            <Text className="text-lg text-black font-bold">Đơn chưa hoàn thành</Text>
           </Pressable>
           <Text style={{ borderWidth: 0.5 }}></Text>
           <Pressable
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
           >
-            <Text style={AppStyle.StyleOderList.text}>Don Da Hoan Thanh</Text>
+            <Text className="text-lg text-black font-bold">Đơn đã hoàn thành</Text>
           </Pressable>
         </View>
         <View

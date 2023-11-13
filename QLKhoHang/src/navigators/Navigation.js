@@ -109,11 +109,6 @@ const Navigation = () => {
           component={ListProduct}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name="SeeOrderDetails"
-          component={SeeOrderDetails}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="AddWarehouseScreen"
           component={AddWarehouseScreen}
@@ -146,7 +141,19 @@ const Navigation = () => {
         />
         <Stack.Screen
           name="AddOrderScreen"
-          component={AddOrderScreen}/>
+          component={AddOrderScreen}
+          options={{ headerShown: false }}
+          />
+        <Stack.Screen
+          name="SeeOrderDetails"
+          component={SeeOrderDetails}
+          options={{ headerShown: false }}
+          />
+        <Stack.Screen
+          name="SeeWarehouseDetails"
+          component={SeeWarehouseDetails}
+          options={{ headerShown: false }}
+          />
         <Stack.Screen
           name="ChangePasswordScreen"
           component={ChangePasswordScreen}
