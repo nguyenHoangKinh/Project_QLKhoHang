@@ -8,33 +8,33 @@ const StyleHome = StyleSheet.create({
         marginHorizontal: 10,
         marginTop: StatusBar.currentHeight || 0,
     },
-    topHome: {
-        backgroundColor: '#2a53c5',
-        paddingHorizontal: 50,
-        paddingVertical: 12,
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 30,
+    warehouse_view: {
+        backgroundColor: "#fff",
+        borderRadius: 6,
+        paddingHorizontal: 6,
+        paddingVertical: 8,
+        marginBottom: 12,
+        flexDirection: "row",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        height: StatusBar.currentHeight,
     },
-    image_name: {
-        paddingTop: 10,
+    name_warehouse: {
+        color: "#fff",
+        fontSize: 18,
+        fontWeight: "600",
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: "row",
+        alignItems: "center",
     },
-    name_email: {
-        paddingTop: 30,
-        marginLeft: 10,
+    tittle_warehouse: {
+        color: "#000",
+        fontSize: 18,
+        fontWeight: "600",
+        flex: 1
     },
-    image: {
-        width: 150,
-        height: 150,
-    },
-    name: {
-        fontSize: 25,
-    },
-    email: {
-        fontSize: 25,
-        paddingTop: 20,
-    }
 });
 export default StyleHome;
