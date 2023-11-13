@@ -10,18 +10,19 @@ export default function LoginScreen({navigation}) {
   const [username, setUsername] = useState (null);
   const [password, setPassword] = useState (null);
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const { isLoading, login } = useContext(AuthContext);
+  const { isLoading, login,formErrorLogin ,check } = useContext(AuthContext);
   return (
     <View
       className="flex-1 bg-white"
       style={{ backgroundColor: themeColors.bg }}
     >
     <Spinner visible={isLoading} />
+
       <SafeAreaView className="flex ">
         <View className="flex-row justify-start">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
@@ -38,6 +39,11 @@ export default function LoginScreen({navigation}) {
         className="flex-1 bg-white px-8 pt-8"
       >
         <Spinner visible={isLoading} />
+        {check ? "" : (
+              <Text className="text-red-600 text-center ">
+                {formErrorLogin}
+              </Text>
+            )}
         <View className="form space-y-2">
           <Text className="text-gray-700 ml-4">Email Address</Text>
           <TextInput
@@ -72,7 +78,7 @@ export default function LoginScreen({navigation}) {
             onPress={() => {
               login(username, password);
             }}
-            className="py-3 bg-yellow-400 rounded-xl"
+            className="py-3 bg-blue-300 rounded-xl"
           >
             <Text className="text-xl font-bold text-center text-gray-700">
               Login

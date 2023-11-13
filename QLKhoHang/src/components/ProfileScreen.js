@@ -42,7 +42,11 @@ export default function ProfileScreen({navigation}) {
         </View>
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome5 name="warehouse" size={20} color="black" style={{marginRight: 10}}/>
+          {userInfo.accessToken && userInfo.others.isOwner ? (
           <Text>{userInfo.others.warehouses.length}</Text>
+        ) : (
+          ""
+        )}
         </View>
         <TouchableOpacity 
         onPress={() => {navigation.navigate('ChangePasswordScreen'),setFormErrorChangePass("")}}

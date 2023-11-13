@@ -11,7 +11,7 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5,Octicons } from '@expo/vector-icons';
 
 const HomeNavigation = () => {
     const Tab = createBottomTabNavigator()
@@ -87,8 +87,8 @@ const HomeNavigation = () => {
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    {/* <Ionicons name="stats-chart" size={24} color={focused ? "#16247d" : "#111"} /> */}
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Statistics</Text>
+                                    <Octicons name="bell" size={24} color={focused ? "#16247d" : "#111"} />
+                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Notification</Text>
                                 </View>
                             )
                         }

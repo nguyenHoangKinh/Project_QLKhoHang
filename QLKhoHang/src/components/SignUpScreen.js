@@ -29,7 +29,7 @@ export default function SignUpScreen({ navigation }) {
         <View className="flex-row justify-start">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
@@ -84,6 +84,7 @@ export default function SignUpScreen({ navigation }) {
           </View>
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
+            keyboardType="email-address"
             value={email}
             onChangeText={(text) => setEmail(text)}
             placeholder="Enter Email..."
@@ -98,6 +99,7 @@ export default function SignUpScreen({ navigation }) {
           </View>
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
+            keyboardType="phone-pad"
             value={phone}
             onChangeText={(text) => setPhone(text)}
             placeholder="Enter Phone..."
@@ -163,7 +165,7 @@ export default function SignUpScreen({ navigation }) {
             }}
           />
           <TouchableOpacity
-            className="py-3 bg-yellow-400 rounded-x1 mt-3"
+            className="py-3 bg-blue-300 rounded-xl mt-3"
             onPress={() => {
               signUP(
                 username,

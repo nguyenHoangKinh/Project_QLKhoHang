@@ -17,6 +17,7 @@ import {
 
 export default function OrderScreenOwner({navigation}) {
   const { orderListOwner, ListOrder,setIdOrder, userInfo,SearchOrder } = useContext(AuthContext);
+  const [modalVisible,setModalVisible] = useState(false);
   // console.log(ListOrder);
   useEffect(() => {
     //call api
@@ -36,7 +37,7 @@ export default function OrderScreenOwner({navigation}) {
         }}
       >
         {/* <Text>{console.log(item._id)}</Text> */}
-        <View  style={AppStyle.StyleOderList.item}>
+        <View className="p-1" style={AppStyle.StyleOderList.item}>
           {/* <View style={AppStyle.StyleOderList.leftItem}>
               <Text style={AppStyle.StyleOderList.text}>{item.TenKhoHang}</Text>
               <Image
@@ -128,7 +129,7 @@ export default function OrderScreenOwner({navigation}) {
               }}
             />
           </View>
-          {/* <Pressable style={AppStyle.StyleOderList.listFilter}>
+          <Pressable style={AppStyle.StyleOderList.listFilter}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -150,16 +151,16 @@ export default function OrderScreenOwner({navigation}) {
               />
             </Pressable>
             <View style={AppStyle.StyleOderList.modalView}>
-              <View style={AppStyle.StyleOderList.modalView_1}>
+              {/* <View style={AppStyle.StyleOderList.modalView_1}>
                 <Text>Loc Don Hang Theo Kho Hang</Text>
                 <FlatList
                   data={warehouseList}
                   keyExtractor={(item) => item.id}
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
-                      onChange={() => {
-                        warehouseFilter(item.id);
-                      }}
+                      // onChange={() => {
+                      //   warehouseFilter(item.id);
+                      // }}
                       style={[AppStyle.StyleOderList.text, { margin: 5 }]}
                     >
                       <Text>{AppStyle.StyleOderList.kho}</Text>
@@ -179,7 +180,7 @@ export default function OrderScreenOwner({navigation}) {
                 <TouchableOpacity style={AppStyle.StyleOderList.Fliter}>
                   <Text>Loc Theo Tuan </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           </View>
         </Modal>
@@ -190,7 +191,7 @@ export default function OrderScreenOwner({navigation}) {
           color="#000"
           onPress={() => setModalVisible(true)}
         />
-      </Pressable> */}
+      </Pressable>
         </View>
         <View
           className=" w-full h-12  bg-black"

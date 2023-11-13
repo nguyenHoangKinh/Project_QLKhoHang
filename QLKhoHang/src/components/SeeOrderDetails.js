@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function SeeOrderDetails({navigation}) {
   const { OrderDetail,DetailOrder,setDetailOrder,setIdOrder,check,setCheck } = useContext(AuthContext);
-  console.log(DetailOrder.Order);
+  // console.log(DetailOrder.Order);
   useEffect(() => {
     OrderDetail()
   }, []);

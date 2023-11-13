@@ -26,7 +26,7 @@ export default function ChangePasswordScreen({ navigation }) {
             onPress={() => {
               navigation.goBack();
             }}
-            className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
@@ -90,7 +90,7 @@ export default function ChangePasswordScreen({ navigation }) {
             onPress={() => {
               changePassword(password, confirmPassword),setCheck(false),setPassword(""),setConfirmPassword("")
             }}
-            className="py-3 bg-yellow-400 rounded-xl"
+            className="py-3 bg-blue-300 rounded-xl"
           >
             {/* {check ? (setCheck(false),alert("doi mat khau ko thanh cong")) : } */}
             <Text className="text-xl font-bold text-center text-gray-700">

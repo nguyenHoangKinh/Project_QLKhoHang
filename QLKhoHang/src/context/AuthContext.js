@@ -19,8 +19,9 @@ export const AuthProvider = ({ children }) => {
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
-// console.log(userInfo);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
+  const [formErrorLogin, setFormErrorLogin] = useState("");
+// console.log(userInfo);
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -107,7 +108,6 @@ export const AuthProvider = ({ children }) => {
 
   const login = (username, password) => {
     setIsLoading(true);
-
     axios
       .post(`${BASE_URL}/login`, {
         username,
@@ -118,10 +118,13 @@ export const AuthProvider = ({ children }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setCheck(true);
         setIsLoading(false);
       })
       .catch((e) => {
         console.log(`login error ${e.response.data.message}`);
+        setCheck(false);
+        setFormErrorLogin(e.response.data.message);
         setIsLoading(false);
       });
   };
@@ -137,12 +140,12 @@ export const AuthProvider = ({ children }) => {
       )
       .then((res) => {
         console.log(res.data);
+        alert(res.data.message);
         AsyncStorage.removeItem("userInfo");
         setUserInfo({});
         setIsLoading(false);
       })
       .catch((e) => {
-        userInfo.accessToken = null;
         console.log(`logout error ${e.response.data.message}`);
         setIsLoading(false);
       });
@@ -364,6 +367,7 @@ export const AuthProvider = ({ children }) => {
         splashLoading,
         IdOrder,
         check,
+        formErrorLogin,
         SearchOrder,
         setCheck,
         setDetailOrder,
