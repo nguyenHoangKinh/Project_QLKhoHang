@@ -15,12 +15,18 @@ import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
+import AddWarehouseScreen from "../components/AddWarehouseScreen";
+import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
+import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
+import WarehouseScreem from "../components/WarehouseScreen";
+import ListAccountActive from "../components/Admin/ListAccountActive"
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp, splashLoading } = useContext(AuthContext);
-  // console.log(">>> hello",userInfo.accessToken);
+  const { userInfo, checkSignUp, splashLoading, getProfile } = useContext(AuthContext);
+  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
       {/* initialRouteName='Welcome' */}
@@ -29,6 +35,12 @@ const Navigation = () => {
           <Stack.Screen
             name="HomeNavigation"
             component={HomeNavigation}
+            options={{ headerShown: false }}
+          />
+        ) : userInfo.accessToken && userInfo.others.isAdmin ? (
+          <Stack.Screen
+            name="HomeNavigationAdmin"
+            component={HomeNavigationAdmin}
             options={{ headerShown: false }}
           />
         ) : userInfo.accessToken && userInfo.others.isActive ? (
@@ -78,11 +90,11 @@ const Navigation = () => {
           component={EditProfileScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="TotalProductScreen"
           component={TotalProductScreen}
@@ -96,6 +108,35 @@ const Navigation = () => {
         <Stack.Screen
           name="SeeOrderDetails"
           component={SeeOrderDetails}
+          options={{ headerShown: false }}
+        />
+          name="AddWarehouseScreen"
+          component={AddWarehouseScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdateWarehouseScreen"
+          component={UpdateWarehouseScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailWarehouseScreem"
+          component={DetailWarehouseScreem}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="WarehouseScreem"
+          component={WarehouseScreem}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="ListAccountActive"
+          component={ListAccountActive}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -9,11 +9,12 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading,setSplashLoading ] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
-
+  const [checkUpdate, setCheckUpdate] = useState(false);
 
   const signUP = (
     usernames,
@@ -136,6 +137,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((e) => {
         console.log(`logout error ${e}`);
+        userInfo.accessToken = null;
         setIsLoading(false);
       });
   };
@@ -158,6 +160,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getProfile = () => {
+    axios
+      .get(`${BASE_URL}/profile`,
+      {
+        headers: 
+        { 
+          Authorization: `Bearer ${userInfo.accessToken}` 
+        },
+      })
+      .then((res) => {
+        let address = res.data.others.address;
+        let phone = res.data.others.phone;
+        let email = res.data.others.email;
+        userInfo.others.address = address;
+        userInfo.others.phone = phone;
+        userInfo.others.email = email;
+        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      })
+      .catch((e) => {
+        console.log(`get error ${e.res}`);
+      });
+  };
+
   const updateProfile = (address, phone, email) => {
     setIsLoading(true);
     axios
@@ -166,16 +191,17 @@ export const AuthProvider = ({ children }) => {
         email: email,
         phone: phone,
       }, {
-        headers: { Authorization: `Token ${userInfo.accessToken}` }
+        headers: { Authorization: `Bearer ${userInfo.accessToken}` }
       })
       .then((res) => {
-        let userInfo = res;
-        console.log(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        console.log(res.data);
+        getProfile();
+        setCheckUpdate(true)
         setIsLoading(false);
       })
       .catch((e) => {
         console.log(`update error ${e.res}`);
+        setCheckUpdate(false)
         setIsLoading(false);
       });
   };
@@ -189,6 +215,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        getProfile,
         checkSignUp,
         formError,
         isLoading,
@@ -200,6 +227,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateProfile,
+        checkUpdate,
+        warehouse,
       }}
     >
       {children}
