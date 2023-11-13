@@ -193,7 +193,7 @@ export const AuthProvider = ({ children }) => {
       .then((res) => {
         if (res && res.data) {
           let order = res.data;
-          // console.log(order);
+          console.log(order);
           setListOrder(order);
         }
         setIsLoading(false);
@@ -252,6 +252,30 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     axios
       .get(ORDER_URL+`/order/getAOrder?id=${IdOrder}`,{
+        headers: {
+           Authorization: `Bearer ${userInfo.accessToken} ` 
+          }
+      })
+      .then((res) => {
+        if (res && res.data) {          
+          let Detail = res.data;
+          // console.log(Detail);
+          setDetailOrder(Detail);
+          setCheck(true);
+        }
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`update error ${e.response.data.message}`);
+        setIsLoading(false);
+        setCheck(false);
+      });
+  }
+  const AddOrder = () => {
+    // console.log(IdOrder);
+    setIsLoading(true);
+    axios
+      .get(ORDER_URL+`/order/create?id=${IdOrder}`,{
         headers: {
            Authorization: `Bearer ${userInfo.accessToken} ` 
           }

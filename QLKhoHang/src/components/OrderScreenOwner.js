@@ -203,14 +203,6 @@ export default function OrderScreenOwner({navigation}) {
         />
       </View> */}
     </View>
-    <TouchableOpacity
-      className="absolute bottom-10 right-8 rounded-full"
-      onPress={() => {
-        navigation.navigate('AddOrderScreen')
-      }}
-    >
-      <AntDesign name="pluscircleo" size={48} color="black" />
-    </TouchableOpacity>
   </>
   );
 }

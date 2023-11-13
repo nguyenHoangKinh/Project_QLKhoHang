@@ -18,7 +18,6 @@ const StyleOderList = StyleSheet.create({
       height: 100,
       margin: 10,
       borderRadius: 10,
-      backgroundColor: "#00feff",
     },
     boxesList: {
       // backgroundColor:"red"
