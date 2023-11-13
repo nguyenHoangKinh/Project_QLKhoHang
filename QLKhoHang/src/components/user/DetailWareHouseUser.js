@@ -117,6 +117,13 @@ const DetailWarehouseScreen = ({ navigation }) => {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
+                        () => navigation.navigate('RentAWareHouse')
+                    }>
+                    <Text style={{ color: '#fff' }}>Thue Kho</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={AppStyle.StyleProfile.btn_logout}
+                    onPress={
                         () => navigation.navigate('HomeNavigationUser')
                     }>
                     <Text style={{ color: '#fff' }}>QUAY LẠI</Text>
