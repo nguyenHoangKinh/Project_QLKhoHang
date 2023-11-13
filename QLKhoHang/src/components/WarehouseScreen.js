@@ -11,7 +11,6 @@ const TodoScreen = ({ navigation }) => {
   const [warehouse, setWarehouse] = useState({});
   const [searchWarehouse, setSearchWarehouse] = useState({});
   const { userInfo } = useContext(AuthContext);
-  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     axios
@@ -28,30 +27,13 @@ const TodoScreen = ({ navigation }) => {
       })
     .then((res) => {
       let warehouses = res.data;
+      // console.log(warehouses)
       setWarehouse(warehouses);
       setSearchWarehouse(warehouses)
     })
     .catch((e) => {
       console.log(`get warehouse error ${e.res}`);
     });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
-        {
-          headers:
-          {
-            Authorization: `Bearer ${userInfo.accessToken}`
-          },
-        })
-      .then((res) => {
-        let categorie = res.data.categories;
-        setCategories(categorie);
-      })
-      .catch((e) => {
-        console.log(`get categories error ${e.res}`);
-      });
   }, []);
 
   // Handle Delete
@@ -79,17 +61,6 @@ const TodoScreen = ({ navigation }) => {
 
   // Render items
   const renderTodos = ({ item, index }) => {
-    const categorie = [];
-    for (let i = 0; i < categories.length; i++) {
-      {
-        categories[i]._id.includes(item.category) &&
-        categorie.push(
-          <Text key={i}>
-            {categories[i].name}
-          </Text>
-        )
-      }
-    }
     return (
       <View style={AppStyle.StyleWarehouse.warehouse_view}>
         <TouchableOpacity
@@ -104,7 +75,7 @@ const TodoScreen = ({ navigation }) => {
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
             Loại kho: <></>
             <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {categorie}
+              {item.category.name}
             </Text>
           </Text>
         </TouchableOpacity>
