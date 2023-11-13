@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({navigation}) {
-  const { userInfo, splashLoading, logout,setFormErrorChangePass } = useContext(AuthContext);
+  const { userInfo, splashLoading, logout,setFormErrorChangePass,setCheck } = useContext(AuthContext);
   return (
     <View>
       <ScrollView>
@@ -49,7 +49,7 @@ export default function ProfileScreen({navigation}) {
         )}
         </View>
         <TouchableOpacity 
-        onPress={() => {navigation.navigate('ChangePasswordScreen'),setFormErrorChangePass("")}}
+        onPress={() => {navigation.navigate('ChangePasswordScreen'),setCheck(false),setFormErrorChangePass("")}}
         className="flex items-end top-5 right-7">
             <Text className="text-gray-700 mb-5">Change Password?</Text>
           </TouchableOpacity>
