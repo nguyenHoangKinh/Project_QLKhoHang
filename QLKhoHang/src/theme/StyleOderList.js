@@ -11,7 +11,7 @@ const StyleOderList = StyleSheet.create({
       fontWeight: "600",
       lineHeight: 21,
       letterSpacing: 0.25,
-      opacity:0.7
+      opacity:1
     },
     //FlatList
     item: {
