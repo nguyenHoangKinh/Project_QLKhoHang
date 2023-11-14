@@ -13,8 +13,8 @@ export default function SeeOrderDetails({ navigation }) {
     DetailOrder,
     setDetailOrder,
     setIdOrder,
-    check,
-    setCheck,
+    checkDetail,
+    setCheckDetail,
   } = useContext(AuthContext);
   // console.log(DetailOrder.Order);
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function SeeOrderDetails({ navigation }) {
               navigation.goBack(),
                 setDetailOrder({}),
                 setIdOrder({}),
-                setCheck(false);
+                setCheckDetail(false);
             }}
             className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
@@ -63,17 +63,17 @@ export default function SeeOrderDetails({ navigation }) {
           </Text>
 
           <Text className="text-yellow-950  mr-3 pt-4 pb-4 text-center text-2xl">
-            {check ? DetailOrder.Order.money : ""}$
+            {checkDetail ? DetailOrder.Order.money : ""}$
           </Text>
 
           <Text className="text-yellow-950  mr-3 p-4">
-            Tên chủ kho: {check ? DetailOrder.Order.owner.username : ""}
+            Tên chủ kho: {checkDetail ? DetailOrder.Order.owner.username : ""}
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
-            Tên kho: {check ? DetailOrder.Order.name : ""}
+            Tên kho: {checkDetail ? DetailOrder.Order.name : ""}
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
-            Thời gian thuê: {check ? DetailOrder.Order.rentalTime : ""}
+            Thời gian thuê: {checkDetail ? DetailOrder.Order.rentalTime : ""}
           </Text>
         </View>
         <View className=" bg-slate-300 mt-16">
@@ -82,7 +82,7 @@ export default function SeeOrderDetails({ navigation }) {
           </Text>
           <View className="flex flex-row justify-between pt-5 pb-5">
             <Text className="text-gray-700 ml-2 w-55 ">
-              Tên khách hàng: {check ? DetailOrder.Order.user.username : ""}
+              Tên khách hàng: {checkDetail ? DetailOrder.Order.user.username : ""}
             </Text>
           </View>
         </View>

@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [check, setCheck] = useState(false);
+  const [checkDetail, setCheckDetail] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -326,14 +327,14 @@ export const AuthProvider = ({ children }) => {
             let Detail = res.data;
             // console.log(Detail);
             setDetailOrder(Detail);
-            setCheck(true);
+            setCheckDetail(true);
           }
           setIsLoading(false);
         })
         .catch((e) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
-          setCheck(false);
+          setCheckDetail(false);
         });
     } else {
       alert("Error id order undefined");
@@ -377,6 +378,7 @@ export const AuthProvider = ({ children }) => {
         DetailOrder,
         checkSignUp,
         ListOrder,
+        checkDetail,
         formError,
         isLoading,
         warehouse,
@@ -393,6 +395,7 @@ export const AuthProvider = ({ children }) => {
         setIdOrder,
         setListWare,
         SearchOrder,
+        setCheckDetail,
         OrderDetail,
         orderListUser,
         updateProfile,
