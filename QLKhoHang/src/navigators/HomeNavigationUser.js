@@ -99,8 +99,8 @@ const HomeNavigationUser = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="ProfileUser"
-                    component={ProfileUserScreen}
+                    name="Profile"
+                    component={ProfileScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
