@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [list, setListWare] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-console.log(userInfo);
+// console.log(userInfo);
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -147,7 +147,7 @@ console.log(userInfo);
         }
       )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         alert(res.data.message);
         AsyncStorage.removeItem("userInfo");
         setUserInfo({});
@@ -214,7 +214,7 @@ console.log(userInfo);
         headers: { Authorization: `Bearer ${userInfo.accessToken}` }
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         getProfile();
         setCheckUpdate(true)
         setIsLoading(false);
@@ -238,7 +238,7 @@ console.log(userInfo);
       }
     }).then((res) => {
       let password = res.data;
-      console.log(password);
+      // console.log(password);
       alert(password.message);
       setCheck(true);
       setFormErrorChangePass("");
@@ -300,26 +300,6 @@ console.log(userInfo);
       alert("error access token undefined");
     }
   }
-  // const deleteOrderListOwner = (Token) => {
-  //   setListOrder({});
-  //   setIsLoading(true);
-  //   axios
-  //     .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}&id_order`,  {
-  //       headers: { Authorization: `Bearer ${Token}` }
-  //     })
-  //     .then((res) => {
-  //       if (res && res.data) {
-  //         let order = res.data;
-  //         // console.log(order);
-  //         setListOrder(order);
-  //       }
-  //       setIsLoading(false);
-  //     })
-  //     .catch((e) => {
-  //       console.log(`update error ${e.response.data.message}`);
-  //       setIsLoading(false);
-  //     });
-  // }
   const OrderDetail = () => {
     // console.log(IdOrder);
     setIsLoading(true);

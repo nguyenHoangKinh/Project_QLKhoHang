@@ -21,7 +21,7 @@ import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
-import DetailWarehouseUserScreen from "../components/User/DetailWareHouseUser";
+import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
 import ListAccountActive from "../components/Admin/ListAccountActive";
 import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";

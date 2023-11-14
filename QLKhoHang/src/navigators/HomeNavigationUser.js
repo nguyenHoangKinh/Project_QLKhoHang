@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreenUser from "../components/User/OrderScreenUser";
+import OrderScreenUser from "../components/user/OrderScreenUser";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5, Octicons } from "@expo/vector-icons";
-import ListWareUser from "../components/User/ListWareUser";
+import ListWareUser from "../components/user/ListWareUser";
 
 const HomeNavigationUser = () => {
   const Tab = createBottomTabNavigator();
