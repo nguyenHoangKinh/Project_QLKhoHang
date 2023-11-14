@@ -1,10 +1,17 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
 import { uuid } from "react-native-uuid";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import AppStyle from '../theme';
+import AppStyle from "../theme";
 
 const TodoScreen = ({ navigation }) => {
   // Init local states
@@ -14,45 +21,42 @@ const TodoScreen = ({ navigation }) => {
 
   useEffect(() => {
     axios
-    .get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`,
-      {
-        headers:
-        {
-          Authorization: `Bearer ${userInfo.accessToken}`
+      .get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
         },
-        params:
-        {
-          id_owner: userInfo.others._id
+        params: {
+          id_owner: userInfo.others._id,
         },
       })
-    .then((res) => {
-      let warehouses = res.data;
-      // console.log(warehouses)
-      setWarehouse(warehouses);
-      setSearchWarehouse(warehouses)
-    })
-    .catch((e) => {
-      console.log(`get warehouse error ${e.res}`);
-    });
+      .then((res) => {
+        let warehouses = res.data;
+        // console.log(warehouses)
+        setWarehouse(warehouses);
+        setSearchWarehouse(warehouses);
+      })
+      .catch((e) => {
+        console.log(`get warehouse error ${e.res}`);
+      });
   }, []);
 
   // Handle Delete
   const handleDeleteTodo = (id) => {
     axios
-      .delete(`https://warehouse-management-api.vercel.app/v1/warehouse/deleteWarehouse/${id}`,
+      .delete(
+        `https://warehouse-management-api.vercel.app/v1/warehouse/deleteWarehouse/${id}`,
         {
-          headers:
-          {
-            Authorization: `Bearer ${userInfo.accessToken}`
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
           },
-          params:
-          {
-            id_owner: userInfo.others._id
+          params: {
+            id_owner: userInfo.others._id,
           },
-        })
+        }
+      )
       .then((res) => {
-        console.log(res.data)
-        navigation.navigate("Home")
+        console.log(res.data);
+        navigation.navigate("Home");
       })
       .catch((e) => {
         console.log(`delete warehouse error ${e.res}`);
@@ -65,7 +69,12 @@ const TodoScreen = ({ navigation }) => {
       <View style={AppStyle.StyleWarehouse.warehouse_view}>
         <TouchableOpacity
           style={AppStyle.StyleWarehouse.name_warehouse}
-          onPress={() => navigation.navigate("DetailWarehouseScreem", { idWarehouse: item._id })}>
+          onPress={() =>
+            navigation.navigate("DetailWarehouseScreem", {
+              idWarehouse: item._id,
+            })
+          }
+        >
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
             Tên Kho Hàng: <></>
             <Text style={AppStyle.StyleWarehouse.name_warehouse}>
@@ -84,7 +93,9 @@ const TodoScreen = ({ navigation }) => {
           icon="pencil"
           iconColor="#fff"
           onPress={() => {
-            navigation.navigate("UpdateWarehouseScreen", { idWarehouse: item._id })
+            navigation.navigate("UpdateWarehouseScreen", {
+              idWarehouse: item._id,
+            });
           }}
         />
         <IconButton
@@ -101,12 +112,12 @@ const TodoScreen = ({ navigation }) => {
       let searchList = warehouse.filter((searchWarehouse) =>
         searchWarehouse.wareHouseName.toLowerCase().includes(text.toLowerCase())
       );
- 
-      setSearchWarehouse(searchList)
+
+      setSearchWarehouse(searchList);
     } else {
-      setSearchWarehouse(warehouse)
+      setSearchWarehouse(warehouse);
     }
-  }
+  };
 
   return (
     <View style={{ marginHorizontal: 16, marginTop: 40 }}>
@@ -121,7 +132,8 @@ const TodoScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={AppStyle.StyleWarehouse.btn_add}
-        onPress={() => navigation.navigate("AddWarehouseScreen")}>
+        onPress={() => navigation.navigate("AddWarehouseScreen")}
+      >
         <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 20 }}>
           Thêm Kho Hàng
         </Text>

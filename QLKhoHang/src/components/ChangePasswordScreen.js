@@ -11,7 +11,7 @@ export default function ChangePasswordScreen({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
-  const { isLoading, changePassword, formErrorChangePass, check,setCheck } =
+  const { isLoading, changePassword, formErrorChangePass, check, setCheck } =
     useContext(AuthContext);
   // console.log(check);
   return (
@@ -46,8 +46,7 @@ export default function ChangePasswordScreen({ navigation }) {
         {formErrorChangePass && (
           <Text className="text-yellow-950  mr-3">{formErrorChangePass}</Text>
         )}
-        {check
-          ? navigation.navigate("ProfileScreen") : ("")}
+        {check ? navigation.navigate("ProfileScreen") : ""}
         <View className="form space-y-2">
           <Text className="text-gray-700 ml-2 w-55 ">Password</Text>
           <View className="flex flex-row relative">
@@ -81,18 +80,22 @@ export default function ChangePasswordScreen({ navigation }) {
                 name={isShowPasswordConfirm === true ? "eye" : "eye-off"}
                 size={24}
                 color="black"
-                onPress={() => {setIsShowPasswordConfirm(!isShowPasswordConfirm)}}
+                onPress={() => {
+                  setIsShowPasswordConfirm(!isShowPasswordConfirm);
+                }}
               />
             </View>
           </View>
 
           <TouchableOpacity
             onPress={() => {
-              changePassword(password, confirmPassword),setCheck(false),setPassword(""),setConfirmPassword("")
+              changePassword(password, confirmPassword),
+                setCheck(false),
+                setPassword(""),
+                setConfirmPassword("");
             }}
             className="py-3 bg-blue-300 rounded-xl"
           >
-            {/* {check ? (setCheck(false),alert("doi mat khau ko thanh cong")) : } */}
             <Text className="text-xl font-bold text-center text-gray-700">
               ChangePassword
             </Text>

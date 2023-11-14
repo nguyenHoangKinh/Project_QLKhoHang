@@ -2,21 +2,21 @@ import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
-import {AuthContext} from '../context/AuthContext';
+import { AuthContext } from "../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
-import { AntDesign,Feather } from '@expo/vector-icons';
+import { AntDesign, Feather } from "@expo/vector-icons";
 
-export default function LoginScreen({navigation}) {
-  const [username, setUsername] = useState (null);
-  const [password, setPassword] = useState (null);
+export default function LoginScreen({ navigation }) {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const { isLoading, login,formErrorLogin ,check } = useContext(AuthContext);
+  const { isLoading, login, formErrorLogin, check } = useContext(AuthContext);
   return (
     <View
       className="flex-1 bg-white"
       style={{ backgroundColor: themeColors.bg }}
     >
-    <Spinner visible={isLoading} />
+      <Spinner visible={isLoading} />
 
       <SafeAreaView className="flex ">
         <View className="flex-row justify-start">
@@ -39,11 +39,11 @@ export default function LoginScreen({navigation}) {
         className="flex-1 bg-white px-8 pt-8"
       >
         <Spinner visible={isLoading} />
-        {check ? "" : (
-              <Text className="text-red-600 text-center ">
-                {formErrorLogin}
-              </Text>
-            )}
+        {check ? (
+          ""
+        ) : (
+          <Text className="text-red-600 text-center ">{formErrorLogin}</Text>
+        )}
         <View className="form space-y-2">
           <Text className="text-gray-700 ml-4">Email Address</Text>
           <TextInput
@@ -51,26 +51,25 @@ export default function LoginScreen({navigation}) {
             value={username}
             placeholder="Enter useranme..."
             onChangeText={(text) => setUsername(text)}
-
           />
           <Text className="text-gray-700 ml-4">Password</Text>
           <View className="flex flex-row relative">
-          <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl w-full"
-            value={password}
-            placeholder="Enter password"
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry={isShowPassword ? false : true}
-          />
-           <View className="absolute right-6 top-4">
-          <Feather
-           name={
-            isShowPassword === true
-                ? "eye"
-                : "eye-off"
-            } size={24} color="black" onPress={() => setIsShowPassword(!isShowPassword)}/>
+            <TextInput
+              className="p-4 bg-gray-100 text-gray-700 rounded-2xl w-full"
+              value={password}
+              placeholder="Enter password"
+              onChangeText={(text) => setPassword(text)}
+              secureTextEntry={isShowPassword ? false : true}
+            />
+            <View className="absolute right-6 top-4">
+              <Feather
+                name={isShowPassword === true ? "eye" : "eye-off"}
+                size={24}
+                color="black"
+                onPress={() => setIsShowPassword(!isShowPassword)}
+              />
             </View>
-            </View>
+          </View>
           <TouchableOpacity className="flex items-end">
             <Text className="text-gray-700 mb-5">Forgot Password?</Text>
           </TouchableOpacity>
