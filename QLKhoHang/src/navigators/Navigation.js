@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -22,16 +21,16 @@ import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
+import DetailWarehouseUserScreen from "../components/User/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
-import ListAccountActive from "../components/Admin/ListAccountActive"
-import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
-import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
-import ListWareUser from "../components/user/ListWareUser";
+import ListAccountActive from "../components/Admin/ListAccountActive";
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp, splashLoading, getProfile } = useContext(AuthContext);
+  const { userInfo, checkSignUp, splashLoading, getProfile } =
+    useContext(AuthContext);
   // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
@@ -64,16 +63,15 @@ const Navigation = () => {
             />
           </>
         )}
-        { checkSignUp ? (
-          <>
-          </>
+        {checkSignUp ? (
+          <></>
         ) : (
           <>
-          <Stack.Screen
-            name="Register"
-            component={SignUpScreen}
-            options={{ headerShown: false }}
-          />
+            <Stack.Screen
+              name="Register"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
         {/* <Stack.Screen
@@ -131,7 +129,7 @@ const Navigation = () => {
           component={WarehouseScreem}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="ListAccountActive"
           component={ListAccountActive}
           options={{ headerShown: false }}
@@ -145,30 +143,25 @@ const Navigation = () => {
           name="AddOrderScreen"
           component={AddOrderScreen}
           options={{ headerShown: false }}
-          />
+        />
         <Stack.Screen
           name="SeeOrderDetails"
           component={SeeOrderDetails}
           options={{ headerShown: false }}
-          />
+        />
         <Stack.Screen
           name="SeeWarehouseDetails"
           component={SeeWarehouseDetails}
           options={{ headerShown: false }}
-          />
+        />
         <Stack.Screen
           name="ChangePasswordScreen"
           component={ChangePasswordScreen}
           options={{ headerShown: false }}
-          />
-          name="DetailWareHouseUser"
-          component={DetailWarehouseUserScreen}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ListWareUser"
-          component={ListWareUser}
-
+          name="DetailWareHouseUser"
+          component={DetailWarehouseUserScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

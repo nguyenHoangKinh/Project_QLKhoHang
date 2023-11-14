@@ -18,7 +18,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
     const route = useRoute();
     // const idWarehouse = route.params?.idWarehouse;
     console.log(list);
-    console.log(userInfo.accessToken);
+    // console.log(userInfo.accessToken);
 
     useEffect(() => {
         axios
@@ -41,46 +41,8 @@ const DetailWarehouseScreen = ({ navigation }) => {
                   .catch((e) => {
                     console.log(`get warehouseUser error ${e.res}`);
                   });
-            // .then(res) => {
-            //     //console.log(res.list);
-            //     let warehouse = res.data.warehouse;
-            //     setWarehouse(warehouse)
-            //     console.log(res.data.warehouse);
-            // })
-            // .catch(e => {
-            //     console.log(`Get warehouse error ${e}`);
-            // });
+
     }, []);
-
-    // useEffect(() => {
-    //     axios
-    //         .get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
-    //             {
-    //                 headers:
-    //                 {
-    //                     Authorization: `Bearer ${userInfo.accessToken}`
-    //                 },
-    //             })
-    //         .then((res) => {
-    //             let categorie = res.data.categories;
-    //             setCategories(categorie);
-    //         })
-    //         .catch((e) => {
-    //             console.log(`get categories error ${e.res}`);
-    //         });
-    // }, []);
-
-    // const categorie = [];
-    // for (let i = 0; i < categories.length; i++) {
-    //     {
-    //         categories[i]._id.includes(warehouses.category) &&
-    //             categorie.push(
-    //                 <Text key={i}>
-    //                     {categories[i].name}
-    //                 </Text>
-    //             )
-    //     }
-    // }
 
 
 

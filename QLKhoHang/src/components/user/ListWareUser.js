@@ -13,10 +13,13 @@ import { AuthContext } from "../../context/AuthContext";
 import AppStyle from "../../theme";
 import StyleListWareHouse from "../../theme/StyleListWareHouse";
 
-export default function ListWareUser({navigation}) {
+export default function ListWareUser({ navigation }) {
+  const [warehouse, setWarehouse] = useState({});
+  const [check, setCheck] = useState(false);
+  const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
-  const { userInfo,setListWare } = useContext(AuthContext);
-
+  const { userInfo, setListWare } = useContext(AuthContext);
+  // console.log(warehousecateName);
   useEffect(() => {
     axios
       .get(
@@ -30,56 +33,102 @@ export default function ListWareUser({navigation}) {
       .then((res) => {
         let warehouseUser = res.data.warehouse;
         setList(warehouseUser);
-        //console.log(res.data.warehouse);
+        setWarehouse(warehouseUser);
+        console.log(res.data.warehouse.name);
+        // console.log(warehouseUser.address);
       })
       .catch((e) => {
         console.log(`get warehouseUser error ${e.res}`);
       });
   }, []);
 
+  // const handleSearch = (text) => {
+  //   if (text) {
+  //     let searchList = warehouse.filter((searchWarehouse) =>
+  //     searchWarehouse.wareHouseName.toLowerCase().includes(text.toLowerCase())
+
+  //     );
+  //     {console.log(warehouse)}
+  //     setList(searchList)
+  //     setCheck(true)
+  //   } else {
+  //     setList(warehouse)
+  //     setCheck(true)
+  //   }
+  // }
+  const handleSearchCate = (text) => {
+    if (text) {
+      let searchList = warehouse.filter((searchWarehouse) =>
+        searchWarehouse.category.name.toLowerCase().includes(text.toLowerCase())
+      );
+
+      setList(searchList);
+      setCheck(false);
+    } else {
+      setList(warehouse);
+      setCheck(false);
+    }
+  };
+
   // Render todo
   const renderTodos = ({ item, index }) => {
     return (
-      <TouchableOpacity
-        onPress={() => {navigation.navigate("DetailWareHouseUser"),setListWare(item._id)}}
-      >
-        {/* <Pressable> */}
-          <View style={AppStyle.StyleOderList.item}>
-            <View style={AppStyle.StyleOderList.rightItem}>
-              {/* <View className="flex flex-row justify-between"> */}
-              <View>
-                <Text style={AppStyle.StyleOderList.text}>
-                  Tên:
-                  {item.wareHouseName}
-                </Text>
-                <Text style={AppStyle.StyleOderList.text_address}>
-                  Địa chỉ:{item.address}
-                </Text>
-                <Text style={AppStyle.StyleOderList.text}>
-                  Danh mục: {item.category.name}
-                </Text>
-                <Text style={AppStyle.StyleOderList.text}>
-                  Gia :{item.monney}
-                </Text>
-                <Text style={AppStyle.StyleOderList.text}>
-                  Chủ kho: {item.owner.username}
-                </Text>
-                {/* <Text
-                  style={{ alignItems: "center", justifyContent: "center" }}
-                >
-                  View
-                </Text> */}
-              </View>
-            </View>
-          </View>
-        {/* </Pressable> */}
-      </TouchableOpacity>
+      <View style={AppStyle.StyleWarehouse.warehouse_view}>
+        <TouchableOpacity
+          style={AppStyle.StyleWarehouse.name_warehouse}
+          onPress={() =>
+            navigation.navigate("DetailWareHouseUser", setListWare(item._id))
+          }
+        >
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Tên Kho Hàng: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.wareHouseName}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Loại kho: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.category.name}
+              {setWarehouseCatename(item.category.name)}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Giá: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.monney}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Chủ Kho: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.owner.username}
+            </Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <FlatList data={list} renderItem={renderTodos} />
+    <View>
+      <View className=" h-1/6 ">
+        <TextInput
+          className="top-16"
+          style={AppStyle.StyleWarehouse.search}
+          placeholder="Tìm kiếm"
+          // value={userInput}
+          onChangeText={(text) => {
+            //handleSearch(text);
+            handleSearchCate(text);
+          }}
+        />
+      </View>
+      <View className=" h-5/6 ">
+        <View className="m-5">
+          <FlatList data={list} renderItem={renderTodos} />
+        </View>
+      </View>
     </View>
   );
 }

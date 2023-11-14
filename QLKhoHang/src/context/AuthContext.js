@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [list, setListWare] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-// console.log(userInfo);
+console.log(userInfo);
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     addresses,
     phones,
     emails,
-    checkValue,
+    // checkValue,
   ) => {
     const isEmptyValue = (value) => {
       return !value || value.trim().length < 1;
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
       });
     }else{
       setCheckSignUp(false);
-      Alert.alert("form invalid");
+      Alert.alert(e.response.data.message);
       console.log("form invalid");
     }
   };
@@ -393,10 +393,10 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         IdOrder,
         check,
+        list,
         login,
         signUP,
         logout,
-        list,
         setCheck,
         setCheck,
         getProfile,
