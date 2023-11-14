@@ -162,16 +162,20 @@ export const AuthProvider = ({ children }) => {
 
   const getProfile = () => {
     axios
-      .get(`${BASE_URL}/account-by-id`,
+      .get(`${BASE_URL}/profile`,
       {
         headers: 
         { 
-          Authorization: `Token ${userInfo.accessToken}` 
+          Authorization: `Bearer ${userInfo.accessToken}` 
         },
       })
       .then((res) => {
         let address = res.data.others.address;
+        let phone = res.data.others.phone;
+        let email = res.data.others.email;
         userInfo.others.address = address;
+        userInfo.others.phone = phone;
+        userInfo.others.email = email;
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
       })
       .catch((e) => {
@@ -187,11 +191,11 @@ export const AuthProvider = ({ children }) => {
         email: email,
         phone: phone,
       }, {
-        headers: { Authorization: `Token ${userInfo.accessToken}` }
+        headers: { Authorization: `Bearer ${userInfo.accessToken}` }
       })
       .then((res) => {
         console.log(res.data);
-        getWarehouse();
+        getProfile();
         setCheckUpdate(true)
         setIsLoading(false);
       })
@@ -216,6 +220,7 @@ export const AuthProvider = ({ children }) => {
         userInfo,
         checkValueSignUp,
         splashLoading,
+        // OrderDetail,
         signUP,
         login,
         logout,

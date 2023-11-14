@@ -81,7 +81,8 @@ export default function HomeNavigation() {
                                 <Entypo name="home" size={24} color={focused ? "#111" : "#fff"} />
                             </View>
                         )
-                    }
+                    },
+                    headerShown: true
                 }}
             />
             <Tab.Screen

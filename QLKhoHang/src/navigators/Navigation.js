@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -20,6 +21,8 @@ import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import WarehouseScreem from "../components/WarehouseScreen";
 import ListAccountActive from "../components/Admin/ListAccountActive"
 import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
+import UploadImageProfile from "../components/UploadImageProfile"
+import Button from "../components/Button"
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +107,11 @@ const Navigation = () => {
           component={ListProduct}
           options={{ headerShown: false }}
         />
+        {/* <Stack.Screen
+          name="SeeOrderDetails"
+          component={SeeOrderDetails}
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
           name="AddWarehouseScreen"
           component={AddWarehouseScreen}
@@ -127,6 +135,21 @@ const Navigation = () => {
          <Stack.Screen
           name="ListAccountActive"
           component={ListAccountActive}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UploadImageProfile"
+          component={UploadImageProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Button"
+          component={Button}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

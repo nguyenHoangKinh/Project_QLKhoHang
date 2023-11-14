@@ -13,7 +13,6 @@ import { useRoute } from '@react-navigation/native';
 const DetailWarehouseScreen = ({ navigation }) => {
     const { userInfo, splashLoading } = useContext(AuthContext);
     const [warehouses, setWarehouse] = useState();
-    const [categories, setCategories] = useState([]);
     const route = useRoute();
     const idWarehouse = route.params?.idWarehouse;
 
@@ -39,36 +38,6 @@ const DetailWarehouseScreen = ({ navigation }) => {
             });
     }, []);
 
-    useEffect(() => {
-        axios
-            .get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
-                {
-                    headers:
-                    {
-                        Authorization: `Bearer ${userInfo.accessToken}`
-                    },
-                })
-            .then((res) => {
-                let categorie = res.data.categories;
-                setCategories(categorie);
-            })
-            .catch((e) => {
-                console.log(`get categories error ${e.res}`);
-            });
-    }, []);
-
-    const categorie = [];
-    for (let i = 0; i < categories.length; i++) {
-        {
-            categories[i]._id.includes(warehouses.category) &&
-                categorie.push(
-                    <Text key={i}>
-                        {categories[i].name}
-                    </Text>
-                )
-        }
-    }
-
     return (
         <View>
             <ScrollView style={{ marginTop: 50 }}>
@@ -85,7 +54,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
                         </View>
                         <View style={AppStyle.StyleProfile.items}>
                             <MaterialIcons name="category" size={20} color="black" />
-                            <Text>{categorie}</Text>
+                            <Text>{warehouses.category.name}</Text>
                         </View>
                         <View style={AppStyle.StyleProfile.items}>
                             <FontAwesome name="money" size={20} color="black" />
@@ -94,6 +63,14 @@ const DetailWarehouseScreen = ({ navigation }) => {
                         <View style={AppStyle.StyleProfile.items}>
                             <Entypo name="user" size={20} color="black" />
                             <Text>{userInfo.others.username}</Text>
+                        </View>
+                        <View style={AppStyle.StyleProfile.items}>
+                            <MaterialIcons name="description" size={20} color="black" />
+                            <Text> {warehouses.description}</Text>
+                        </View>
+                        <View style={AppStyle.StyleProfile.items}>
+                            <MaterialIcons name="aspect-ratio" size={20} color="black" />
+                            <Text>{warehouses.status}</Text>
                         </View>
                     </>
                 )}

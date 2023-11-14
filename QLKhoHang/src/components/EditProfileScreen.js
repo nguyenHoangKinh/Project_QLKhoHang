@@ -1,18 +1,54 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Text, Image, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, Image, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import { useRoute } from '@react-navigation/native';
 
 export default function EditProfileScreen({ navigation }) {
-    const {userInfo, splashLoading, updateProfile, checkUpdate} = useContext(AuthContext);
+    const { userInfo, splashLoading, getProfile } = useContext(AuthContext);
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
+    const route = useRoute();
+    const avatar = route.params?.nameImage;
     
+    const showAlert = () =>
+        Alert.alert(
+            'Cập nhật thất bại',
+            'Yêu cầu nhập thông tin cần cập nhật',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
+        );
+
+    const updateProfile = (address, phone, email, avatar) => {
+        axios
+            .put(`${BASE_URL}/update-account`, {
+                address: address,
+                email: email,
+                phone: phone,
+                avatar: avatar,
+            }, {
+                headers: { Authorization: `Bearer ${userInfo.accessToken}` }
+            })
+            .then((res) => {
+                console.log(res.data);
+                getProfile();
+                navigation.navigate('Home')
+            })
+            .catch((e) => {
+                console.log(`update error ${e.res}`);
+            });
+    };
+    console.log(userInfo.others.avatar)
     return (
         <View>
             <ScrollView>
@@ -23,8 +59,12 @@ export default function EditProfileScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                    <Image source={{uri: `${userInfo.others.avatar}`}}
-                        style={AppStyle.StyleProfile.avatar}></Image>
+                    <TouchableOpacity onPress={
+                        () => navigation.navigate('UploadImageProfile', { selectedImage: userInfo.others.avatar })
+                    }>
+                        <Image source={{ uri: `${!avatar ? userInfo.others.avatar : avatar}` }}
+                            style={AppStyle.StyleProfile.avatar}></Image>
+                    </TouchableOpacity>
                     <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
                     <TextInput
                         style={AppStyle.StyleProfile.email}
@@ -32,13 +72,6 @@ export default function EditProfileScreen({ navigation }) {
                         keyboardType="default"
                         value={email}
                         onChangeText={text => setEmail(text)}
-                    />
-                </View>
-                <View style={AppStyle.StyleProfile.items}>
-                    <FontAwesome name="bank" size={20} color="black" />
-                    <TextInput
-                        placeholder="Nhập số tài khoản"
-                        keyboardType="numeric"
                     />
                 </View>
                 <View style={AppStyle.StyleProfile.items}>
@@ -62,13 +95,11 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        updateProfile(address, phone, email),
-                        checkUpdate ? navigation.navigate("HomeNavigation") : console.log("Cap nhat that bai")
+                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar)
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
