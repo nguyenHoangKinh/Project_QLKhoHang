@@ -14,6 +14,7 @@ const AppStyle = {
     StyleStatistics,
     StyleListProduct,
     StyleWarehouse,
-    StyleOderList
+    StyleOderList,
+    StyleOderList,
 }
 export default AppStyle;

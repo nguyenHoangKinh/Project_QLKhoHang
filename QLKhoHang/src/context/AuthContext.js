@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
+  const [list, setListWare] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
 // console.log(userInfo);
@@ -372,6 +373,7 @@ export const AuthProvider = ({ children }) => {
   }
   useEffect(() => {
     isLoggedIn();
+
   }, []);
 
   return (
@@ -394,10 +396,12 @@ export const AuthProvider = ({ children }) => {
         login,
         signUP,
         logout,
+        list,
         setCheck,
         setCheck,
         getProfile,
         setIdOrder,
+        setListWare,
         SearchOrder,
         OrderDetail,
         orderListUser,

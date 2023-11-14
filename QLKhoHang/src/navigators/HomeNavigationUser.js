@@ -12,8 +12,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5,Octicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import ListWareUser from '../components/user/ListWareUser';
 
-const HomeNavigation = () => {
+
+const HomeNavigationUser = () => {
     const Tab = createBottomTabNavigator()
     const screenOptions = {
         tabBarShowLabel: false,
@@ -32,6 +35,11 @@ const HomeNavigation = () => {
                 <Tab.Screen
                     name="WarehouseScreen"
                     component={WarehouseScreen}
+                <Tab.Screen                                 
+                    name="ListWareUser"
+                    component={ListWareUser}
+                    // name="Warehouse"
+                    // component={WarehouseScreen}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
@@ -112,4 +120,4 @@ const HomeNavigation = () => {
     )
 }
 
-export default HomeNavigation;
+export default HomeNavigationUser;

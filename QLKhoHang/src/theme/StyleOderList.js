@@ -5,6 +5,13 @@ const StyleOderList = StyleSheet.create({
       flex: 1,
       height: "100%",
     },
+    text_address: {
+      fontSize: 14,
+      lineHeight: 21,
+      fontWeight: "bold",
+      letterSpacing: 0.25,
+      color: "balck",
+    },
     text: {
       color: "#06bcee",
       fontSize: 18,
