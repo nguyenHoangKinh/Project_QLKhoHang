@@ -48,7 +48,7 @@ export default function EditProfileScreen({ navigation }) {
                 console.log(`update error ${e.res}`);
             });
     };
-    console.log(userInfo.others.avatar)
+    console.log(avatar)
     return (
         <View>
             <ScrollView>
@@ -62,7 +62,7 @@ export default function EditProfileScreen({ navigation }) {
                     <TouchableOpacity onPress={
                         () => navigation.navigate('UploadImageProfile', { selectedImage: userInfo.others.avatar })
                     }>
-                        <Image source={{ uri: `${!avatar ? userInfo.others.avatar : avatar}` }}
+                        <Image source={{ uri: `${!avatar ? userInfo.others.avatar : avatar.assets[0].uri}` }}
                             style={AppStyle.StyleProfile.avatar}></Image>
                     </TouchableOpacity>
                     <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
@@ -95,7 +95,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar)
+                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar.assets[0].uri)
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
