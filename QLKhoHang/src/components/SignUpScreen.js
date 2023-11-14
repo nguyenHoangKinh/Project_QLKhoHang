@@ -5,8 +5,7 @@ import { themeColors } from "../theme";
 import { AuthContext } from "../context/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spinner from "react-native-loading-spinner-overlay";
-import { AntDesign,Feather } from '@expo/vector-icons';
-
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 export default function SignUpScreen({ navigation }) {
   const [checkValue, setCheckValue] = useState(false);
@@ -18,7 +17,8 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
-  const { formError, isLoading, signUP, checkValueSignUp } = useContext(AuthContext);
+  const { formError, isLoading, signUP, checkValueSignUp } =
+    useContext(AuthContext);
   return (
     <View
       className="flex-1 bg-white"
@@ -63,9 +63,7 @@ export default function SignUpScreen({ navigation }) {
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Address</Text>
             {formError.address && (
-              <Text className="text-yellow-950  mr-3">
-                {formError.address}
-              </Text>
+              <Text className="text-yellow-950  mr-3">{formError.address}</Text>
             )}
           </View>
           <TextInput
@@ -77,9 +75,7 @@ export default function SignUpScreen({ navigation }) {
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Email</Text>
             {formError.email && (
-              <Text className="text-yellow-950  mr-3">
-                {formError.email}
-              </Text>
+              <Text className="text-yellow-950  mr-3">{formError.email}</Text>
             )}
           </View>
           <TextInput
@@ -92,9 +88,7 @@ export default function SignUpScreen({ navigation }) {
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Phone</Text>
             {formError.phone && (
-              <Text className="text-yellow-950  mr-3">
-                {formError.phone}
-              </Text>
+              <Text className="text-yellow-950  mr-3">{formError.phone}</Text>
             )}
           </View>
           <TextInput
@@ -113,22 +107,22 @@ export default function SignUpScreen({ navigation }) {
             )}
           </View>
           <View className="flex flex-row relative">
-          <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 w-full"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            placeholder="Enter Password"
-            secureTextEntry={isShowPassword ? false : true}
-          />
-          <View className="absolute right-6 top-4">
-          <Feather
-           name={
-            isShowPassword === true
-                ? "eye"
-                : "eye-off"
-            } size={24} color="black" onPress={() => setIsShowPassword(!isShowPassword)}/>
+            <TextInput
+              className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 w-full"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              placeholder="Enter Password"
+              secureTextEntry={isShowPassword ? false : true}
+            />
+            <View className="absolute right-6 top-4">
+              <Feather
+                name={isShowPassword === true ? "eye" : "eye-off"}
+                size={24}
+                color="black"
+                onPress={() => setIsShowPassword(!isShowPassword)}
+              />
             </View>
-            </View>
+          </View>
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">ConfirmPassword</Text>
             {formError.confirmPassword && (
@@ -138,22 +132,22 @@ export default function SignUpScreen({ navigation }) {
             )}
           </View>
           <View className="flex flex-row relative">
-          <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2 w-full"
-            value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
-            placeholder="Enter Password"
-            secureTextEntry={isShowPasswordConfirm ? false : true}
-          />
-          <View className="absolute right-6 top-4">
-          <Feather
-           name={
-            isShowPasswordConfirm === true
-                ? "eye"
-                : "eye-off"
-            } size={24} color="black" onPress={() => setIsShowPasswordConfirm(!isShowPasswordConfirm)}/>
+            <TextInput
+              className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2 w-full"
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+              placeholder="Enter Password"
+              secureTextEntry={isShowPasswordConfirm ? false : true}
+            />
+            <View className="absolute right-6 top-4">
+              <Feather
+                name={isShowPasswordConfirm === true ? "eye" : "eye-off"}
+                size={24}
+                color="black"
+                onPress={() => setIsShowPasswordConfirm(!isShowPasswordConfirm)}
+              />
             </View>
-            </View>
+          </View>
           {/* <CheckBox
             isChecked={checkValue}
             onClick={() => setCheckValue(!checkValue)}
@@ -185,30 +179,8 @@ export default function SignUpScreen({ navigation }) {
               Sign Up
             </Text>
           </TouchableOpacity>
-
-          {/* <Text>{console.log(checkValueSignUp)}</Text> */}
         </View>
         <Text className="text-l text-gray-700 text-center">Or</Text>
-        {/* <View className="flex-row justify-center space-x-12">
-          <TouchableOpacity className="p-2 bg-gray-100 rounded-2xl">
-            <Image
-              source={require("../assets/icons/google.png")}
-              className="w-10 h-10"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity className="p-2 bg-gray-100 rounded-2xl">
-            <Image
-              source={require("../assets/icons/apple.png")}
-              className="w-10 h-10"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity className="p-2 bg-gray-100 rounded-2xl">
-            <Image
-              source={require("../assets/icons/facebook.png")}
-              className="w-10 h-10"
-            />
-          </TouchableOpacity>
-        </View> */}
         <View className="flex-row justify-center mt-1">
           <Text className="text-gray-500 font-semibold">
             Already have an account?

@@ -17,11 +17,11 @@ import { BASE_URL_Owners } from "../config";
 export default function ListWareHouseUser() {
   const [userInfo, setUserInfo] = useState({});
   const [list, setListWare] = useState([]);
-//   const [visible, setViisble] = useState(false);
-  constructor= (props) => {
+  //   const [visible, setViisble] = useState(false);
+  constructor = (props) => {
     super(props);
-    this.state = {persons: []};
-  }
+    this.state = { persons: [] };
+  };
 
   useEffect(() => {
     getList();
@@ -31,12 +31,11 @@ export default function ListWareHouseUser() {
     axios
       .get(`${BASE_URL_Owners}/warehouse/listWarehouseUser/persons`, {
         //headers: { Authorization: `Token ${userInfo.accessToken}` },
-        
       })
       .then((res) => {
         console.log(res.data);
-        this.setState({persons: res.data});
-       
+        this.setState({ persons: res.data });
+
         // let userInfo = res.data;
         // setUserInfo(userInfo);
         // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -44,8 +43,8 @@ export default function ListWareHouseUser() {
         // var response = res.data;
         // setListWare(res.data.warehouse);
         //console.log(res.data.warehouse);
-
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         // if (error.response && error.response.status === 401 ) {
         //   // Handle 401 Unauthorized error
@@ -56,41 +55,23 @@ export default function ListWareHouseUser() {
         // }
       });
   };
-  tabRow=()=> {
+  tabRow = () => {
     return this.state.persons.map(function (object, i) {
-        return <TableRow obj={object} key={i}/>;
+      return <TableRow obj={object} key={i} />;
     });
-}
+  };
 
-//   const handleVisibleModal = () => {
-//     setViisble(!visible);
-//   };
+  //   const handleVisibleModal = () => {
+  //     setViisble(!visible);
+  //   };
   return (
     <SafeAreaView>
-      {/* <View style={styles.header_container}>
-        <Text style={styles.txt_main}>Course {list && list.length}</Text>
-        <TouchableOpacity onPress={handleVisibleModal}>
-          <Text style={styles.txt_name}>New Course</Text>
-        </TouchableOpacity>
-      </View> */}
-
       <ScrollView>
         {list &&
           list.map((item, index) => {
             return (
               <View style={styles.item_course} key={index}>
-                <View >
-                    {this.tabRow}
-                  
-                </View>
-                {/* <View>
-                    <TouchableOpacity onPress={() => handelDetete(item)}>
-                      <Text style={styles.txt_del}>Delete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleEdit(item)}>
-                      <Text style={styles.txt_edit}>Edit</Text>
-                    </TouchableOpacity>
-                  </View> */}
+                <View>{this.tabRow}</View>
               </View>
             );
           })}

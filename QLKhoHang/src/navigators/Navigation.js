@@ -25,6 +25,7 @@ import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
 import ListAccountActive from "../components/Admin/ListAccountActive";
 import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
+import DetailAcount from "../components/Admin/DetailAccount";
 
 const Stack = createNativeStackNavigator();
 
@@ -162,6 +163,11 @@ const Navigation = () => {
         <Stack.Screen
           name="DetailWareHouseUser"
           component={DetailWarehouseUserScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailAcount"
+          component={DetailAcount}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

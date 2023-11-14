@@ -23,7 +23,7 @@ import {
 export default function OrderScreenUser({ navigation }) {
   const { orderListUser, ListOrder, setIdOrder, userInfo, SearchOrder } =
     useContext(AuthContext);
-    const [modalVisible,setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   // console.log(ListOrder);
   useEffect(() => {
     //call api
@@ -58,7 +58,10 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Đơn Hàng:
               </Text>
-              <Text className="flex-initial text-white text-base"> {item.name}</Text>
+              <Text className="flex-initial text-white text-base">
+                {" "}
+                {item.name}
+              </Text>
             </View>
             <View className="flex flex-row">
               <Text
@@ -67,7 +70,10 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Chủ Kho:
               </Text>
-              <Text className="flex-initial text-white text-base"> {item.owner.username}</Text>
+              <Text className="flex-initial text-white text-base">
+                {" "}
+                {item.owner.username}
+              </Text>
             </View>
             <View className="flex flex-row">
               <Text
@@ -76,7 +82,9 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Khách Hàng:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">{item.user.username}</Text>
+              <Text className="flex-initial text-white text-base">
+                {item.user.username}
+              </Text>
             </View>
             <View className="flex flex-row">
               <Text
@@ -85,7 +93,9 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Thời Gian Thuê:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">{item.rentalTime}</Text>
+              <Text className="flex-initial text-white text-base">
+                {item.rentalTime}
+              </Text>
             </View>
             {/* <Text style={AppStyle.StyleOderList.text}>LuuLuong: {item.LuuLuongHangHoa}</Text> */}
           </View>
@@ -126,37 +136,37 @@ export default function OrderScreenUser({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               onChangeText={(text) => {
-                if(text.length > 0){
+                if (text.length > 0) {
                   SearchOrder(text);
-                }else{
+                } else {
                   orderListOwner(userInfo.accessToken);
                 }
               }}
             />
           </View>
           <Pressable style={AppStyle.StyleOderList.listFilter}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={AppStyle.StyleOderList.centeredView}>
-            <Pressable
-              style={[AppStyle.StyleOderList.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
             >
-              <Ionicons
-                name="close-outline"
-                size={35}
-                color="#000"
-                style={AppStyle.StyleOderList.textStyle}
-              />
-            </Pressable>
-            <View style={AppStyle.StyleOderList.modalView}>
-              {/* <View style={AppStyle.StyleOderList.modalView_1}>
+              <View style={AppStyle.StyleOderList.centeredView}>
+                <Pressable
+                  style={[AppStyle.StyleOderList.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Ionicons
+                    name="close-outline"
+                    size={35}
+                    color="#000"
+                    style={AppStyle.StyleOderList.textStyle}
+                  />
+                </Pressable>
+                <View style={AppStyle.StyleOderList.modalView}>
+                  {/* <View style={AppStyle.StyleOderList.modalView_1}>
                 <Text>Loc Don Hang Theo Kho Hang</Text>
                 <FlatList
                   data={warehouseList}
@@ -186,17 +196,17 @@ export default function OrderScreenUser({ navigation }) {
                   <Text>Loc Theo Tuan </Text>
                 </TouchableOpacity>
               </View> */}
-            </View>
-          </View>
-        </Modal>
-        <Ionicons
-          style={AppStyle.StyleOderList.iconFilter}
-          name="options-outline"
-          size={30}
-          color="#000"
-          onPress={() => setModalVisible(true)}
-        />
-      </Pressable>
+                </View>
+              </View>
+            </Modal>
+            <Ionicons
+              style={AppStyle.StyleOderList.iconFilter}
+              name="options-outline"
+              size={30}
+              color="#000"
+              onPress={() => setModalVisible(true)}
+            />
+          </Pressable>
         </View>
         <View
           className=" w-full h-12  bg-black"
@@ -207,14 +217,18 @@ export default function OrderScreenUser({ navigation }) {
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
           >
-            <Text className="text-lg text-black font-bold">Đơn chưa hoàn thành</Text>
+            <Text className="text-lg text-black font-bold">
+              Đơn chưa hoàn thành
+            </Text>
           </Pressable>
           <Text style={{ borderWidth: 0.5 }}></Text>
           <Pressable
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
           >
-            <Text className="text-lg text-black font-bold">Đơn đã hoàn thành</Text>
+            <Text className="text-lg text-black font-bold">
+              Đơn đã hoàn thành
+            </Text>
           </Pressable>
         </View>
         <View

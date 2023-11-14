@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function DetailWareHouse() {
-  return (
-    <div>DetailWareHouse</div>
-  )
+  return <div>DetailWareHouse</div>;
 }
 
-export default DetailWareHouse
+export default DetailWareHouse;
