@@ -3,18 +3,20 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, Image, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { BASE_URL } from "../config";
+import { useRoute } from '@react-navigation/native';
 
 export default function EditProfileScreen({ navigation }) {
     const { userInfo, splashLoading, getProfile } = useContext(AuthContext);
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
-
+    const route = useRoute();
+    const avatar = route.params?.nameImage;
+    
     const showAlert = () =>
         Alert.alert(
             'Cập nhật thất bại',
@@ -27,12 +29,13 @@ export default function EditProfileScreen({ navigation }) {
             ],
         );
 
-    const updateProfile = (address, phone, email) => {
+    const updateProfile = (address, phone, email, avatar) => {
         axios
             .put(`${BASE_URL}/update-account`, {
                 address: address,
                 email: email,
                 phone: phone,
+                avatar: avatar,
             }, {
                 headers: { Authorization: `Bearer ${userInfo.accessToken}` }
             })
@@ -45,7 +48,7 @@ export default function EditProfileScreen({ navigation }) {
                 console.log(`update error ${e.res}`);
             });
     };
-
+    console.log(userInfo.others.avatar)
     return (
         <View>
             <ScrollView>
@@ -56,8 +59,12 @@ export default function EditProfileScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                    <Image source={{ uri: `${userInfo.others.avatar}` }}
-                        style={AppStyle.StyleProfile.avatar}></Image>
+                    <TouchableOpacity onPress={
+                        () => navigation.navigate('UploadImageProfile', { selectedImage: userInfo.others.avatar })
+                    }>
+                        <Image source={{ uri: `${!avatar ? userInfo.others.avatar : avatar}` }}
+                            style={AppStyle.StyleProfile.avatar}></Image>
+                    </TouchableOpacity>
                     <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
                     <TextInput
                         style={AppStyle.StyleProfile.email}
@@ -88,7 +95,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!address & !phone & !email) ? showAlert() : updateProfile(address, phone, email)
+                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar)
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>

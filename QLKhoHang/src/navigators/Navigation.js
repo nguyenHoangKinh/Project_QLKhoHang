@@ -21,6 +21,8 @@ import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import WarehouseScreem from "../components/WarehouseScreen";
 import ListAccountActive from "../components/Admin/ListAccountActive"
 import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
+import UploadImageProfile from "../components/UploadImageProfile"
+import Button from "../components/Button"
 
 const Stack = createNativeStackNavigator();
 
@@ -138,6 +140,16 @@ const Navigation = () => {
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UploadImageProfile"
+          component={UploadImageProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Button"
+          component={Button}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
