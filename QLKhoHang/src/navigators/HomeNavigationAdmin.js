@@ -45,20 +45,6 @@ const HomeNavigation = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="ListAccountNotActive"
-                    component={ListAccountNotActive}
-                    options={{
-                        tabBarIcon: ({ focused }) => {
-                            return (
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <MaterialCommunityIcons name="account-cancel" size={24} color={focused ? "#16247d" : "#111"} />
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Acc Not Active</Text>
-                                </View>
-                            )
-                        }
-                    }}
-                />
-                <Tab.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
@@ -81,29 +67,15 @@ const HomeNavigation = () => {
                         }
                     }}
                 />
-                <Tab.Screen
-                    name="Statistics"
-                    component={StatisticsScreen}
+                  <Tab.Screen
+                    name="ListAccountNotActive"
+                    component={ListAccountNotActive}
                     options={{
                         tabBarIcon: ({ focused }) => {
                             return (
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    {/* <Ionicons name="stats-chart" size={24} color={focused ? "#16247d" : "#111"} /> */}
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Statistics</Text>
-                                </View>
-                            )
-                        }
-                    }}
-                />
-                <Tab.Screen
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => {
-                            return (
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <Entypo name="user" size={24} color={focused ? "#16247d" : "#111"} />
-                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Profile</Text> 
+                                    <MaterialCommunityIcons name="account-cancel" size={24} color={focused ? "#16247d" : "#111"} />
+                                    <Text style={{ fontSize: 12, color: "#16247d" }}>Acc Not Active</Text>
                                 </View>
                             )
                         }
