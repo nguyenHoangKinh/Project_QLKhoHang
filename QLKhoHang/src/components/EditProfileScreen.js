@@ -27,24 +27,24 @@ export default function EditProfileScreen({ navigation }) {
             ],
         );
 
-        const updateProfile = (address, phone, email) => {
-            axios
-              .put(`${BASE_URL}/update-account`, {
+    const updateProfile = (address, phone, email) => {
+        axios
+            .put(`${BASE_URL}/update-account`, {
                 address: address,
                 email: email,
                 phone: phone,
-              }, {
+            }, {
                 headers: { Authorization: `Bearer ${userInfo.accessToken}` }
-              })
-              .then((res) => {
+            })
+            .then((res) => {
                 console.log(res.data);
                 getProfile();
                 navigation.navigate('Home')
-              })
-              .catch((e) => {
+            })
+            .catch((e) => {
                 console.log(`update error ${e.res}`);
-              });
-          };
+            });
+    };
 
     return (
         <View>

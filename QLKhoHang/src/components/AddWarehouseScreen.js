@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Text, Image, TextInput, TouchableOpacity, View, FlatList } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -21,7 +21,6 @@ export default function AddWarehouseScreen({ navigation }) {
     const [monney, setMonney] = useState();
     const [status, setStatus] = useState();
     const [description, setDescription] = useState();
-    const [checkAdd, setCheckAdd] = useState(false);
 
     useEffect(() => {
         axios
@@ -40,6 +39,19 @@ export default function AddWarehouseScreen({ navigation }) {
                 console.log(`get categories error ${e.res}`);
             });
     }, []);
+
+    const showAlert = () =>
+        Alert.alert(
+            'Thêm thất bại',
+            'Yêu cầu nhập đầy đủ thông tin cần thêm',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
+        );
+
     const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, owner) => {
         axios
             .post(`https://warehouse-management-api.vercel.app/v1/warehouse/create`, {
@@ -63,11 +75,10 @@ export default function AddWarehouseScreen({ navigation }) {
             })
             .then((res) => {
                 console.log(res.data);
-                setCheckAdd(true)
+                navigation.navigate("Home")
             })
             .catch((e) => {
                 console.log(`Add error ${e}`);
-                setCheckAdd(false)
             });
     };
 
@@ -152,10 +163,11 @@ export default function AddWarehouseScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, userInfo.others._id)
-                        {checkAdd ? navigation.navigate("AddWarehouseScreen") : navigation.navigate("Home")}
+                        (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description)
+                            ? showAlert()
+                            : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, userInfo.others._id)
                     }}>
-                    
+
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>THÊM KHO HÀNG</Text>
                 </TouchableOpacity>
