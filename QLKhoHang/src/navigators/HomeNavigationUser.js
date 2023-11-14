@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import ListWareUser from '../components/user/ListWareUser';
-import ProfileUserScreen from "../components/user/FrofileUser";
+
 
 const HomeNavigationUser = () => {
     const Tab = createBottomTabNavigator()

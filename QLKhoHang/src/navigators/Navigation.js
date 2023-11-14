@@ -14,7 +14,6 @@ import ProfileScreen from "../components/ProfileScreen";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
-import EditProfileUser from "../components/user/EditProfileUser";
 //import ListWareHouse from "../components/owners/ListWareHouse";
 import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import ListWareUser from "../components/user/ListWareUser";
@@ -95,11 +94,6 @@ const Navigation = () => {
           component={ListProduct}
           options={{ headerShown: false }}
         />
-         {/* <Stack.Screen
-          name="EditProfileUser"
-          component={EditProfileUser}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="DetailWareHouseUser"
           component={DetailWarehouseUserScreen}
