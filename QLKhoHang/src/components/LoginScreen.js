@@ -20,12 +20,12 @@ export default function LoginScreen({navigation}) {
 
       <SafeAreaView className="flex ">
         <View className="flex-row justify-start">
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.goBack()}
             className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
           >
             <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View className="flex-row justify-center">
           <Image

@@ -78,15 +78,15 @@ export const AuthProvider = ({ children }) => {
       };
     setIsLoading(true);
     setCheckValueSignUp(true);
-      let check ='';
-      if (checkValue) {
-        check= '1';
-      }else
-      {
-        check='0'
-      }
+      // let check ='';
+      // if (checkValue) {
+      //   check= '1';
+      // }else
+      // {
+      //   check='0'
+      // }
     axios
-      .post(`${BASE_URL}/register?status=`+check, acc)
+      .post(`${BASE_URL}/register?status=1`, acc)
       .then((res) => {
         let userInfo = res;
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -107,31 +107,38 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (username, password) => {
+    setFormErrorLogin("");
     setIsLoading(true);
+  if (username && password) {
     axios
-      .post(`${BASE_URL}/login`, {
-        username,
-        password,
-      })
+    .post(`${BASE_URL}/login`, {
+      username,
+      password,
+    })
 
-      .then((res) => {
-        let userInfo = res.data;
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setCheck(true);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(`login error ${e.response.data.message}`);
-        setCheck(false);
-        setFormErrorLogin(e.response.data.message);
-        setIsLoading(false);
-      });
+    .then((res) => {
+      let userInfo = res.data;
+      setUserInfo(userInfo);
+      AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      setCheck(true);
+      setIsLoading(false);
+    })
+    .catch((e) => {
+      console.log(`login error ${e.response.data.message}`);
+      setCheck(false);
+      setFormErrorLogin(e.response.data.message);
+      setIsLoading(false);
+    });
+  }else{
+    alert("bang chua nhap username or password");
+    setIsLoading(false);
+  }
   };
 
   const logout = () => {
     setIsLoading(true);
-    axios
+    if (userInfo.accessToken) {
+      axios
       .get(
         `${BASE_URL}/logout`,
         {
@@ -149,6 +156,9 @@ export const AuthProvider = ({ children }) => {
         console.log(`logout error ${e.response.data.message}`);
         setIsLoading(false);
       });
+    }else{
+      alert("lopout error access token undefined");
+    }
   };
 
   const isLoggedIn = async () => {
@@ -243,6 +253,7 @@ export const AuthProvider = ({ children }) => {
   const orderListUser = (Token) => {
     setListOrder({});
     setIsLoading(true);
+    if (IdOrder && userInfo.accessToken) {
     axios
       .get(`${ORDER_URL}/order/listOrderByUser?id_user=${userInfo.others._id}`,  {
         headers: { Authorization: `Bearer ${Token}` }
@@ -258,12 +269,16 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
       });
+    }else{
+      alert("error access token undefined");
+    }
   }
   const orderListOwner = (Token) => {
-    setListOrder({});
+    setIsLoading(true);
+    if (Token) {
+      setListOrder({});
     // console.log(userInfo.others._id);
     // console.log(Token);
-    setIsLoading(true);
     axios
       .get(`${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}`,  {
         headers: { Authorization: `Bearer ${Token}` }
@@ -280,6 +295,9 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
       });
+    }else{
+      alert("error access token undefined");
+    }
   }
   // const deleteOrderListOwner = (Token) => {
   //   setListOrder({});
@@ -304,7 +322,8 @@ export const AuthProvider = ({ children }) => {
   const OrderDetail = () => {
     // console.log(IdOrder);
     setIsLoading(true);
-    axios
+    if (IdOrder && userInfo.accessToken) {
+      axios
       .get(ORDER_URL+`/order/getAOrder?id=${IdOrder}`,{
         headers: {
            Authorization: `Bearer ${userInfo.accessToken} ` 
@@ -324,6 +343,9 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         setCheck(false);
       });
+    }else{
+      alert("Error id order undefined");
+    }
   }
   const SearchOrder = (Name) => {
     setListOrder({});
@@ -355,35 +377,35 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        getProfile,
-        DetailOrder,
         formErrorChangePass,
+        checkValueSignUp,
+        formErrorLogin,
+        splashLoading,
+        checkUpdate,
+        DetailOrder,
         checkSignUp,
         ListOrder,
         formError,
         isLoading,
+        warehouse,
         userInfo,
-        checkValueSignUp,
-        splashLoading,
         IdOrder,
         check,
-        formErrorLogin,
-        SearchOrder,
+        login,
+        signUP,
+        logout,
         setCheck,
-        setDetailOrder,
+        setCheck,
+        getProfile,
         setIdOrder,
+        SearchOrder,
         OrderDetail,
         orderListUser,
-        orderListOwner,
-        setFormErrorChangePass,
-        setCheck,
-        changePassword,
-        signUP,
-        login,
-        logout,
         updateProfile,
-        checkUpdate,
-        warehouse,
+        setDetailOrder,
+        orderListOwner,
+        changePassword,
+        setFormErrorChangePass,
       }}
     >
       {children}

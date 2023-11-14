@@ -154,7 +154,7 @@ export default function SignUpScreen({ navigation }) {
             } size={24} color="black" onPress={() => setIsShowPasswordConfirm(!isShowPasswordConfirm)}/>
             </View>
             </View>
-          <CheckBox
+          {/* <CheckBox
             isChecked={checkValue}
             onClick={() => setCheckValue(!checkValue)}
             rightText="Đăng ký bằng tài khoản nhân viên"
@@ -163,7 +163,7 @@ export default function SignUpScreen({ navigation }) {
               color: "black",
               fontWeight: "bold",
             }}
-          />
+          /> */}
           <TouchableOpacity
             className="py-3 bg-blue-300 rounded-xl mt-3"
             onPress={() => {
