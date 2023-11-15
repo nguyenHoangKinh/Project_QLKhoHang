@@ -1,5 +1,5 @@
 import { StyleSheet, StatusBar } from "react-native";
-const StyleListProduct = StyleSheet.create({
+const StyleListWareHouse = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 20,
@@ -7,10 +7,12 @@ const StyleListProduct = StyleSheet.create({
   },
 
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: "yellow",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   warehouse_count: {
@@ -25,7 +27,7 @@ const StyleListProduct = StyleSheet.create({
   },
 
   nameProduct: {
-    fontSize: 20,
+    fontSize: 15,
   },
 
   searchBar: {
@@ -43,9 +45,9 @@ const StyleListProduct = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
 
-  icon: {
-    marginRight: 5,
-  },
+  // icon: {
+  //     marginRight: 5,
+  // },
 
   placeholderStyle: {
     fontSize: 16,
@@ -65,4 +67,4 @@ const StyleListProduct = StyleSheet.create({
     fontSize: 16,
   },
 });
-export default StyleListProduct;
+export default StyleListWareHouse;

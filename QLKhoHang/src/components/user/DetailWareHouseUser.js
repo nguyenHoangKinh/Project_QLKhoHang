@@ -1,20 +1,24 @@
 import { useContext, useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, Text, Image, TouchableOpacity, View } from "react-native";
-import AppStyle from "../theme";
+import AppStyle from "../../theme";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { AuthContext } from "../context/AuthContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
+import { FlatList } from "react-native-gesture-handler";
 
 const DetailWarehouseScreen = ({ navigation }) => {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, splashLoading, list } = useContext(AuthContext);
   const [warehouses, setWarehouse] = useState();
+  //const [categories, setCategories] = useState([]);
   const route = useRoute();
-  const idWarehouse = route.params?.idWarehouse;
+  // const idWarehouse = route.params?.idWarehouse;
+  console.log(list);
+  // console.log(userInfo.accessToken);
 
   useEffect(() => {
     axios
@@ -25,16 +29,17 @@ const DetailWarehouseScreen = ({ navigation }) => {
             Authorization: `Bearer ${userInfo.accessToken}`,
           },
           params: {
-            id: idWarehouse,
+            id: list,
           },
         }
       )
       .then((res) => {
-        let warehouse = res.data.warehouse;
-        setWarehouse(warehouse);
+        let warehouseUser = res.data.warehouse;
+        setWarehouse(warehouseUser);
+        console.log(res.data.warehouse);
       })
       .catch((e) => {
-        console.log(`Get warehouse error ${e}`);
+        console.log(`get warehouseUser error ${e.res}`);
       });
   }, []);
 
@@ -43,7 +48,14 @@ const DetailWarehouseScreen = ({ navigation }) => {
       <ScrollView style={{ marginTop: 50 }}>
         {warehouses && (
           <>
-            <Text style={AppStyle.StyleWarehouse.detail_warehouse}>
+            <Text
+              style={{
+                flex: 1,
+                fontSize: 15,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               Chi tiết của kho {warehouses.wareHouseName}
             </Text>
             <View style={AppStyle.StyleProfile.items}>
@@ -63,22 +75,21 @@ const DetailWarehouseScreen = ({ navigation }) => {
               <Text> {warehouses.monney}</Text>
             </View>
             <View style={AppStyle.StyleProfile.items}>
-              <Entypo name="user" size={20} color="black" />
-              <Text>{userInfo.others.username}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <MaterialIcons name="description" size={20} color="black" />
-              <Text> {warehouses.description}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <MaterialIcons name="aspect-ratio" size={20} color="black" />
-              <Text>{warehouses.status}</Text>
+              <Entypo name="owner" size={20} color="black" />
+              <Text> {warehouses.owner.username}</Text>
+              {/* <Text>{userInfo.others.username}</Text> */}
             </View>
           </>
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("RentAWareHouse")}
+        >
+          <Text style={{ color: "#fff" }}>Thue Kho</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_logout}
+          onPress={() => navigation.navigate("HomeNavigationUser")}
         >
           <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
         </TouchableOpacity>
