@@ -120,8 +120,8 @@ export default function OrderScreenUser({ navigation }) {
 
   return (
     <>
-      <View className=" flex static ">
-        <View className="w-full" style={AppStyle.StyleOderList.header}>
+      <View className=" flex static h-full">
+        <View className="w-full " style={AppStyle.StyleOderList.header}>
           <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
             <Ionicons
               style={AppStyle.StyleOderList.iconSearch}
@@ -232,7 +232,7 @@ export default function OrderScreenUser({ navigation }) {
           </Pressable>
         </View>
         <View
-          className=" flex-auto h-full"
+          className=" flex-auto "
           style={AppStyle.StyleOderList.boxesList}
         >
           <FlatList

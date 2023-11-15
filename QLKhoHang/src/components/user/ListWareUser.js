@@ -18,7 +18,7 @@ export default function ListWareUser({ navigation }) {
   const [check, setCheck] = useState(false);
   const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
-  const { userInfo, setListWare } = useContext(AuthContext);
+  const { userInfo, setListWare,setOrderItem } = useContext(AuthContext);
   // console.log(warehousecateName);
   useEffect(() => {
     axios
@@ -34,7 +34,7 @@ export default function ListWareUser({ navigation }) {
         let warehouseUser = res.data.warehouse;
         setList(warehouseUser);
         setWarehouse(warehouseUser);
-        console.log(res.data.warehouse.name);
+        // console.log(res.data.warehouse.name);
         // console.log(warehouseUser.address);
       })
       .catch((e) => {
@@ -77,7 +77,7 @@ export default function ListWareUser({ navigation }) {
         <TouchableOpacity
           style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>
-            navigation.navigate("DetailWareHouseUser", setListWare(item._id))
+            {navigation.navigate("DetailWareHouseUser"), setListWare(item._id),setOrderItem(item)}
           }
         >
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>

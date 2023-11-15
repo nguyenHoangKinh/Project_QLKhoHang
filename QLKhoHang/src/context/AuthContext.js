@@ -6,19 +6,21 @@ import { BASE_URL, ORDER_URL } from "../config";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children,navigation }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
+  const [checkUpdate, setCheckUpdate] = useState(false);
+  const [checkSignUp, setCheckSignUp] = useState(false);
+  const [checkAddOrder, setCheckAddOrder] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
-  const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
-  const [checkUpdate, setCheckUpdate] = useState(false);
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
+  const [OrderItem, setOrderItem] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
   const [list, setListWare] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
@@ -363,6 +365,53 @@ export const AuthProvider = ({ children }) => {
         setCheck(false);
       });
   };
+  const AddOrder = (monneys, owners, names, Warehouses, rentalTimes) => {
+    setCheckAddOrder(false);
+    setIsLoading(true);
+    if (
+      monneys &&
+      owners &&
+      names &&
+      Warehouses &&
+      rentalTimes &&
+      userInfo.others._id
+    ) {
+      axios
+        .post(
+          ORDER_URL + `/order/create?id_user=${userInfo.others._id}`,
+          {
+            money: monneys,
+            owner: owners,
+            name: names,
+            warehouses: Warehouses,
+            rentalTime: rentalTimes,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken} `,
+            },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            let order = res;
+            console.log(order);
+            setCheckAddOrder(true);
+            navigation.navigate('HomeNavigationUser')
+          }
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+          setCheckAddOrder(false);
+          setIsLoading(false);
+        });
+    } else {
+      setCheckAddOrder(true);
+      setIsLoading(false);
+      console.log("update error");
+    }
+  };
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -379,7 +428,9 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         ListOrder,
         checkDetail,
+        checkAddOrder,
         formError,
+        OrderItem,
         isLoading,
         warehouse,
         userInfo,
@@ -393,6 +444,8 @@ export const AuthProvider = ({ children }) => {
         setCheck,
         getProfile,
         setIdOrder,
+        setOrderItem,
+        AddOrder,
         setListWare,
         SearchOrder,
         setCheckDetail,
