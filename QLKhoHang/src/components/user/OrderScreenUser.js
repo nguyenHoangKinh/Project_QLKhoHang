@@ -139,7 +139,7 @@ export default function OrderScreenUser({ navigation }) {
                 if (text.length > 0) {
                   SearchOrder(text);
                 } else {
-                  orderListOwner(userInfo.accessToken);
+                  orderListUser(userInfo.accessToken);
                 }
               }}
             />

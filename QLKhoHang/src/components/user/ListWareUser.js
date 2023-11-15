@@ -87,6 +87,12 @@ export default function ListWareUser({ navigation }) {
             </Text>
           </Text>
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Dia Chi: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.address}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
             Loại kho: <></>
             <Text style={AppStyle.StyleWarehouse.name_warehouse}>
               {item.category.name}
