@@ -1,18 +1,30 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from "../theme";
-import { AuthContext } from "../context/AuthContext";
+import { themeColors } from "../../theme";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import axios from "axios";
 
 export default function AddOrderScreen({ navigation }) {
-  const [money, setMoney] = useState({});
-  const [owner, setowner] = useState({});
-  const [warehouses, setWarehouses] = useState({});
+  // const [money, setMoney] = useState({});
+  // const [owner, setowner] = useState({});
+  const [name, setName] = useState({});
+  // const [warehouses, setWarehouses] = useState({});
   const [rentalTime, setRentalTime] = useState({});
+  const { AddOrder, OrderItem,checkAddOrder } = useContext(AuthContext);
+  // console.log(OrderItem._id);
+  const getCurrentDate=()=>{
+ 
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
 
+    //Alert.alert(date + '-' + month + '-' + year);
+    // You can turn it in to your desired format
+    return date + '/' + month + '/' + year;//format: d-m-y;
+}
   return (
     <View
       className="flex-1 bg-white"
@@ -51,40 +63,60 @@ export default function AddOrderScreen({ navigation }) {
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Money</Text>
           </View>
-          <TextInput
+          {/* <View className="flex flex-row justify-between"> */}
+          <Text className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5">
+            {OrderItem.monney}
+          </Text>
+          {/* </View> */}
+          {/* <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
             value={money}
             onChangeText={(text) => setMoney(text)}
             placeholder="Enter money..."
-          />
+          /> */}
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Owner</Text>
           </View>
-          <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
-            value={owner}
-            onChangeText={(text) => setowner(text)}
-            placeholder="Enter owner..."
-          />
+          <Text className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5">
+            {OrderItem.owner.username}
+          </Text>
           <View className="flex flex-row justify-between">
             <Text className="text-gray-700 ml-2 w-55 ">Warehouses</Text>
           </View>
-          <TextInput
-            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
-            value={warehouses}
-            onChangeText={(text) => setWarehouses(text)}
-            placeholder="Enter warehouses..."
-          />
+          <Text className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 ">
+            {OrderItem.wareHouseName}
+          </Text>
           <View className="flex flex-row justify-between">
-            <Text className="text-gray-700 ml-2 w-55 ">RentalTime</Text>
+            <Text className="text-gray-700 ml-2 w-55 ">Name</Text>
           </View>
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
+            value={name}
+            onChangeText={(text) => setName(text)}
+            placeholder="Enter name..."
+          />
+
+          {/* <View className="flex flex-row justify-between"> */}
+            <Text className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5">{getCurrentDate()}</Text>
+          {/* </View> */}
+          {/* <TextInput
+            className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5"
             value={rentalTime}
             onChangeText={(text) => setRentalTime(text)}
-            placeholder="Enter Phone..."
-          />
-          <TouchableOpacity className="py-3 bg-blue-300 rounded-x1 mt-3">
+            placeholder="Enter rentalTime..."
+          /> */}
+          <TouchableOpacity
+            onPress={() =>
+          {AddOrder(
+                OrderItem.monney,
+                OrderItem.owner._id,
+                name,
+                OrderItem._id,
+                rentalTime
+              )}
+            }
+            className="py-3 bg-blue-300 rounded-x1 mt-3"
+          >
             <Text className=" font-bold text-center text-gray-700">
               Add Order
             </Text>
