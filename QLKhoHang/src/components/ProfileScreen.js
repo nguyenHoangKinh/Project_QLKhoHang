@@ -45,15 +45,6 @@ export default function ProfileScreen({ navigation }) {
           </Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome
-            name="bank"
-            size={20}
-            color="black"
-            style={{ marginRight: 10 }}
-          />
-          <Text>Số tài khoản</Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
           <Entypo
             name="phone"
             size={20}
@@ -70,19 +61,6 @@ export default function ProfileScreen({ navigation }) {
             style={{ marginRight: 10 }}
           />
           <Text>{userInfo.others.address}</Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
-          <FontAwesome5
-            name="warehouse"
-            size={20}
-            color="black"
-            style={{ marginRight: 10 }}
-          />
-          {userInfo.accessToken && userInfo.others.isOwner ? (
-            <Text>{userInfo.others.warehouses.length}</Text>
-          ) : (
-            ""
-          )}
         </View>
         <TouchableOpacity
           onPress={() => {

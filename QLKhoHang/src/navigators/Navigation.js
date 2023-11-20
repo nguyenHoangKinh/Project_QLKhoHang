@@ -27,6 +27,7 @@ import ListAccountActive from "../components/Admin/ListAccountActive"
 import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 import UploadImageProfile from "../components/UploadImageProfile"
 import Button from "../components/Button"
+import DetailAcount from "../components/Admin/DetailAccount"
 
 const Stack = createNativeStackNavigator();
 
@@ -151,6 +152,7 @@ const Navigation = () => {
           component={Button}
 			options={{ headerShown: false }}
         />
+        <Stack.Screen
           name="AddOrderScreen"
           component={AddOrderScreen}
           options={{ headerShown: false }}

@@ -32,6 +32,7 @@ const StyleWarehouse = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     flex: 1,
+    paddingRight: -100
   },
   btn_add: {
     backgroundColor: "#000",

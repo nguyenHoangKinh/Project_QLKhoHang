@@ -16,7 +16,7 @@ export default function EditProfileScreen({ navigation }) {
     const [phone, setPhone] = useState();
     const route = useRoute();
     const avatar = route.params?.nameImage;
-    
+
     const showAlert = () =>
         Alert.alert(
             'Cập nhật thất bại',
@@ -45,10 +45,20 @@ export default function EditProfileScreen({ navigation }) {
                 navigation.navigate('Home')
             })
             .catch((e) => {
-                console.log(`update error ${e.res}`);
+                Alert.alert(
+                    'Cập nhật thất bại',
+                    `${e.response.data.message}`,
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel',
+                        },
+                    ],
+                );
+                console.log(`update error ${e.response.data.message}`);
             });
     };
-    console.log(avatar)
+
     return (
         <View>
             <ScrollView>
@@ -95,7 +105,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar.assets[0].uri)
+                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar)
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
@@ -103,7 +113,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('HomeNavigation')
+                        () => navigation.navigate('Home')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>
