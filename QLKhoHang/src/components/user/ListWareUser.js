@@ -138,5 +138,3 @@ export default function ListWareUser({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
