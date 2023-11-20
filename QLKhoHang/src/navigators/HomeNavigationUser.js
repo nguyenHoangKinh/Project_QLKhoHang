@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
+import ListBlogPost from "../components/ListBlogPost";
 import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenUser from "../components/user/OrderScreenUser";
 import StatisticsScreen from "../components/StatisticsScreen";
@@ -73,8 +74,8 @@ const HomeNavigationUser = () => {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="ListBlogPost"
+        component={ListBlogPost}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {

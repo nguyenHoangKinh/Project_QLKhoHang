@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
   const [list, setListWare] = useState([]);
+  const [listBlog, setListBlog] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
   // console.log(userInfo);
@@ -400,6 +401,23 @@ export const AuthProvider = ({ children }) => {
       alert("xoa that bai!");
     }
   }
+  const ListBlog = () => {
+    if (userInfo.accessToken) {
+      axios.get(ORDER_URL+`/blog/list-by-blog`,{
+        headers:{
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }).then((res)=>{
+        // alert(res.data.message);
+        // console.log(res.data.blog);
+        setListBlog(res.data.blog);
+      }).catch((e)=>{
+        alert(e.response.data.message);
+      })
+    }else{
+      alert("load bai viet that bai!");
+    }
+  }
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -419,6 +437,7 @@ export const AuthProvider = ({ children }) => {
         formError,
         isLoading,
         warehouse,
+        listBlog,
         userInfo,
         IdOrder,
         check,
@@ -428,6 +447,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         setCheck,
         setCheck,
+        ListBlog,
         getProfile,
         setIdOrder,
         setListWare,
