@@ -42,7 +42,6 @@ const TodoScreen = ({ navigation }) => {
           },
         }
       ).then((res) => {
-        console.log(res.data);
         navigation.navigate("Home");
       }).catch((e) => {
         console.log(`delete warehouse error ${e.res}`);

@@ -23,19 +23,16 @@ export default function AddWarehouseScreen({ navigation }) {
     const [description, setDescription] = useState();
 
     useEffect(() => {
-        axios
-            .get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
+        axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
+            {
+                headers:
                 {
-                    headers:
-                    {
-                        Authorization: `Bearer ${userInfo.accessToken}`
-                    },
-                })
-            .then((res) => {
+                    Authorization: `Bearer ${userInfo.accessToken}`
+                },
+            }).then((res) => {
                 let categorie = res.data.categories;
                 setCategories(categorie);
-            })
-            .catch((e) => {
+            }).catch((e) => {
                 console.log(`get categories error ${e.res}`);
             });
     }, []);
@@ -53,33 +50,29 @@ export default function AddWarehouseScreen({ navigation }) {
         );
 
     const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, owner) => {
-        axios
-            .post(`https://warehouse-management-api.vercel.app/v1/warehouse/create`, {
-                wareHouseName: wareHouseName,
-                address: address,
-                category: category,
-                capacity: capacity,
-                monney: monney,
-                status: status,
-                description: description,
-                owner: owner,
-            }, {
-                headers:
-                {
-                    Authorization: `Bearer ${userInfo.accessToken}`
-                },
-                params:
-                {
-                    id_owner: userInfo.others._id
-                },
-            })
-            .then((res) => {
-                console.log(res.data);
-                navigation.navigate("Home")
-            })
-            .catch((e) => {
-                console.log(`Add error ${e}`);
-            });
+        axios.post(`https://warehouse-management-api.vercel.app/v1/warehouse/create`, {
+            wareHouseName: wareHouseName,
+            address: address,
+            category: category,
+            capacity: capacity,
+            monney: monney,
+            status: status,
+            description: description,
+            owner: owner,
+        }, {
+            headers:
+            {
+                Authorization: `Bearer ${userInfo.accessToken}`
+            },
+            params:
+            {
+                id_owner: userInfo.others._id
+            },
+        }).then((res) => {
+            navigation.navigate("Home")
+        }).catch((e) => {
+            console.log(`Add error ${e}`);
+        });
     };
 
     return (
