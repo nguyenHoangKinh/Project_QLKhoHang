@@ -34,6 +34,7 @@ const HomeNavigation = () => {
         name="ListAccountActive"
         component={ListAccountActive}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -54,6 +55,7 @@ const HomeNavigation = () => {
         name="ListAccountNotActive"
         component={ListAccountNotActive}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -74,6 +76,7 @@ const HomeNavigation = () => {
         name="Home"
         component={HomeScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -101,6 +104,7 @@ const HomeNavigation = () => {
         name="Statistics"
         component={StatisticsScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -117,6 +121,7 @@ const HomeNavigation = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>

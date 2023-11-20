@@ -21,10 +21,16 @@ import {
 } from "react-native";
 
 export default function OrderScreenUser({ navigation }) {
-  const { orderListUser, ListOrder, setIdOrder, userInfo, SearchOrder } =
-    useContext(AuthContext);
+  const {
+    orderListUser,
+    ListOrder,
+    setIdOrder,
+    userInfo,
+    SearchOrder,
+    DeleteOrderUser,
+  } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // console.log(ListOrder);
+  // console.log(userInfo.others._id);
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
@@ -110,9 +116,30 @@ export default function OrderScreenUser({ navigation }) {
             </Text>
           </TouchableOpacity> */}
         </View>
-        {/* <Pressable className="absolute right-0 ">
-        <MaterialCommunityIcons name="delete-circle-outline" size={24} color="black" />
-        </Pressable> */}
+        <Pressable
+          onPress={() => {
+            Alert.alert(
+              "",
+              "Are you sure you want to delete?",
+              [
+                {
+                  text: "Cancel", 
+                  onPress: () =>navigation.navigate("OrderScreenUser"),
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => DeleteOrderUser(userInfo.others._id,item._id) },
+              ],
+              { cancelable: false }
+            );
+          }}
+          className="absolute right-5 top-10"
+        >
+          <MaterialCommunityIcons
+            name="delete-circle-outline"
+            size={40}
+            color="#aa381e"
+          />
+        </Pressable>
       </Pressable>
     );
     // }
@@ -145,60 +172,6 @@ export default function OrderScreenUser({ navigation }) {
             />
           </View>
           <Pressable style={AppStyle.StyleOderList.listFilter}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={AppStyle.StyleOderList.centeredView}>
-                <Pressable
-                  style={[AppStyle.StyleOderList.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Ionicons
-                    name="close-outline"
-                    size={35}
-                    color="#000"
-                    style={AppStyle.StyleOderList.textStyle}
-                  />
-                </Pressable>
-                <View style={AppStyle.StyleOderList.modalView}>
-                  {/* <View style={AppStyle.StyleOderList.modalView_1}>
-                <Text>Loc Don Hang Theo Kho Hang</Text>
-                <FlatList
-                  data={warehouseList}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      // onChange={() => {
-                      //   warehouseFilter(item.id);
-                      // }}
-                      style={[AppStyle.StyleOderList.text, { margin: 5 }]}
-                    >
-                      <Text>{AppStyle.StyleOderList.kho}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-              <View style={AppStyle.StyleOderList.modalView_2}>
-                <Text>Loc Don Hang Theo Thang - tuan</Text>
-
-                <TouchableOpacity>
-                  <Text
-                    style={AppStyle.StyleOderList.Fliter}
-                    >Loc Theo Thang</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={AppStyle.StyleOderList.Fliter}>
-                  <Text>Loc Theo Tuan </Text>
-                </TouchableOpacity>
-              </View> */}
-                </View>
-              </View>
-            </Modal>
             <Ionicons
               style={AppStyle.StyleOderList.iconFilter}
               name="options-outline"
@@ -248,7 +221,7 @@ export default function OrderScreenUser({ navigation }) {
           navigation.navigate("AddOrderScreen");
         }}
       >
-        <AntDesign name="pluscircleo" size={48} color="black" />
+        <AntDesign name="pluscircleo" size={48} color="#89c296" />
       </TouchableOpacity>
     </>
   );

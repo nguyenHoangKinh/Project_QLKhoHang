@@ -1,7 +1,7 @@
-import AppStyle from "../theme";
+import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AuthContext } from "../../context/AuthContext";
+import { AntDesign, Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   FlatList,
   SafeAreaView,
@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 export default function OrderScreenOwner({ navigation }) {
-  const { orderListOwner, ListOrder, setIdOrder, userInfo, SearchOrder } =
+  const { orderListOwner, ListOrder, setIdOrder, userInfo, SearchOrder,DeleteOrderOwner } =
     useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
@@ -79,6 +79,30 @@ export default function OrderScreenOwner({ navigation }) {
               </Text>
             </View>
           </View>
+          <Pressable
+          onPress={() => {
+            Alert.alert(
+              "",
+              "Are you sure you want to delete?",
+              [
+                {
+                  text: "Cancel", 
+                  onPress: () =>navigation.navigate("OrderScreenUser"),
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => DeleteOrderOwner(userInfo.others._id,item._id) },
+              ],
+              { cancelable: false }
+            );
+          }}
+          className="absolute right-5 top-8"
+        >
+          <MaterialCommunityIcons
+            name="delete-circle-outline"
+            size={40}
+            color="#aa381e"
+          />
+        </Pressable>
         </View>
       </Pressable>
     );

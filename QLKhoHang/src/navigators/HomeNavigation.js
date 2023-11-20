@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreenOwner from "../components/OrderScreenOwner";
+import OrderScreenOwner from "../components/owners/OrderScreenOwner";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";

@@ -36,6 +36,7 @@ const HomeNavigationUser = () => {
         // name="Warehouse"
         // component={WarehouseScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -56,6 +57,7 @@ const HomeNavigationUser = () => {
         name="OrderScreenUser"
         component={OrderScreenUser}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -74,6 +76,7 @@ const HomeNavigationUser = () => {
         name="Home"
         component={HomeScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -101,6 +104,7 @@ const HomeNavigationUser = () => {
         name="Statistics"
         component={StatisticsScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -121,6 +125,7 @@ const HomeNavigationUser = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>

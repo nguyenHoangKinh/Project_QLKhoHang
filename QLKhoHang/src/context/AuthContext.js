@@ -4,6 +4,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { BASE_URL, ORDER_URL } from "../config";
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -138,6 +139,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    console.log(userInfo.accessToken);  
     setIsLoading(true);
     if (userInfo.accessToken) {
       axios
@@ -145,7 +147,7 @@ export const AuthProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           alert(res.data.message);
           AsyncStorage.removeItem("userInfo");
           setUserInfo({});
@@ -153,6 +155,7 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           console.log(`logout error ${e.response.data.message}`);
+          userInfo.accessToken = null;
           setIsLoading(false);
         });
     } else {
@@ -363,6 +366,40 @@ export const AuthProvider = ({ children }) => {
         setCheck(false);
       });
   };
+  const DeleteOrderUser = (idUser,idOrder) => {
+    console.log(idUser,idOrder);
+    if (idUser && idOrder) {
+      axios.delete(ORDER_URL+`/order/deleteOrderByUser?id_user=${idUser}&id_order=${idOrder}`,{
+        headers:{
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }).then((res)=>{
+        // alert(res.data);
+        // console.log(res.data);
+        orderListUser(userInfo.accessToken);
+      }).catch((e)=>{
+        alert(e.response.data.message);
+      })
+    }else{
+      alert("xoa that bai!");
+    }
+  }
+  const DeleteOrderOwner = (idOwner,idOrder) => {
+    if (idOwner && idOrder) {
+      axios.delete(ORDER_URL+`/order/deleteOrderByOwner?id_owner=${idOwner}&id_order=${idOrder}`,{
+        headers:{
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }).then((res)=>{
+        // alert(res.data.message);
+        orderListOwner(userInfo.accessToken);
+      }).catch((e)=>{
+        alert(e.response.data.message);
+      })
+    }else{
+      alert("xoa that bai!");
+    }
+  }
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -395,13 +432,15 @@ export const AuthProvider = ({ children }) => {
         setIdOrder,
         setListWare,
         SearchOrder,
-        setCheckDetail,
         OrderDetail,
         orderListUser,
         updateProfile,
         setDetailOrder,
         orderListOwner,
         changePassword,
+        setCheckDetail,
+        DeleteOrderUser,
+        DeleteOrderOwner,
         setFormErrorChangePass,
       }}
     >
