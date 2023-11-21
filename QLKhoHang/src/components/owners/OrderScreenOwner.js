@@ -26,11 +26,12 @@ export default function OrderScreenOwner({ navigation }) {
   const FlatListData = (item) => {
     return (
       <Pressable
+      className="border-2 border-blue-500 mt-1 bg-white m-2"
         onPress={() => {
           setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
         }}
       >
-        <View className="p-1" style={AppStyle.StyleOderList.item}>
+        <View className="" style={AppStyle.StyleOderList.item}>
           <View>
             <View className="flex flex-row">
               <Text
@@ -39,7 +40,7 @@ export default function OrderScreenOwner({ navigation }) {
               >
                 Tên Đơn Hàng:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial text-base">
                 {" "}
                 {item.name}
               </Text>
@@ -51,7 +52,7 @@ export default function OrderScreenOwner({ navigation }) {
               >
                 Tên Chủ Kho:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {" "}
                 {item.owner.username}
               </Text>
@@ -63,7 +64,7 @@ export default function OrderScreenOwner({ navigation }) {
               >
                 Tên Khách Hàng:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.user.username}
               </Text>
             </View>
@@ -74,12 +75,13 @@ export default function OrderScreenOwner({ navigation }) {
               >
                 Thời Gian Thuê:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.rentalTime}
               </Text>
             </View>
           </View>
-          <Pressable
+        </View>
+        <Pressable
           onPress={() => {
             Alert.alert(
               "",
@@ -90,12 +92,12 @@ export default function OrderScreenOwner({ navigation }) {
                   onPress: () =>navigation.navigate("OrderScreenUser"),
                   style: "cancel",
                 },
-                { text: "OK", onPress: () => DeleteOrderOwner(userInfo.others._id,item._id) },
+                { text: "OK", onPress: () => DeleteOrderUser(userInfo.others._id,item._id) },
               ],
               { cancelable: false }
             );
           }}
-          className="absolute right-5 top-8"
+          className="absolute right-5 top-10"
         >
           <MaterialCommunityIcons
             name="delete-circle-outline"
@@ -103,7 +105,6 @@ export default function OrderScreenOwner({ navigation }) {
             color="#aa381e"
           />
         </Pressable>
-        </View>
       </Pressable>
     );
   };
@@ -232,14 +233,14 @@ export default function OrderScreenOwner({ navigation }) {
           />
         </View>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {
           navigation.navigate("AddOrderScreen");
         }}
       >
         <AntDesign name="pluscircleo" size={48} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 }

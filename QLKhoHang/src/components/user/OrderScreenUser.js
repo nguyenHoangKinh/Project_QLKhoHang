@@ -43,19 +43,12 @@ export default function OrderScreenUser({ navigation }) {
     // ) {
     return (
       <Pressable
+      className="border-2 border-blue-500 mt-1 bg-white m-2"
         onPress={() => {
           setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
         }}
       >
-        {/* <Text>{console.log(item._id)}</Text> */}
-        <View className="p-1" style={AppStyle.StyleOderList.item}>
-          {/* <View style={AppStyle.StyleOderList.leftItem}>
-              <Text style={AppStyle.StyleOderList.text}>{item.TenKhoHang}</Text>
-              <Image
-                source={{ uri: item.AnhKhoHang }}
-                style={{ width: 60, height: 60, borderRadius: 50 }}
-              />
-            </View> */}
+        <View className="" style={AppStyle.StyleOderList.item}>
           <View>
             <View className="flex flex-row">
               <Text
@@ -64,7 +57,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Đơn Hàng:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial text-base">
                 {" "}
                 {item.name}
               </Text>
@@ -76,7 +69,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Chủ Kho:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {" "}
                 {item.owner.username}
               </Text>
@@ -88,7 +81,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Khách Hàng:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.user.username}
               </Text>
             </View>
@@ -99,22 +92,11 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Thời Gian Thuê:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.rentalTime}
               </Text>
             </View>
-            {/* <Text style={AppStyle.StyleOderList.text}>LuuLuong: {item.LuuLuongHangHoa}</Text> */}
           </View>
-          {/* <TouchableOpacity
-            className="top-7 text-center bg-red-600 rounded-xl h-8 p-1"
-            // onPress={() => {
-            //   deleteOrderListOwner()
-            // }}
-          >
-            <Text className="text-sm font-bold text-white">
-              Hủy Don 
-            </Text>
-          </TouchableOpacity> */}
         </View>
         <Pressable
           onPress={() => {
@@ -215,14 +197,14 @@ export default function OrderScreenUser({ navigation }) {
           />
         </View>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {
           navigation.navigate("AddOrderScreen");
         }}
       >
-        <AntDesign name="pluscircleo" size={48} color="#89c296" />
-      </TouchableOpacity>
+        <AntDesign name="pluscircleo" size={48} color="black" />
+      </TouchableOpacity> */}
     </>
   );
 }

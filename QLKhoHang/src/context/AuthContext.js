@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [listBlog, setListBlog] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  // console.log(userInfo);
+  console.log(userInfo);
   // console.log(userInfo);
   const signUP = (
     usernames,
