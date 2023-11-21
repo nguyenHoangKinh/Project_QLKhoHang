@@ -12,16 +12,13 @@ const StyleOderList = StyleSheet.create({
     color: "balck",
   },
   text: {
-    color: "#06bcee",
     fontSize: 18,
     fontWeight: "600",
     lineHeight: 21,
     letterSpacing: 0.25,
-    opacity: 1,
   },
   //FlatList
   item: {
-    backgroundColor: "#2a53c5",
     flexDirection: "row",
     height: 100,
     margin: 10,
