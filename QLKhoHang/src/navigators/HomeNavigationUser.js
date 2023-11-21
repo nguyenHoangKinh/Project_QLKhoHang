@@ -63,7 +63,7 @@ const HomeNavigationUser = () => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Entypo
-                  name="text-document"
+                  name={ focused ? "text-document-inverted" : "text-document"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -110,7 +110,7 @@ const HomeNavigationUser = () => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Octicons
-                  name="bell"
+                  name={focused ? "bell-fill" : "bell"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -130,8 +130,8 @@ const HomeNavigationUser = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Entypo
-                  name="user"
+                <FontAwesome
+                  name={focused ? "user-circle-o" : "user-circle"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
