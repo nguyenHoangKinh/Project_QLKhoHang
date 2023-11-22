@@ -15,17 +15,17 @@ import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
-import TotalProductScreen from "../components/TotalProductScreen";
-import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
-import ListAccountActive from "../components/Admin/ListAccountActive";
-import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
-import DetailAcount from "../components/Admin/DetailAccount";
+import ListAccountActive from "../components/Admin/ListAccountActive"
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
+import UploadImageProfile from "../components/UploadImageProfile"
+import Button from "../components/Button"
+import DetailAcount from "../components/Admin/DetailAccount"
 
 const Stack = createNativeStackNavigator();
 
@@ -101,16 +101,6 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="TotalProductScreen"
-          component={TotalProductScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListProduct"
-          component={ListProduct}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="AddWarehouseScreen"
           component={AddWarehouseScreen}
           options={{ headerShown: false }}
@@ -139,6 +129,16 @@ const Navigation = () => {
           name="HomeScreen"
           component={HomeScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UploadImageProfile"
+          component={UploadImageProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Button"
+          component={Button}
+			options={{ headerShown: false }}
         />
         <Stack.Screen
           name="AddOrderScreen"
