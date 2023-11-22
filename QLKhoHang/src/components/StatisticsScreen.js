@@ -5,18 +5,7 @@ import AppStyle from "../theme";
 export default function StatisticsScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={AppStyle.StyleStatistics.btn_statistics}
-        onPress={() => navigation.navigate("HomeNavigation")}
-      >
-        <Text style={AppStyle.StyleStatistics.btn_text}>THỐNG KÊ KHO HÀNG</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={AppStyle.StyleStatistics.btn_statistics}
-        onPress={() => navigation.navigate("TotalProductScreen")}
-      >
-        <Text style={AppStyle.StyleStatistics.btn_text}>THỐNG KÊ HÀNG HÓA</Text>
-      </TouchableOpacity>
+      
     </View>
   );
 }

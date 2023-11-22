@@ -15,8 +15,6 @@ import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
-import TotalProductScreen from "../components/TotalProductScreen";
-import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
@@ -100,16 +98,6 @@ const Navigation = () => {
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TotalProductScreen"
-          component={TotalProductScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListProduct"
-          component={ListProduct}
           options={{ headerShown: false }}
         />
         <Stack.Screen
