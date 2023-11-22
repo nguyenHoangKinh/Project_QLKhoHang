@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
+import ListBlogPost from "../components/ListBlogPost";
 import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenUser from "../components/user/OrderScreenUser";
 import StatisticsScreen from "../components/StatisticsScreen";
@@ -36,6 +37,7 @@ const HomeNavigationUser = () => {
         // name="Warehouse"
         // component={WarehouseScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -56,11 +58,12 @@ const HomeNavigationUser = () => {
         name="OrderScreenUser"
         component={OrderScreenUser}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Entypo
-                  name="text-document"
+                  name={ focused ? "text-document-inverted" : "text-document"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -71,9 +74,10 @@ const HomeNavigationUser = () => {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="ListBlogPost"
+        component={ListBlogPost}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -101,11 +105,12 @@ const HomeNavigationUser = () => {
         name="Statistics"
         component={StatisticsScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Octicons
-                  name="bell"
+                  name={focused ? "bell-fill" : "bell"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -121,11 +126,12 @@ const HomeNavigationUser = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Entypo
-                  name="user"
+                <FontAwesome
+                  name={focused ? "user-circle-o" : "user-circle"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />

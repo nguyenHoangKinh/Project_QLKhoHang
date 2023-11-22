@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreenOwner from "../components/OrderScreenOwner";
+import OrderScreenOwner from "../components/owners/OrderScreenOwner";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -59,7 +59,7 @@ export default function HomeNavigation() {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Entypo
-                  name="text-document"
+                  name={ focused ? "text-document-inverted" : "text-document"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -107,7 +107,7 @@ export default function HomeNavigation() {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Ionicons
-                  name="stats-chart"
+                  name={ focused ? "stats-chart" :"stats-chart-outline"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -127,8 +127,8 @@ export default function HomeNavigation() {
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Entypo
-                  name="user"
+                <FontAwesome
+                  name={focused ? "user-circle-o" : "user-circle"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />

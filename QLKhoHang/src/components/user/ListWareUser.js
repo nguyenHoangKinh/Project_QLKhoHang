@@ -11,7 +11,6 @@ import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import AppStyle from "../../theme";
-import StyleListWareHouse from "../../theme/StyleListWareHouse";
 
 export default function ListWareUser({ navigation }) {
   const [warehouse, setWarehouse] = useState({});
@@ -19,7 +18,6 @@ export default function ListWareUser({ navigation }) {
   const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
   const { userInfo, setListWare } = useContext(AuthContext);
-  // console.log(warehousecateName);
   useEffect(() => {
     axios
       .get(
@@ -42,20 +40,7 @@ export default function ListWareUser({ navigation }) {
       });
   }, []);
 
-  // const handleSearch = (text) => {
-  //   if (text) {
-  //     let searchList = warehouse.filter((searchWarehouse) =>
-  //     searchWarehouse.wareHouseName.toLowerCase().includes(text.toLowerCase())
 
-  //     );
-  //     {console.log(warehouse)}
-  //     setList(searchList)
-  //     setCheck(true)
-  //   } else {
-  //     setList(warehouse)
-  //     setCheck(true)
-  //   }
-  // }
   const handleSearchCate = (text) => {
     if (text) {
       let searchList = warehouse.filter((searchWarehouse) =>
@@ -84,6 +69,12 @@ export default function ListWareUser({ navigation }) {
             Tên Kho Hàng: <></>
             <Text style={AppStyle.StyleWarehouse.name_warehouse}>
               {item.wareHouseName}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Dia Chi: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.address}
             </Text>
           </Text>
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
@@ -132,5 +123,3 @@ export default function ListWareUser({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

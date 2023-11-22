@@ -63,7 +63,7 @@ export default function SeeOrderDetails({ navigation }) {
           </Text>
 
           <Text className="text-yellow-950  mr-3 pt-4 pb-4 text-center text-2xl">
-            {checkDetail ? DetailOrder.Order.money : ""}$
+            {checkDetail ? DetailOrder.Order.money : ""}VND
           </Text>
 
           <Text className="text-yellow-950  mr-3 p-4">
