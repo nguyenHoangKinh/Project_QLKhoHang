@@ -24,9 +24,13 @@ export const AuthProvider = ({ children }) => {
   const [list, setListWare] = useState({});
   const [listBlog, setListBlog] = useState({});
   const [detailBlog, setDetailBlog] = useState({});
+  const [showImgBlog, setShowImgBlog] = useState([]);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  // console.log(userInfo);
+  // setTimeout(() => {
+    // console.log(showImgBlog);
+  //   // showImgBlog
+  // }, 9000);
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -427,6 +431,13 @@ export const AuthProvider = ({ children }) => {
         },
       }).then((res)=>{
         setDetailBlog(res.data.data);
+        // useEffect(() => {
+        for (let i = 0; i < res.data.data.images.length; i++) {
+          // cach luu nhieu gia tri vao trong hook useState
+          setShowImgBlog([...showImgBlog,{uri:res.data.data.images[i]}])
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ",res.data.data.images[i]);
+        }
+      // }, []);
       }).catch((e)=>{
         alert(e.response.data.message);
       })
@@ -450,6 +461,7 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         ListOrder,
         checkDetail,
+        showImgBlog,
         detailBlog,
         formError,
         isLoading,

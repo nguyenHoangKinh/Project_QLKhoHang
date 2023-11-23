@@ -15,15 +15,27 @@ import { AntDesign, Feather,Ionicons } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
 
 export default function DetaiBlogPost({ route, navigation }) {
+  const { DetailBlog, detailBlog,showImgBlog } = useContext(AuthContext);
   const [imageView, setImageView] = useState("");
-  const [imageViewValue, setImageViewValue] = useState("");
+  const [imageViewValue, setImageViewValue] = useState([]);
   const [imageViews, setImageViews] = useState([]);
-  // const [checkImageViewValue, setcheckImageViewValue] = useState(false);
+  const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   const { itemId } = route.params;
-  console.log(itemId);
+  console.log(imageView);
+  // setTimeout(() => {
+  //   // showImgBlog
+  // }, 9000);
+  // const Img =(showImgBlog) => {
+  //   // useEffect(() => {
+  //     for (let i = 0; i < showImgBlog.length; i++) {
+  //       setcheckImageViewValue([...checkImageViewValue,{uri:showImgBlog[i]}])
+  //       console.log(showImgBlog[i]);
+        
+  //     }
+  //   // }, []);
+  // }
   // let imageTimeout = "";
   const [visible, setIsVisible] = useState(false);
-  const { DetailBlog, detailBlog } = useContext(AuthContext);
   useEffect(() => {
     DetailBlog(itemId);
   }, []);
@@ -34,7 +46,7 @@ export default function DetaiBlogPost({ route, navigation }) {
     return (
       <TouchableOpacity
         onPress={() => {
-          setImageView(item), setImageViewValue(index);
+          setcheckImageViewValue([{uri:item}]),setImageView(item)
         }}
         className="w-28 h-28 m-0.5"
       >
@@ -91,6 +103,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                       : imageView,
                 }}
               />
+              {/* {setImageViewValue([{uri: imageViews}])} */}
             </TouchableOpacity>
             <View className="flex-row ">
               <FlatList
@@ -102,9 +115,10 @@ export default function DetaiBlogPost({ route, navigation }) {
             </View>
           </View>
         </View>
+        {/* {Img(showImgBlog)} */}
         <ImageView
-          images={detailBlog.images}
-          imageIndex={imageViewValue == "" ? 0 : imageViewValue}
+          images={checkImageViewValue !=null ? checkImageViewValue : null}
+          imageIndex={0}
           visible={visible}
           onRequestClose={() => setIsVisible(false)}
         />
