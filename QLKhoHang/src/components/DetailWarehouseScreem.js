@@ -7,6 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 
@@ -59,8 +60,12 @@ const DetailWarehouseScreen = ({ navigation }) => {
               <Text>{warehouses.category.name}</Text>
             </View>
             <View style={AppStyle.StyleProfile.items}>
+              <MaterialCommunityIcons name="crop-landscape" size={20} color="black" />
+              <Text> {warehouses.currentCapacity}</Text><Text>/{warehouses.capacity} {warehouses.category.acreage}</Text>
+            </View>
+            <View style={AppStyle.StyleProfile.items}>
               <FontAwesome name="money" size={20} color="black" />
-              <Text> {warehouses.monney}</Text>
+              <Text> {warehouses.monney}</Text><Text> VND</Text>
             </View>
             <View style={AppStyle.StyleProfile.items}>
               <Entypo name="user" size={20} color="black" />
@@ -72,7 +77,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
             </View>
             <View style={AppStyle.StyleProfile.items}>
               <MaterialIcons name="aspect-ratio" size={20} color="black" />
-              <Text>{warehouses.status}</Text>
+              {warehouses.status ? <Text>Đang hoạt động</Text> : <Text>Ngưng hoạt động</Text>}
             </View>
           </>
         )}
