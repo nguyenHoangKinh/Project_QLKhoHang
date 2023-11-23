@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import TotalProductScreen from "../components/TotalProductScreen";
 import ListProduct from "../components/ListProduct";
@@ -170,6 +171,12 @@ const Navigation = () => {
           component={DetailAcount}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="DetaiBlogPost"
+          component={DetaiBlogPost}
+          options={{ headerShown: false }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

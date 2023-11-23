@@ -21,11 +21,12 @@ export const AuthProvider = ({ children }) => {
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
-  const [list, setListWare] = useState([]);
-  const [listBlog, setListBlog] = useState([]);
+  const [list, setListWare] = useState({});
+  const [listBlog, setListBlog] = useState({});
+  const [detailBlog, setDetailBlog] = useState({});
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  console.log(userInfo);
+  // console.log(userInfo);
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -418,6 +419,21 @@ export const AuthProvider = ({ children }) => {
       alert("load bai viet that bai!");
     }
   }
+  const DetailBlog = (id) => {
+    if (userInfo.accessToken && id) {
+      axios.get(ORDER_URL+`/blog/get-by-id?id=${id}`,{
+        headers:{
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }).then((res)=>{
+        setDetailBlog(res.data.data);
+      }).catch((e)=>{
+        alert(e.response.data.message);
+      })
+    }else{
+      alert("load bai viet that bai!");
+    }
+  }
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -434,6 +450,7 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         ListOrder,
         checkDetail,
+        detailBlog,
         formError,
         isLoading,
         warehouse,
@@ -450,6 +467,7 @@ export const AuthProvider = ({ children }) => {
         ListBlog,
         getProfile,
         setIdOrder,
+        DetailBlog,
         setListWare,
         SearchOrder,
         OrderDetail,
