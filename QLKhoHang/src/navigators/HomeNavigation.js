@@ -5,7 +5,6 @@ import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenOwner from "../components/owners/OrderScreenOwner";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons,MaterialCommunityIcons,FontAwesome5,FontAwesome,Entypo } from "@expo/vector-icons";
 

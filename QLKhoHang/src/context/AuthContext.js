@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
+  console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -139,18 +140,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    console.log(userInfo.accessToken);
+  const logout = async () => {
     setIsLoading(true);
-    if (userInfo.accessToken) {
-      axios
+    // if (userInfo.accessToken) {
+      await axios
         .get(`${BASE_URL}/logout`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
-        .then((res) => {
+        .then(async (res) => {
           console.log(res.data);
-          alert(res.data.message);
-          AsyncStorage.removeItem("userInfo");
+          // alert(res.data.message);
+          await AsyncStorage.removeItem("userInfo");
           setUserInfo({});
           setIsLoading(false);
         })
@@ -159,9 +159,9 @@ export const AuthProvider = ({ children }) => {
           userInfo.accessToken = null;
           setIsLoading(false);
         });
-    } else {
-      alert("lopout error access token undefined");
-    }
+    // } else {
+    //   alert("lopout error access token undefined");
+    // }
   };
 
   const isLoggedIn = async () => {
@@ -178,7 +178,10 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(false);
     } catch (e) {
       setSplashLoading(false);
-      console.log(`is logged in error ${e}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
     }
   };
 
@@ -199,7 +202,10 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
       })
       .catch((e) => {
-        console.log(`get error ${e.res}`);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
 
@@ -227,6 +233,10 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
   const changePassword = (passwords, confirmPasswords) => {
@@ -258,6 +268,10 @@ export const AuthProvider = ({ children }) => {
         setFormErrorChangePass(e.response.data.message);
         setCheck(false);
         setIsLoading(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
 
@@ -282,6 +296,10 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("error access token undefined");
@@ -311,6 +329,10 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("error access token undefined");
@@ -339,6 +361,10 @@ export const AuthProvider = ({ children }) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("Error id order undefined");
@@ -365,6 +391,10 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
   const DeleteOrderUser = (idUser, idOrder) => {
@@ -386,7 +416,10 @@ export const AuthProvider = ({ children }) => {
           orderListUser(userInfo.accessToken);
         })
         .catch((e) => {
-          alert(e.response.data.message);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("xoa that bai!");
@@ -409,7 +442,10 @@ export const AuthProvider = ({ children }) => {
           orderListOwner(userInfo.accessToken);
         })
         .catch((e) => {
-          alert(e.response.data.message);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("xoa that bai!");
@@ -429,7 +465,10 @@ export const AuthProvider = ({ children }) => {
           setListBlog(res.data.blog);
         })
         .catch((e) => {
-          alert(e.response.data.message);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("load bai viet that bai!");
@@ -450,13 +489,16 @@ export const AuthProvider = ({ children }) => {
               for (let i = 0; i < res.data.data.images.length; i++) {
                 setShowImgBlog({ uri: res.data.data.images[i] });
               }
-            }else{
-              setShowImgBlog()
+            } else {
+              setShowImgBlog();
             }
           }
         })
         .catch((e) => {
-          alert(e.response.data.message);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("load bai viet that bai!");
