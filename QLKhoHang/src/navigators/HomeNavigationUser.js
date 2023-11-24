@@ -30,8 +30,6 @@ const HomeNavigationUser = () => {
       <Tab.Screen
         name="ListWareUser"
         component={ListWareUser}
-        // name="Warehouse"
-        // component={WarehouseScreen}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {

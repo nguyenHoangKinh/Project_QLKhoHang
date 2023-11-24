@@ -18,7 +18,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 const ListBlogPost = ({ navigation }) => {
-  const { ListBlog, listBlog } = useContext(AuthContext);
+  const { ListBlog, listBlog,setShowImgBlog,setIsVisible } = useContext(AuthContext);
   useEffect(() => {
     //call api
     ListBlog();
@@ -31,7 +31,7 @@ const ListBlogPost = ({ navigation }) => {
           className=" border-2 border-indigo-500 rounded"
           style={styles.container}
           onPress={() => {
-            navigation.navigate("DetaiBlogPost",{itemId:item._id});
+            navigation.navigate("DetaiBlogPost",{itemId:item._id}),setShowImgBlog([]),setIsVisible(false)
           }}
         >
           {item.images != "" ? (

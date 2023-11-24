@@ -17,7 +17,7 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-const ListChat = ({ route, navigation }) => {
+const ListComments = ({ route, navigation }) => {
     const { ListCommentsBlog } = useContext(AuthContext);
   //   const { itemId } = route.params;
   // console.log(itemId);
@@ -44,4 +44,4 @@ const ListChat = ({ route, navigation }) => {
   );
 };
 
-export default ListChat;
+export default ListComments;

@@ -17,7 +17,7 @@ export default function ListWareUser({ navigation }) {
   const [check, setCheck] = useState(false);
   const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
-  const { userInfo, setListWare } = useContext(AuthContext);
+  const { userInfo, setListWare,logout } = useContext(AuthContext);
   useEffect(() => {
     axios
       .get(
@@ -37,6 +37,10 @@ export default function ListWareUser({ navigation }) {
       })
       .catch((e) => {
         console.log(`get warehouseUser error ${e.res}`);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   }, []);
 

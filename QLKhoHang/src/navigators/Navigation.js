@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import ListComments from "../components/ListComments";
 import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -31,12 +32,10 @@ import DetailAcount from "../components/Admin/DetailAccount"
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp, splashLoading, getProfile } =
+  const { userInfo, checkSignUp } =
     useContext(AuthContext);
-  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
-      {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName="Home">
         {userInfo.accessToken && userInfo.others.isOwner ? (
           <Stack.Screen
@@ -76,16 +75,6 @@ const Navigation = () => {
             />
           </>
         )}
-        {/* <Stack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen}
-          options={{ headerShown: false }}
-        /> */}
-        {/* <Stack.Screen
-          name="Register"
-          component={SignUpScreen}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="AuthContext"
           component={AuthContext}
@@ -174,6 +163,11 @@ const Navigation = () => {
         <Stack.Screen
           name="DetaiBlogPost"
           component={DetaiBlogPost}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListComments"
+          component={ListComments}
           options={{ headerShown: false }}
         />
         
