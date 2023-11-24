@@ -10,7 +10,7 @@ const TodoScreen = ({ navigation }) => {
   // Init local states
   const [warehouse, setWarehouse] = useState({});
   const [searchWarehouse, setSearchWarehouse] = useState({});
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo,logout } = useContext(AuthContext);
 
   useEffect(() => {
     axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
@@ -26,6 +26,10 @@ const TodoScreen = ({ navigation }) => {
         setSearchWarehouse(warehouses);
       }).catch((e) => {
         console.log(`get warehouse error ${e.res}`);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   }, []);
 
