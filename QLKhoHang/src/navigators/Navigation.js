@@ -26,6 +26,8 @@ import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 import UploadImageProfile from "../components/UploadImageProfile"
 import Button from "../components/Button"
 import DetailAcount from "../components/Admin/DetailAccount"
+import ListBlogOwner from "../components/ListBlogOwner"
+import UpdateBlog from "../components/UpdateBlog"
 
 const Stack = createNativeStackNavigator();
 
@@ -168,6 +170,16 @@ const Navigation = () => {
         <Stack.Screen
           name="DetailAcount"
           component={DetailAcount}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListBlogOwner"
+          component={ListBlogOwner}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="UpdateBlog"
+          component={UpdateBlog}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -119,7 +119,6 @@ const TodoScreen = ({ navigation }) => {
       <TextInput
         style={AppStyle.StyleWarehouse.search}
         placeholder="Tìm kiếm"
-        // value={userInput}
         onChangeText={(text) => {
           handleSearch(text);
         }}

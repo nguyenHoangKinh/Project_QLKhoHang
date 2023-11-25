@@ -17,12 +17,12 @@ export default function UploadImageProfile({ navigation }) {
   
   // const pickImageAsync = async () => {
   //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
+  //         allowsEditing: true,
+  //         quality: 1,
+  //       });
   //   if (!result.canceled) {
   //     setSelectedImage(result.assets[0].uri);
+  //     console.log(result)
   //   } else {
   //     alert("You did not select any image.");
   //   }
@@ -33,6 +33,7 @@ export default function UploadImageProfile({ navigation }) {
     
     if (!result.canceled) {
       setSelectedImage(result);
+      console.log(result)
     } else {
       alert("You did not select any image.");
     }

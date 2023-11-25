@@ -35,7 +35,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [status, setStatus] = useState();
   const [description, setDescription] = useState();
   const [checkUpdate, setCheckUpdate] = useState(false);
-  const [warehouses, setWarehouse] = useState();
   const route = useRoute();
   const idWarehouse = route.params?.idWarehouse;
 
@@ -51,22 +50,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
       setCategories(categorie);
     }).catch((e) => {
       console.log(`get categories error ${e.res}`);
-    });
-
-    axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/getAWarehouse`,
-      {
-        headers: {
-          Authorization: `Bearer ${userInfo.accessToken}`,
-        },
-        params: {
-          id: idWarehouse,
-        },
-      }
-    ).then((res) => {
-      let warehouse = res.data.warehouse;
-      setWarehouse(warehouse);
-    }).catch((e) => {
-      console.log(`Get warehouse error ${e}`);
     });
   }, []);
 
@@ -99,41 +82,40 @@ export default function UpdateWarehouseScreen({ navigation }) {
       <ScrollView style={{ marginTop: 50 }}>
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome5 name="warehouse" size={20} color="black" />
-          {warehouses &&
-            <TextInput
-              placeholder={warehouses.wareHouseName}
-              keyboardType="default"
-              value={wareHouseName}
-              onChangeText={(text) => setWareHouseName(text)}
-            />}
+          <TextInput
+            placeholder="Nhập tên kho hàng"
+            keyboardType="default"
+            value={wareHouseName}
+            onChangeText={(text) => setWareHouseName(text)}
+          />
         </View>
         <View style={AppStyle.StyleProfile.items}>
           <Entypo name="address" size={20} color="black" />
-          {warehouses &&
-            <TextInput
-              placeholder={warehouses.address}
-              keyboardType="default"
-              value={address}
-              onChangeText={(text) => setAddress(text)}
-            />}
+          <TextInput
+            placeholder="Nhập địa chỉ kho hàng"
+            keyboardType="default"
+            value={address}
+            onChangeText={(text) => setAddress(text)}
+          />
         </View>
-        {warehouses &&
-          <Dropdown
-            style={AppStyle.StyleListProduct.dropdown}
-            placeholderStyle={AppStyle.StyleListProduct.placeholderStyle}
-            selectedTextStyle={AppStyle.StyleListProduct.selectedTextStyle}
-            inputSearchStyle={AppStyle.StyleListProduct.inputSearchStyle}
-            iconStyle={AppStyle.StyleListProduct.iconStyle}
-            data={categories}
-            maxHeight={300}
-            labelField="name"
-            valueField="_id"
-            placeholder={warehouses.category.name}
-            onChange={(item) => {
-              setIdCategorie(item._id);
-              setCategorie(item.acreage);
-            }}
-          />}
+        <Dropdown
+          style={AppStyle.StyleListProduct.dropdown}
+          placeholderStyle={AppStyle.StyleListProduct.placeholderStyle}
+          selectedTextStyle={AppStyle.StyleListProduct.selectedTextStyle}
+          inputSearchStyle={AppStyle.StyleListProduct.inputSearchStyle}
+          iconStyle={AppStyle.StyleListProduct.iconStyle}
+          data={categories}
+          maxHeight={300}
+          labelField="name"
+          valueField="_id"
+          placeholder="Chọn danh mục"
+          // searchPlaceholder="Search..."
+          // value={name}
+          onChange={(item) => {
+            setIdCategorie(item._id);
+            setCategorie(item.acreage);
+          }}
+        />
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
           <TextInput
@@ -146,46 +128,43 @@ export default function UpdateWarehouseScreen({ navigation }) {
         </View>
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome name="money" size={20} color="black" />
-          {warehouses &&
-            <TextInput
-              placeholder={warehouses.monney + ""}
-              keyboardType="numeric"
-              value={monney}
-              onChangeText={(text) => setMonney(text)}
-              style={{ marginTop: -3 }}
-            />}
+          <Text> </Text>
+          <TextInput
+            placeholder="Nhập số tiền"
+            keyboardType="numeric"
+            value={monney}
+            onChangeText={(text) => setMonney(text)}
+          />
         </View>
-        {warehouses &&
-          <Dropdown
-            style={AppStyle.StyleListProduct.dropdown}
-            placeholderStyle={AppStyle.StyleListProduct.placeholderStyle}
-            selectedTextStyle={AppStyle.StyleListProduct.selectedTextStyle}
-            inputSearchStyle={AppStyle.StyleListProduct.inputSearchStyle}
-            iconStyle={AppStyle.StyleListProduct.iconStyle}
-            data={stat}
-            maxHeight={300}
-            labelField="st"
-            valueField="id"
-            placeholder="Thiết lập trạng thái"
-            onChange={(item) => {
-              { item.id === 0 ? setStatus(true) : setStatus(false) }
-            }}
-          />}
+        <Dropdown
+          style={AppStyle.StyleListProduct.dropdown}
+          placeholderStyle={AppStyle.StyleListProduct.placeholderStyle}
+          selectedTextStyle={AppStyle.StyleListProduct.selectedTextStyle}
+          inputSearchStyle={AppStyle.StyleListProduct.inputSearchStyle}
+          iconStyle={AppStyle.StyleListProduct.iconStyle}
+          data={stat}
+          maxHeight={300}
+          labelField="st"
+          valueField="id"
+          placeholder="Thiết lập trạng thái"
+          onChange={(item) => {
+            { item.id === 0 ? setStatus(true) : setStatus(false) }
+          }}
+        />
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome5 name="sticky-note" size={20} color="black" />
-          {warehouses &&
-            <TextInput
-              placeholder={warehouses.description}
-              keyboardType="default"
-              value={description}
-              onChangeText={(text) => setDescription(text)}
-            />}
+          <TextInput
+            placeholder="Nhập ghi chú"
+            keyboardType="default"
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+          />
         </View>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
             updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description);
-            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
+            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("WarehouseScreem"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>CẬP NHẬT</Text>
