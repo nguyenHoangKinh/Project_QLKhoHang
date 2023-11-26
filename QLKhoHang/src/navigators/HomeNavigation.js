@@ -5,13 +5,9 @@ import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenOwner from "../components/owners/OrderScreenOwner";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons,MaterialCommunityIcons,FontAwesome5,FontAwesome,Entypo } from "@expo/vector-icons";
+
 
 export default function HomeNavigation() {
   const Tab = createBottomTabNavigator();
@@ -106,8 +102,8 @@ export default function HomeNavigation() {
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Ionicons
-                  name={ focused ? "stats-chart" :"stats-chart-outline"}
+                <MaterialCommunityIcons
+                  name={ focused ? "message-processing" : "message-processing-outline"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />

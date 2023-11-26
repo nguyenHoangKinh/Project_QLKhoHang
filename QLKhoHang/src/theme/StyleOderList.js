@@ -25,7 +25,7 @@ const StyleOderList = StyleSheet.create({
     borderRadius: 10,
   },
   boxesList: {
-    // backgroundColor:"red"
+    paddingBottom: 200
   },
   //boxes
   leftItem: {

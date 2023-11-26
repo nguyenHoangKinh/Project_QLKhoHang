@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import AppStyle from "../theme";
 import {
   FlatList,
   Pressable,
@@ -8,42 +9,31 @@ import {
   Image,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
-import { AntDesign, Ionicons, FontAwesome5 } from "@expo/vector-icons";
-const ListBlogPost = () => {
-  const text =
-    " đẹp quá trời nha mọi người đẹp quá trời nha mọi người đẹp quá trời nha mọi người";
-  const { ListBlog, listBlog } = useContext(AuthContext);
-  // console.log(listBlog.owner);
+import {
+  AntDesign,
+  Ionicons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+const ListBlogPost = ({ navigation }) => {
+  const { ListBlog, listBlog,setShowImgBlog,setIsVisible } = useContext(AuthContext);
   useEffect(() => {
     //call api
     ListBlog();
   }, []);
   const FlatListBlog = (item) => {
+    // console.log(item._id);
     return (
       <View className="ml-2 mr-2">
         <Pressable
           className=" border-2 border-indigo-500 rounded"
           style={styles.container}
+          onPress={() => {
+            navigation.navigate("DetaiBlogPost",{itemId:item._id}),setShowImgBlog([]),setIsVisible(false)
+          }}
         >
-          {/* <View style={{ padding: 10 }}>
-            <View className="flex flex-row">
-              <View>
-                <View style={styles.avatar}>
-                  <Image
-                    className="rounded-full"
-                    source={{ uri: `${item.owner.avatar}` }}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </View>
-              </View>
-              <View className="pl-3 w-64">
-                <Text>{item.owner.username}</Text>
-                <Text>Hôm qua lúc 19:10</Text>
-              </View>
-            </View>
-          </View> */}
-
           {item.images != "" ? (
             <View className="pb-0.5">
               <Image
@@ -76,23 +66,6 @@ const ListBlogPost = () => {
                 </TouchableOpacity>
                 <Text className="pl-2">{item.warehouse.address}</Text>
               </View>
-
-              {/* <View className="flex-row">
-              <TouchableOpacity>
-                <AntDesign name="hearto" size={24} color="black" />
-              </TouchableOpacity>
-              <Text className="pl-2">0</Text>
-            </View>
-            <View className="flex-row pl-3">
-              <TouchableOpacity>
-                <Ionicons
-                  name="chatbox-ellipses-outline"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-              <Text className="pl-2">0</Text>
-            </View> */}
             </View>
           </View>
         </Pressable>
@@ -101,7 +74,41 @@ const ListBlogPost = () => {
   };
   return (
     <View className="flex-auto h-full">
+      <View className="w-full mb-3" style={AppStyle.StyleOderList.header}>
+        <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
+          <Ionicons
+            style={AppStyle.StyleOderList.iconSearch}
+            name="search"
+            size={23}
+            color="black"
+          />
+          <TextInput
+            placeholder="nhap ten kho "
+            clearButtonMode="always"
+            style={AppStyle.StyleOderList.search}
+            autoCapitalize="none"
+            autoCorrect={false}
+            // onChangeText={(text) => {
+            //   if (text.length > 0) {
+            //     SearchOrder(text);
+            //   } else {
+            //     orderListUser(userInfo.accessToken);
+            //   }
+            // }}
+          />
+        </View>
+        <Pressable style={AppStyle.StyleOderList.listFilter}>
+          <AntDesign
+            style={AppStyle.StyleOderList.iconFilter}
+            name="shoppingcart"
+            size={30}
+            color="#000"
+            // onPress={() => setModalVisible(true)}
+          />
+        </Pressable>
+      </View>
       <FlatList
+        className="mb-6"
         data={listBlog}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListBlog(item)}

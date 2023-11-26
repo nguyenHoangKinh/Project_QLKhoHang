@@ -30,17 +30,12 @@ export default function OrderScreenUser({ navigation }) {
     DeleteOrderUser,
   } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // console.log(userInfo.others._id);
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
   }, []);
 
   const FlatListData = (item) => {
-    // if (
-    //   ListOrder === "" ||
-    //   item.TenKhoHang.toLowerCase().includes(ListOrder.toLowerCase())
-    // ) {
     return (
       <Pressable
       className="border-2 border-blue-500 mt-1 bg-white m-2"
@@ -124,7 +119,6 @@ export default function OrderScreenUser({ navigation }) {
         </Pressable>
       </Pressable>
     );
-    // }
   };
 
   return (

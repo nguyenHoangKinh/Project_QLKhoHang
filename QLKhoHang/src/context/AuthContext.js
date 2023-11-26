@@ -4,7 +4,6 @@ import React, { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { BASE_URL, ORDER_URL } from "../config";
 
-
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -21,12 +20,14 @@ export const AuthProvider = ({ children }) => {
   const [ListOrder, setListOrder] = useState({});
   const [IdOrder, setIdOrder] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
-  const [list, setListWare] = useState([]);
-  const [listBlog, setListBlog] = useState([]);
+  const [list, setListWare] = useState({});
+  const [listBlog, setListBlog] = useState({});
+  const [detailBlog, setDetailBlog] = useState({});
+  const [showImgBlog, setShowImgBlog] = useState();
+  const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
   console.log(userInfo);
-  // console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -139,18 +140,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    console.log(userInfo.accessToken);  
+  const logout = async () => {
     setIsLoading(true);
-    if (userInfo.accessToken) {
-      axios
+    // if (userInfo.accessToken) {
+      await axios
         .get(`${BASE_URL}/logout`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
-        .then((res) => {
+        .then(async (res) => {
           console.log(res.data);
-          alert(res.data.message);
-          AsyncStorage.removeItem("userInfo");
+          // alert(res.data.message);
+          await AsyncStorage.removeItem("userInfo");
           setUserInfo({});
           setIsLoading(false);
         })
@@ -159,9 +159,9 @@ export const AuthProvider = ({ children }) => {
           userInfo.accessToken = null;
           setIsLoading(false);
         });
-    } else {
-      alert("lopout error access token undefined");
-    }
+    // } else {
+    //   alert("lopout error access token undefined");
+    // }
   };
 
   const isLoggedIn = async () => {
@@ -178,7 +178,10 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(false);
     } catch (e) {
       setSplashLoading(false);
-      console.log(`is logged in error ${e}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
     }
   };
 
@@ -199,7 +202,10 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
       })
       .catch((e) => {
-        console.log(`get error ${e.res}`);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
 
@@ -227,6 +233,10 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
   const changePassword = (passwords, confirmPasswords) => {
@@ -258,6 +268,10 @@ export const AuthProvider = ({ children }) => {
         setFormErrorChangePass(e.response.data.message);
         setCheck(false);
         setIsLoading(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
 
@@ -282,6 +296,10 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("error access token undefined");
@@ -311,6 +329,10 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("error access token undefined");
@@ -339,6 +361,10 @@ export const AuthProvider = ({ children }) => {
           console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
         });
     } else {
       alert("Error id order undefined");
@@ -365,59 +391,119 @@ export const AuthProvider = ({ children }) => {
         console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   };
-  const DeleteOrderUser = (idUser,idOrder) => {
-    console.log(idUser,idOrder);
+  const DeleteOrderUser = (idUser, idOrder) => {
+    console.log(idUser, idOrder);
     if (idUser && idOrder) {
-      axios.delete(ORDER_URL+`/order/deleteOrderByUser?id_user=${idUser}&id_order=${idOrder}`,{
-        headers:{
-          Authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      }).then((res)=>{
-        // alert(res.data);
-        // console.log(res.data);
-        orderListUser(userInfo.accessToken);
-      }).catch((e)=>{
-        alert(e.response.data.message);
-      })
-    }else{
+      axios
+        .delete(
+          ORDER_URL +
+            `/order/deleteOrderByUser?id_user=${idUser}&id_order=${idOrder}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          // alert(res.data);
+          // console.log(res.data);
+          orderListUser(userInfo.accessToken);
+        })
+        .catch((e) => {
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
+        });
+    } else {
       alert("xoa that bai!");
     }
-  }
-  const DeleteOrderOwner = (idOwner,idOrder) => {
+  };
+  const DeleteOrderOwner = (idOwner, idOrder) => {
     if (idOwner && idOrder) {
-      axios.delete(ORDER_URL+`/order/deleteOrderByOwner?id_owner=${idOwner}&id_order=${idOrder}`,{
-        headers:{
-          Authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      }).then((res)=>{
-        // alert(res.data.message);
-        orderListOwner(userInfo.accessToken);
-      }).catch((e)=>{
-        alert(e.response.data.message);
-      })
-    }else{
+      axios
+        .delete(
+          ORDER_URL +
+            `/order/deleteOrderByOwner?id_owner=${idOwner}&id_order=${idOrder}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          // alert(res.data.message);
+          orderListOwner(userInfo.accessToken);
+        })
+        .catch((e) => {
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
+        });
+    } else {
       alert("xoa that bai!");
     }
-  }
+  };
   const ListBlog = () => {
     if (userInfo.accessToken) {
-      axios.get(ORDER_URL+`/blog/list-by-blog`,{
-        headers:{
-          Authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      }).then((res)=>{
-        // alert(res.data.message);
-        // console.log(res.data.blog);
-        setListBlog(res.data.blog);
-      }).catch((e)=>{
-        alert(e.response.data.message);
-      })
-    }else{
+      axios
+        .get(ORDER_URL + `/blog/list-by-blog`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        })
+        .then((res) => {
+          // alert(res.data.message);
+          // console.log(res.data.blog);
+          setListBlog(res.data.blog);
+        })
+        .catch((e) => {
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
+        });
+    } else {
       alert("load bai viet that bai!");
     }
-  }
+  };
+  const DetailBlog = (id) => {
+    if (userInfo.accessToken && id) {
+      axios
+        .get(ORDER_URL + `/blog/get-by-id?id=${id}`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        })
+        .then((res) => {
+          if (res && res.data.data) {
+            setDetailBlog(res.data.data);
+            if (res.data.data.images) {
+              for (let i = 0; i < res.data.data.images.length; i++) {
+                setShowImgBlog({ uri: res.data.data.images[i] });
+              }
+            } else {
+              setShowImgBlog();
+            }
+          }
+        })
+        .catch((e) => {
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout()
+          }
+        });
+    } else {
+      alert("load bai viet that bai!");
+    }
+  };
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -434,9 +520,12 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         ListOrder,
         checkDetail,
+        showImgBlog,
+        detailBlog,
         formError,
         isLoading,
         warehouse,
+        visible,
         listBlog,
         userInfo,
         IdOrder,
@@ -448,12 +537,15 @@ export const AuthProvider = ({ children }) => {
         setCheck,
         setCheck,
         ListBlog,
+        setIsVisible,
         getProfile,
         setIdOrder,
+        DetailBlog,
         setListWare,
         SearchOrder,
         OrderDetail,
         orderListUser,
+        setShowImgBlog,
         updateProfile,
         setDetailOrder,
         orderListOwner,

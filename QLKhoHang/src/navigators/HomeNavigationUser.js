@@ -8,11 +8,7 @@ import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5, Octicons } from "@expo/vector-icons";
+import { FontAwesome,MaterialCommunityIcons,FontAwesome5,Entypo } from "@expo/vector-icons";
 import ListWareUser from "../components/user/ListWareUser";
 
 const HomeNavigationUser = () => {
@@ -34,8 +30,6 @@ const HomeNavigationUser = () => {
       <Tab.Screen
         name="ListWareUser"
         component={ListWareUser}
-        // name="Warehouse"
-        // component={WarehouseScreen}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
@@ -109,8 +103,8 @@ const HomeNavigationUser = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Octicons
-                  name={focused ? "bell-fill" : "bell"}
+                <MaterialCommunityIcons
+                  name={focused ? "message-processing" : "message-processing-outline"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
