@@ -30,6 +30,7 @@ import Button from "../components/Button"
 import DetailAcount from "../components/Admin/DetailAccount"
 import ListBlogOwner from "../components/ListBlogOwner"
 import UpdateBlog from "../components/UpdateBlog"
+import AddPostOwner from "../components/AddPostOwner"
 
 const Stack = createNativeStackNavigator();
 
@@ -165,13 +166,14 @@ const Navigation = () => {
         <Stack.Screen
           name="ListBlogOwner"
           component={ListBlogOwner}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
          <Stack.Screen
           name="UpdateBlog"
           component={UpdateBlog}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
           name="DetaiBlogPost"
           component={DetaiBlogPost}
           options={{ headerShown: false }}
@@ -179,6 +181,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ListComments"
           component={ListComments}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddPostOwner"
+          component={AddPostOwner}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -31,7 +31,7 @@ const TodoScreen = ({ navigation }) => {
           logout()
         }
       });
-  }, []);
+  }, [warehouse]);
 
   // Handle Delete
   const handleDeleteTodo = (id) => {
@@ -46,7 +46,7 @@ const TodoScreen = ({ navigation }) => {
           },
         }
       ).then((res) => {
-        navigation.navigate("Home");
+        alert("Xóa thành công");
       }).catch((e) => {
         console.log(`delete warehouse error ${e.res}`);
       });
