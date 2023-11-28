@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
 import { ScrollView, Text, Image, TextInput, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
@@ -11,15 +10,19 @@ import { AuthContext } from "../context/AuthContext";
 import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 
 let stat = [
   {
     id: 0,
     st: "true",
+    status: "Hoạt động",
   },
   {
     id: 1,
     st: "false",
+    status: "Ngưng hoạt động",
   },
 ]
 
@@ -31,12 +34,14 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [address, setAddress] = useState();
   const [idCategorie, setIdCategorie] = useState();
   const [capacity, setCapacity] = useState();
+  const [currentCapacity, setCurrentCapacity] = useState();
   const [monney, setMonney] = useState();
   const [status, setStatus] = useState();
   const [description, setDescription] = useState();
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [warehouses, setWarehouse] = useState();
   const route = useRoute();
+  const [images, setImages] = useState();
   const idWarehouse = route.params?.idWarehouse;
 
   useEffect(() => {
@@ -70,16 +75,18 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   }, []);
 
-  const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description) => {
+  const updateWarehouse = (wareHouseName, address, category, capacity, currentCapacity, monney, status, description, images) => {
     axios.put(`https://warehouse-management-api.vercel.app/v1/warehouse/updateWarehouse/${idWarehouse}`,
       {
         wareHouseName: wareHouseName,
         address: address,
         category: category,
         capacity: capacity,
+        currentCapacity: currentCapacity,
         monney: monney,
         status: status,
         description: description,
+        images: images,
       },
       {
         headers: {
@@ -93,6 +100,30 @@ export default function UpdateWarehouseScreen({ navigation }) {
       setCheckUpdate(false);
     });
   };
+
+  const pickFromGalary = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status) {
+      let data = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+        base64: true
+      });
+
+      console.log(data.assets)
+
+      if (!data.canceled) {
+        let newFile = {
+          uri: data.assets[0].uri,
+          type: data.assets[0].type,
+          name: data.assets[0].name,
+        };
+        setImages(data.assets.base64);
+      }
+    } else { Alert.alert('Chưa chọn hình ảnh'); }
+  }
 
   return (
     <View>
@@ -137,6 +168,16 @@ export default function UpdateWarehouseScreen({ navigation }) {
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
           <TextInput
+            placeholder="Nhập dung tích hiện tại"
+            keyboardType="numeric"
+            value={currentCapacity}
+            onChangeText={(text) => setCurrentCapacity(text)}
+          />
+          <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
+        </View>
+        <View style={AppStyle.StyleProfile.items}>
+          <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
+          <TextInput
             placeholder="Nhập dung tích"
             keyboardType="numeric"
             value={capacity}
@@ -164,7 +205,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
             iconStyle={AppStyle.StyleListProduct.iconStyle}
             data={stat}
             maxHeight={300}
-            labelField="st"
+            labelField="status"
             valueField="id"
             placeholder="Thiết lập trạng thái"
             onChange={(item) => {
@@ -181,11 +222,20 @@ export default function UpdateWarehouseScreen({ navigation }) {
               onChangeText={(text) => setDescription(text)}
             />}
         </View>
+
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_upload}
+          onPress={
+            () => pickFromGalary()
+          }>
+          <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
-            updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description);
-            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
+            updateWarehouse(wareHouseName, address, idCategorie, capacity, currentCapacity, monney, status, description, images);
+            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("HomeNavigation"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>CẬP NHẬT</Text>

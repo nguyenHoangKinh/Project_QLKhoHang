@@ -90,7 +90,7 @@ const TodoScreen = ({ navigation }) => {
 
         <IconButton
           icon="pencil"
-          iconColor="#fff"
+          iconColor="#000"
           onPress={() => {
             navigation.navigate("UpdateWarehouseScreen", {
               idWarehouse: item._id,
@@ -99,7 +99,7 @@ const TodoScreen = ({ navigation }) => {
         />
         <IconButton
           icon="trash-can"
-          iconColor="#fff"
+          iconColor="#000"
           onPress={() => handleDeleteTodo(item._id)}
         />
       </View>
