@@ -145,22 +145,22 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     // if (userInfo.accessToken) {
-      await axios
-        .get(`${BASE_URL}/logout`, {
-          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-        })
-        .then(async (res) => {
-          console.log(res.data);
-          // alert(res.data.message);
-          await AsyncStorage.removeItem("userInfo");
-          setUserInfo({});
-          setIsLoading(false);
-        })
-        .catch((e) => {
-          console.log(`logout error ${e.response.data.message}`);
-          userInfo.accessToken = null;
-          setIsLoading(false);
-        });
+    await axios
+      .get(`${BASE_URL}/logout`, {
+        headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      .then(async (res) => {
+        console.log(res.data);
+        // alert(res.data.message);
+        await AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`logout error ${e.response.data.message}`);
+        userInfo.accessToken = null;
+        setIsLoading(false);
+      });
     // } else {
     //   alert("lopout error access token undefined");
     // }
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(false);
       if (e.response.data.success === false) {
         alert(e.response.data.message);
-        logout()
+        logout();
       }
     }
   };
@@ -206,7 +206,7 @@ export const AuthProvider = ({ children }) => {
       .catch((e) => {
         if (e.response.data.success === false) {
           alert(e.response.data.message);
-          logout()
+          logout();
         }
       });
   };
@@ -237,7 +237,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         if (e.response.data.success === false) {
           alert(e.response.data.message);
-          logout()
+          logout();
         }
       });
   };
@@ -272,7 +272,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         if (e.response.data.success === false) {
           alert(e.response.data.message);
-          logout()
+          logout();
         }
       });
   };
@@ -300,7 +300,7 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -333,7 +333,7 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -365,7 +365,7 @@ export const AuthProvider = ({ children }) => {
           setCheckDetail(false);
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -395,7 +395,7 @@ export const AuthProvider = ({ children }) => {
         setCheck(false);
         if (e.response.data.success === false) {
           alert(e.response.data.message);
-          logout()
+          logout();
         }
       });
   };
@@ -420,7 +420,7 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -446,7 +446,7 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -469,7 +469,7 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -477,72 +477,123 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
-
-    const DetailBlog = () => {
-      if (userInfo.accessToken && detailBlogListCommnetsId) {
-        axios
-          .get(ORDER_URL + `/blog/get-by-id?id=${detailBlogListCommnetsId}`, {
-            headers: {
-              Authorization: `Bearer ${userInfo.accessToken}`,
-            },
-          })
-          .then((res) => {
-            if (res && res.data.data) {
-              setDetailBlog(res.data.data);
-              console.log(res.data.data._id);
-              if (res.data.data.images) {
-                for (let i = 0; i < res.data.data.images.length; i++) {
-                  setShowImgBlog([{ uri: res.data.data.images[i] }]);
-                }
-              } else {
-                setShowImgBlog();
+  const DetailBlog = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .get(ORDER_URL + `/blog/get-by-id?id=${detailBlogListCommnetsId}`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        })
+        .then((res) => {
+          if (res && res.data.data) {
+            setDetailBlog(res.data.data);
+            console.log(res.data.data._id);
+            if (res.data.data.images) {
+              for (let i = 0; i < res.data.data.images.length; i++) {
+                setShowImgBlog([{ uri: res.data.data.images[i] }]);
               }
+            } else {
+              setShowImgBlog();
             }
-          })
-          .catch((e) => {
-            if (e.response.data.success === false) {
-              alert(e.response.data.message);
-              logout()
-            }
-          });
-        } else {
-          alert("load bai viet that bai!");
-        }
-
-      };
-    const ListComments = () => {
-      if (userInfo.accessToken && detailBlogListCommnetsId) {
-        axios
-          .get(ORDER_URL + `/blog/comment/list-by-blog?idBlog=${detailBlogListCommnetsId}`, {
+          }
+        })
+        .catch((e) => {
+          if (e.response.data.success === false) {
+            alert(e.response.data.message);
+            logout();
+          }
+        });
+    } else {
+      alert("load bai viet that bai!");
+    }
+  };
+  const ListComments = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .get(
+          ORDER_URL +
+            `/blog/comment/list-by-blog?idBlog=${detailBlogListCommnetsId}`,
+          {
             headers: {
               Authorization: `Bearer ${userInfo.accessToken}`,
             },
-          })
-          .then((res) => {
-            if (res && res.data.data) {
-              setListCommnets(res.data.data)
-              // setDetailBlog(res.data.data);
-              // if (res.data.data.images) {
-              //   for (let i = 0; i < res.data.data.images.length; i++) {
-              //     setShowImgBlog({ uri: res.data.data.images[i] });
-              //   }
-              // } else {
-              //   setShowImgBlog();
-              // }
-            }
-          })
-          .catch((e) => {
-            // if (e.response.data.success === false) {
-              alert(e.response.data.message);
-            //   logout()
+          }
+        )
+        .then((res) => {
+          if (res && res.data.data) {
+            setListCommnets(res.data.data);
+            // setDetailBlog(res.data.data);
+            // if (res.data.data.images) {
+            //   for (let i = 0; i < res.data.data.images.length; i++) {
+            //     setShowImgBlog({ uri: res.data.data.images[i] });
+            //   }
+            // } else {
+            //   setShowImgBlog();
             // }
-          });
-      } else {
-        alert("load binh luan that bai!");
-      }
-    };
-    useEffect(() => {
+          }
+        })
+        .catch((e) => {
+          // if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          //   logout()
+          // }
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const pustComments = (contents) => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .post(
+          ORDER_URL + `/blog/comment/create?idBlog=${detailBlogListCommnetsId}`,
+          {
+            content: contents,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data.data) {
+            console.log(res.data);
+            ListComments();
+          }
+        })
+        .catch((e) => {
+          alert(e.response.data.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const DeleteTextCommentUser = (contents) => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .post(
+          ORDER_URL + `/blog/comment/create?idBlog=${detailBlogListCommnetsId}`,
+          {
+            content: contents,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data.data) {
+            console.log(res.data);
+            ListComments();
+          }
+        })
+        .catch((e) => {
+          alert(e.response.data.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  useEffect(() => {
     isLoggedIn();
   }, []);
 
@@ -586,6 +637,7 @@ export const AuthProvider = ({ children }) => {
         SearchOrder,
         OrderDetail,
         orderListUser,
+        pustComments,
         setListCommnets,
         setShowImgBlog,
         updateProfile,
@@ -595,6 +647,7 @@ export const AuthProvider = ({ children }) => {
         setCheckDetail,
         DeleteOrderUser,
         DeleteOrderOwner,
+        DeleteTextCommentUser,
         setFormErrorChangePass,
         setDetailBlogListCommnetsId,
       }}

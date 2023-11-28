@@ -24,14 +24,16 @@ export default function DetaiBlogPost({ route, navigation }) {
     setShowImgBlog,
     visible,
     setIsVisible,
-    Commnetsid,
     ListComments,
     listCommnets,
     setListCommnets,
+    pustComments,
+    detailBlogListCommnetsId,
+    DeleteTextCommentUser,
   } = useContext(AuthContext);
   const [imageView, setImageView] = useState("");
   const [index, setIndex] = useState("");
-  // const [imageViews, setImageViews] = useState([]);
+  const [message, setMessage] = useState("");
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   // const { itemId } = route.params;
   const panelRef = useRef(null);
@@ -39,8 +41,22 @@ export default function DetaiBlogPost({ route, navigation }) {
 
   useEffect(() => {
     DetailBlog();
-      ListComments();
-    }, []);
+    ListComments();
+  }, []);
+  const pustTextComment = () => {
+    pustComments(message,detailBlogListCommnetsId)
+    setMessage("")
+  }
+  // const DeleteTextComment = () => {
+  //   pustComments(message,detailBlogListCommnetsId)
+  //   setMessage("")
+  // }
+  const DeleteItemComment = () => {
+    if (window.confirm(`bạn có chất là muốn xóa bình luận!`)) {
+      this.DeleteTextCommentUser();
+    }
+  
+  }
   const FlatListData = (item, index) => {
     return (
       <TouchableOpacity
@@ -62,7 +78,9 @@ export default function DetaiBlogPost({ route, navigation }) {
     console.log(index);
     setIndex(index + 1);
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+      onLongPress={() => DeleteItemComment()}
+      >
         <Text className="flex flex-col w-32 h-10 bg-slate-200 m-2 rounded-lg text-left p-1">
           {item.content}
         </Text>
@@ -83,9 +101,8 @@ export default function DetaiBlogPost({ route, navigation }) {
                   navigation.goBack(),
                     setIndex(),
                     setImageView(""),
-                    setListCommnets([])
-                    setcheckImageViewValue([]),
-                    setShowImgBlog([]);
+                    setListCommnets([]);
+                  setcheckImageViewValue([]), setShowImgBlog([]);
                 }
               }}
               className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
@@ -101,9 +118,7 @@ export default function DetaiBlogPost({ route, navigation }) {
             style={{ width: 390, height: 70 }}
           ></View>
         </SafeAreaView>
-        <View
-          className="flex-1 bg-white px-5 pt-6 pb-16 rounded-2xl"
-        >
+        <View className="flex-1 bg-white px-5 pt-6 pb-16 rounded-2xl">
           {showImgBlog == "" ? (
             ""
           ) : (
@@ -117,7 +132,8 @@ export default function DetaiBlogPost({ route, navigation }) {
                   <Image
                     className="w-full h-full "
                     source={{
-                      uri: imageView == "" ? `${showImgBlog[0].uri}` : imageView,
+                      uri:
+                        imageView == "" ? `${showImgBlog[0].uri}` : imageView,
                     }}
                   />
                 </TouchableOpacity>
@@ -242,29 +258,29 @@ export default function DetaiBlogPost({ route, navigation }) {
               renderItem={({ item, index }) => FlatListComment(item, index)}
             />
           </View>
-          <View>
-            <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
+          <View className="w-full h-9  mb-3 flex-row border-t-2 border-indigo-500">
+            <View className="" style={{width:"92%"}} >
+              <TextInput
+              className=" w-full h-9"
+                placeholder="nhập bình luận... "
+                value={message}
+                // clearButtonMode="always"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={(text) => setMessage(text)}
+              />
+            </View>
+              <TouchableOpacity
+              onPress={() => pustTextComment()}
+              className=" absolute right-0 top-1.5"
+              >
               <Ionicons
-                style={AppStyle.StyleOderList.iconSearch}
-                name="search"
+              className=""
+                name="send"
                 size={23}
                 color="black"
               />
-              <TextInput
-                placeholder="nhap ten kho "
-                clearButtonMode="always"
-                style={AppStyle.StyleOderList.search}
-                autoCapitalize="none"
-                autoCorrect={false}
-                // onChangeText={(text) => {
-                //   if (text.length > 0) {
-                //     SearchOrder(text);
-                //   } else {
-                //     orderListUser(userInfo.accessToken);
-                //   }
-                // }}
-              />
-            </View>
+              </TouchableOpacity>
           </View>
         </BottomSheet>
       </View>
