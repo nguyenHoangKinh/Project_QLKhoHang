@@ -23,11 +23,13 @@ export const AuthProvider = ({ children }) => {
   const [list, setListWare] = useState({});
   const [listBlog, setListBlog] = useState({});
   const [detailBlog, setDetailBlog] = useState({});
-  const [showImgBlog, setShowImgBlog] = useState();
+  const [listCommnets, setListCommnets] = useState([]);
+  const [detailBlogListCommnetsId, setDetailBlogListCommnetsId] = useState("");
+  const [showImgBlog, setShowImgBlog] = useState([]);
   const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  console.log(userInfo);
+  // console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -474,43 +476,80 @@ export const AuthProvider = ({ children }) => {
       alert("load bai viet that bai!");
     }
   };
-  const DetailBlog = (id) => {
-    if (userInfo.accessToken && id) {
-      axios
-        .get(ORDER_URL + `/blog/get-by-id?id=${id}`, {
-          headers: {
-            Authorization: `Bearer ${userInfo.accessToken}`,
-          },
-        })
-        .then((res) => {
-          if (res && res.data.data) {
-            setDetailBlog(res.data.data);
-            if (res.data.data.images) {
-              for (let i = 0; i < res.data.data.images.length; i++) {
-                setShowImgBlog({ uri: res.data.data.images[i] });
+
+
+
+    const DetailBlog = () => {
+      if (userInfo.accessToken && detailBlogListCommnetsId) {
+        axios
+          .get(ORDER_URL + `/blog/get-by-id?id=${detailBlogListCommnetsId}`, {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          })
+          .then((res) => {
+            if (res && res.data.data) {
+              setDetailBlog(res.data.data);
+              console.log(res.data.data._id);
+              if (res.data.data.images) {
+                for (let i = 0; i < res.data.data.images.length; i++) {
+                  setShowImgBlog([{ uri: res.data.data.images[i] }]);
+                }
+              } else {
+                setShowImgBlog();
               }
-            } else {
-              setShowImgBlog();
             }
-          }
-        })
-        .catch((e) => {
-          if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
-          }
-        });
-    } else {
-      alert("load bai viet that bai!");
-    }
-  };
-  useEffect(() => {
+          })
+          .catch((e) => {
+            if (e.response.data.success === false) {
+              alert(e.response.data.message);
+              logout()
+            }
+          });
+        } else {
+          alert("load bai viet that bai!");
+        }
+
+      };
+    const ListComments = () => {
+      if (userInfo.accessToken && detailBlogListCommnetsId) {
+        axios
+          .get(ORDER_URL + `/blog/comment/list-by-blog?idBlog=${detailBlogListCommnetsId}`, {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          })
+          .then((res) => {
+            if (res && res.data.data) {
+              setListCommnets(res.data.data)
+              // setDetailBlog(res.data.data);
+              // if (res.data.data.images) {
+              //   for (let i = 0; i < res.data.data.images.length; i++) {
+              //     setShowImgBlog({ uri: res.data.data.images[i] });
+              //   }
+              // } else {
+              //   setShowImgBlog();
+              // }
+            }
+          })
+          .catch((e) => {
+            // if (e.response.data.success === false) {
+              alert(e.response.data.message);
+            //   logout()
+            // }
+          });
+      } else {
+        alert("load binh luan that bai!");
+      }
+    };
+    useEffect(() => {
     isLoggedIn();
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
+        detailBlogListCommnetsId,
         formErrorChangePass,
         checkValueSignUp,
         formErrorLogin,
@@ -518,6 +557,7 @@ export const AuthProvider = ({ children }) => {
         checkUpdate,
         DetailOrder,
         checkSignUp,
+        listCommnets,
         ListOrder,
         checkDetail,
         showImgBlog,
@@ -541,10 +581,12 @@ export const AuthProvider = ({ children }) => {
         getProfile,
         setIdOrder,
         DetailBlog,
+        ListComments,
         setListWare,
         SearchOrder,
         OrderDetail,
         orderListUser,
+        setListCommnets,
         setShowImgBlog,
         updateProfile,
         setDetailOrder,
@@ -554,6 +596,7 @@ export const AuthProvider = ({ children }) => {
         DeleteOrderUser,
         DeleteOrderOwner,
         setFormErrorChangePass,
+        setDetailBlogListCommnetsId,
       }}
     >
       {children}

@@ -18,20 +18,21 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 const ListBlogPost = ({ navigation }) => {
-  const { ListBlog, listBlog,setShowImgBlog,setIsVisible } = useContext(AuthContext);
+  const { ListBlog, listBlog,setShowImgBlog,setIsVisible,setDetailBlogListCommnetsId } = useContext(AuthContext);
   useEffect(() => {
     //call api
     ListBlog();
   }, []);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",listBlog);
   const FlatListBlog = (item) => {
-    // console.log(item._id);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",item);
     return (
       <View className="ml-2 mr-2">
         <Pressable
           className=" border-2 border-indigo-500 rounded"
           style={styles.container}
           onPress={() => {
-            navigation.navigate("DetaiBlogPost",{itemId:item._id}),setShowImgBlog([]),setIsVisible(false)
+            navigation.navigate("DetaiBlogPost"),setDetailBlogListCommnetsId(item._id),setShowImgBlog([]),setIsVisible(false)
           }}
         >
           {item.images != "" ? (

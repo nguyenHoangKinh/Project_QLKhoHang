@@ -14,7 +14,6 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import ListComments from "../components/ListComments";
 import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -163,11 +162,6 @@ const Navigation = () => {
         <Stack.Screen
           name="DetaiBlogPost"
           component={DetaiBlogPost}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListComments"
-          component={ListComments}
           options={{ headerShown: false }}
         />
         

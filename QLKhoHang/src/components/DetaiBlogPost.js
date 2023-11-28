@@ -5,34 +5,42 @@ import {
   ScrollView,
   Image,
   FlatList,
+  TextInput,
 } from "react-native";
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
+import AppStyle from "../theme";
 import { AuthContext } from "../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
 import BottomSheet from "react-native-simple-bottom-sheet";
-import ListChat from "./ListComments";
 export default function DetaiBlogPost({ route, navigation }) {
-  const { DetailBlog, detailBlog, showImgBlog, setShowImgBlog,visible } = useContext(AuthContext);
+  const {
+    DetailBlog,
+    detailBlog,
+    showImgBlog,
+    setShowImgBlog,
+    visible,
+    setIsVisible,
+    Commnetsid,
+    ListComments,
+    listCommnets,
+    setListCommnets,
+  } = useContext(AuthContext);
   const [imageView, setImageView] = useState("");
-  const [imageViews, setImageViews] = useState([]);
+  const [index, setIndex] = useState("");
+  // const [imageViews, setImageViews] = useState([]);
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
+  // const { itemId } = route.params;
   const panelRef = useRef(null);
-  const { itemId } = route.params;
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", visible);
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", index);
 
-  setTimeout(() => {
-    setImageViews([showImgBlog]);
-  }, 1000);
-  
   useEffect(() => {
-    DetailBlog(itemId);
-  }, []);
-
-
+    DetailBlog();
+      ListComments();
+    }, []);
   const FlatListData = (item, index) => {
     return (
       <TouchableOpacity
@@ -50,6 +58,17 @@ export default function DetaiBlogPost({ route, navigation }) {
       </TouchableOpacity>
     );
   };
+  const FlatListComment = (item, index) => {
+    console.log(index);
+    setIndex(index + 1);
+    return (
+      <TouchableOpacity>
+        <Text className="flex flex-col w-32 h-10 bg-slate-200 m-2 rounded-lg text-left p-1">
+          {item.content}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <>
       <ScrollView
@@ -62,8 +81,9 @@ export default function DetaiBlogPost({ route, navigation }) {
               onPress={() => {
                 {
                   navigation.goBack(),
-                    setImageViews([]),
+                    setIndex(),
                     setImageView(""),
+                    setListCommnets([])
                     setcheckImageViewValue([]),
                     setShowImgBlog([]);
                 }
@@ -82,7 +102,6 @@ export default function DetaiBlogPost({ route, navigation }) {
           ></View>
         </SafeAreaView>
         <View
-          // style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}
           className="flex-1 bg-white px-5 pt-6 pb-16 rounded-2xl"
         >
           {showImgBlog == "" ? (
@@ -98,7 +117,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                   <Image
                     className="w-full h-full "
                     source={{
-                      uri: imageView == "" ? `${showImgBlog.uri}` : imageView,
+                      uri: imageView == "" ? `${showImgBlog[0].uri}` : imageView,
                     }}
                   />
                 </TouchableOpacity>
@@ -118,7 +137,7 @@ export default function DetaiBlogPost({ route, navigation }) {
           ) : (
             <ImageView
               images={
-                checkImageViewValue == "" ? imageViews : checkImageViewValue
+                checkImageViewValue == "" ? showImgBlog : checkImageViewValue
               }
               imageIndex={0}
               visible={visible}
@@ -177,7 +196,9 @@ export default function DetaiBlogPost({ route, navigation }) {
               <Text className="pl-1">0</Text>
             </View>
             <TouchableOpacity
-              onPress={() => panelRef.current.togglePanel()}
+              onPress={() => {
+                panelRef.current.togglePanel();
+              }}
               className="flex-row top-2 pl-1"
             >
               <Ionicons
@@ -185,7 +206,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                 size={24}
                 color="black"
               />
-              <Text className="pl-1">0</Text>
+              <Text className="pl-1">{index == "" ? 0 : index}</Text>
             </TouchableOpacity>
             <Text className="absolute bottom-2 right-0">lược thích</Text>
           </View>
@@ -205,9 +226,48 @@ export default function DetaiBlogPost({ route, navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <BottomSheet isOpen={visible} ref={(ref) => (panelRef.current = ref)} sliderMinHeight={0}>
-        <Text style={{ paddingVertical: 200 }}>Some random content</Text>
-      </BottomSheet>
+      <View className="absolute bottom-0 w-full h-96">
+        <BottomSheet
+          isOpen={visible}
+          ref={(ref) => (panelRef.current = ref)}
+          sliderMinHeight={0}
+        >
+          <View style={{ width: "100%", height: 300 }} className="">
+            <View className="border-b-2 border-indigo-500">
+              <Text className="font-bold text-xl text-center ">Bình luận</Text>
+            </View>
+            <FlatList
+              data={listCommnets}
+              // keyExtractor={(item) => String(item)}
+              renderItem={({ item, index }) => FlatListComment(item, index)}
+            />
+          </View>
+          <View>
+            <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
+              <Ionicons
+                style={AppStyle.StyleOderList.iconSearch}
+                name="search"
+                size={23}
+                color="black"
+              />
+              <TextInput
+                placeholder="nhap ten kho "
+                clearButtonMode="always"
+                style={AppStyle.StyleOderList.search}
+                autoCapitalize="none"
+                autoCorrect={false}
+                // onChangeText={(text) => {
+                //   if (text.length > 0) {
+                //     SearchOrder(text);
+                //   } else {
+                //     orderListUser(userInfo.accessToken);
+                //   }
+                // }}
+              />
+            </View>
+          </View>
+        </BottomSheet>
+      </View>
     </>
   );
 }
