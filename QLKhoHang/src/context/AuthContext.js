@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
   const [userInfo, setUserInfo] = useState({});
@@ -29,7 +30,9 @@ export const AuthProvider = ({ children }) => {
   const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  // console.log(userInfo);
+  const [numberLike, setNumberLike] = useState(0);
+  const [numberLikes, setNumberLikes] = useState(0);
+  // console.log(numberLike);
   const signUP = (
     usernames,
     passwords,
@@ -154,6 +157,30 @@ export const AuthProvider = ({ children }) => {
         // alert(res.data.message);
         await AsyncStorage.removeItem("userInfo");
         setUserInfo({});
+        setNumberLikes(0);
+        setNumberLike(0);
+        setFormErrorLogin("");
+        setFormErrorChangePass("");
+        setListCommnets([]);
+        setIsVisible(false);
+        setShowImgBlog([]);
+        setDetailBlogListCommnetsId("");
+        setDetailBlog({});
+        setListBlog({});
+        setListWare({});
+        setDetailOrder({});
+        setIdOrder({});
+        setListOrder({});
+        setCheckUpdate(false);
+        setFormError({});
+        setCheckSignUp(false);
+        setSplashLoading(false);
+        setIsLoading(false);
+        setCheckDetail(false);
+        setCheck(false);
+        setModalVisible(false);
+        setModalVisible(false);
+        setCheckValueSignUp(false);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -496,6 +523,26 @@ export const AuthProvider = ({ children }) => {
             } else {
               setShowImgBlog();
             }
+            // console.log(res.data.data);
+            if (res.data.data.likes != "") {
+              for (let i = 0; i < res.data.data.likes.length; i++) {
+                // if (i) {
+                setNumberLikes(i + 1);
+                // }else{
+                //   setNumberLikes(0)
+
+                // }
+                console.log(res.data.data.likes[i], userInfo.others._id);
+                if (res.data.data.likes[i] === userInfo.others._id) {
+                  setNumberLike(1);
+                }
+              }
+              // setNumberLike(0);
+            }
+          } else {
+            // alert("mang rong ");
+            setNumberLikes(0);
+            setNumberLike(0);
           }
         })
         .catch((e) => {
@@ -568,26 +615,93 @@ export const AuthProvider = ({ children }) => {
       alert("load binh luan that bai!");
     }
   };
-  const DeleteTextCommentUser = (contents) => {
-    if (userInfo.accessToken && detailBlogListCommnetsId) {
+  const DeleteTextCommentUser = (IdComment) => {
+    console.log(IdComment);
+    if (userInfo.accessToken && IdComment) {
       axios
-        .post(
-          ORDER_URL + `/blog/comment/create?idBlog=${detailBlogListCommnetsId}`,
-          {
-            content: contents,
-          },
+        .delete(ORDER_URL + `/blog/comment/delete?idComment=${IdComment}`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            alert(res.data.message);
+            console.log(res.data.message);
+            setModalVisible(false);
+            ListComments();
+            DetailBlog();
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const LikeBlog = (id) => {
+    console.log(id);
+    if (userInfo.accessToken && id) {
+      axios
+        .put(
+          ORDER_URL + `/blog/likes/${id}`,
+          {},
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
           }
         )
         .then((res) => {
-          if (res && res.data.data) {
-            console.log(res.data);
-            ListComments();
+          if (res && res.data) {
+            // alert(res.data.blog);
+            // console.log(res.data.blog.likes);
+            setNumberLike(0);
+            // if (res.data.blog.likes == "") {
+            //   setNumberLikes(0);
+            // } else {
+            //   setNumberLike(1);
+            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
+            //     setNumberLikes(i + 1);
+            //   }
+            // }
+            DetailBlog();
           }
         })
         .catch((e) => {
-          alert(e.response.data.data.message);
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const DisLike = (id) => {
+    console.log(id);
+    if (userInfo.accessToken && id) {
+      axios
+        .put(
+          ORDER_URL + `/blog/dislikes/${id}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            // alert(res.data);
+            setNumberLike(0);
+            // console.log(res.data.blog.likes);
+            // if (res.data.blog.likes == "") {
+            //   setNumberLikes(0)
+            // }else if (res.data.blog.likes) {
+            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
+            //     console.log("helloasdasd", i);
+            //     setNumberLikes(i + 1);
+
+            //   }
+            // }
+            DetailBlog();
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
         });
     } else {
       alert("load binh luan that bai!");
@@ -609,9 +723,12 @@ export const AuthProvider = ({ children }) => {
         DetailOrder,
         checkSignUp,
         listCommnets,
+        modalVisible,
         ListOrder,
+        numberLikes,
         checkDetail,
         showImgBlog,
+        numberLike,
         detailBlog,
         formError,
         isLoading,
@@ -627,8 +744,13 @@ export const AuthProvider = ({ children }) => {
         logout,
         setCheck,
         setCheck,
+        DisLike,
         ListBlog,
+        LikeBlog,
         setIsVisible,
+        setModalVisible,
+        setNumberLikes,
+        setNumberLike,
         getProfile,
         setIdOrder,
         DetailBlog,
