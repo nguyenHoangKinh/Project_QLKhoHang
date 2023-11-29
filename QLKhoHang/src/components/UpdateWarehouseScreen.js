@@ -75,13 +75,12 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   }, []);
 
-  const updateWarehouse = (wareHouseName, address, category, capacity, currentCapacity, monney, status, description, images) => {
+  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description, images) => {
     axios.put(`https://warehouse-management-api.vercel.app/v1/warehouse/updateWarehouse/${idWarehouse}`,
       {
         wareHouseName: wareHouseName,
         address: address,
         category: category,
-        capacity: capacity,
         currentCapacity: currentCapacity,
         monney: monney,
         status: status,
@@ -165,24 +164,23 @@ export default function UpdateWarehouseScreen({ navigation }) {
               setCategorie(item.acreage);
             }}
           />}
+          
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
+          {warehouses &&
           <TextInput
-            placeholder="Nhập dung tích hiện tại"
+            placeholder={warehouses.currentCapacity + ""}
             keyboardType="numeric"
             value={currentCapacity}
             onChangeText={(text) => setCurrentCapacity(text)}
-          />
+          />}
           <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
         </View>
+        
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
-          <TextInput
-            placeholder="Nhập dung tích"
-            keyboardType="numeric"
-            value={capacity}
-            onChangeText={(text) => setCapacity(text)}
-          />
+          {warehouses &&
+          <Text style={{  marginTop: 2 }}>{warehouses.currentCapacity}</Text>}
           <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
         </View>
         <View style={AppStyle.StyleProfile.items}>
@@ -234,7 +232,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
-            updateWarehouse(wareHouseName, address, idCategorie, capacity, currentCapacity, monney, status, description, images);
+            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, images);
             { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("HomeNavigation"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />

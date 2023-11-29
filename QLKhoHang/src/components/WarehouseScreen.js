@@ -89,6 +89,7 @@ const TodoScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <IconButton
+          style={{marginLeft: -10}}
           icon="pencil"
           iconColor="#000"
           onPress={() => {
@@ -98,6 +99,7 @@ const TodoScreen = ({ navigation }) => {
           }}
         />
         <IconButton
+        style={{marginLeft: -15, marginRight: -10}}
           icon="trash-can"
           iconColor="#000"
           onPress={() => handleDeleteTodo(item._id)}

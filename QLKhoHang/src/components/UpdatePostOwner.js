@@ -8,34 +8,37 @@ import { Dropdown } from "react-native-element-dropdown";
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import axios from "axios";
+import { useRoute } from "@react-navigation/native";
 
-export default function AddPostOwner({ navigation }) {
+export default function UpdatePostOwner({ navigation }) {
     const { userInfo } = useContext(AuthContext);
-    const [warehouse, setWarehouse] = useState([]);
+    const [post, setPost] = useState();
     const [idWarehouse, setIdWarehouse] = useState("");
     const [description, setDescription] = useState();
     const [images, setImages] = useState();
+    const route = useRoute();
+    const idPost = route.params?.idPost;
 
     useEffect(() => {
-        axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
+        axios.get(`https://warehouse-management-api.vercel.app/v1/blog/get-by-id`, {
             headers: {
                 Authorization: `Bearer ${userInfo.accessToken}`,
             },
             params: {
-                id_owner: userInfo.others._id,
+                id: idPost,
             },
         }).then((res) => {
-            let warehouses = res.data;
-            setWarehouse(warehouses);
+            let post = res.data.data;
+            setPost(post);
         }).catch((e) => {
-            console.log(`get warehouse error ${e.res}`);
+            console.log(`Get post error ${e.res}`);
         });
     }, []);
 
     const showAlert = () =>
         Alert.alert(
-            'Thêm thất bại',
-            'Yêu cầu nhập đầy đủ thông tin cần thêm',
+            'Sửa thất bại',
+            'Yêu cầu nhập đầy đủ thông tin cần sửa',
             [
                 {
                     text: 'Cancel',
@@ -45,23 +48,30 @@ export default function AddPostOwner({ navigation }) {
         );
 
     const addPost = (description, images) => {
-        axios.post(`https://warehouse-management-api.vercel.app/v1/blog/create`, {
-            description: description,
-            images: images,
-        }, {
-            headers:
-            {
-                Authorization: `Bearer ${userInfo.accessToken}`
+        const formData = new FormData();
+
+        // for (let i = 0; i < images.length; i++) {
+        //     formData.append("images", images[i].images);
+        // }
+
+        formData.append("description", description)
+        axios.put("https://warehouse-management-api.vercel.app/v1//blog/update", {
+                description: description,
+                images: images
             },
-            params:
             {
-                warehouse: idWarehouse
-            },
-        }).then((res) => {
-            navigation.navigate("ListBlogOwner")
-        }).catch((e) => {
-            console.log(`Add error ${e}`);
-        });
+                headers: {
+                    Authorization: `Bearer ${userInfo.accessToken}`
+                },
+                params: {
+                    id: idPost
+                }
+            }).then((res) => {
+                Alert.alert("Cập nhật bài viết thành công");
+                navigation.navigate("ListBlogOwner")
+            }).catch((err) => {
+                console.log(err)
+            });
     };
 
     const pickFromGalary = async () => {
@@ -99,32 +109,23 @@ export default function AddPostOwner({ navigation }) {
                     <Entypo name="email" size={20} color="black" />
                     <Text> {userInfo.others.email}</Text>
                 </View>
-                <Dropdown
-                    style={AppStyle.StyleListProduct.dropdown}
-                    placeholderStyle={AppStyle.StyleListProduct.placeholderStyle}
-                    selectedTextStyle={AppStyle.StyleListProduct.selectedTextStyle}
-                    inputSearchStyle={AppStyle.StyleListProduct.inputSearchStyle}
-                    iconStyle={AppStyle.StyleListProduct.iconStyle}
-                    data={warehouse}
-                    maxHeight={300}
-                    labelField="wareHouseName"
-                    valueField="_id"
-                    placeholder="Chọn kho hàng"
-                    searchPlaceholder="Search..."
-                    // value={userInfo.others.warehouses}
-                    onChange={item => {
-                        setIdWarehouse(item._id);
-                    }}
-                />
+
+                <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: "bold" }}>Tên bài viết</Text>
+                <View style={AppStyle.StyleProfile.items}>
+                    {post &&
+                    <Text>{post.warehouse.wareHouseName}</Text>}
+                </View>
+
                 <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: "bold" }}>Mô tả</Text>
                 <View style={AppStyle.StyleProfile.items}>
+                    {post &&
                     <TextInput
-                        placeholder=" Nhập mô tả bài viết"
+                        placeholder={post.description}
                         keyboardType="default"
                         value={description}
                         onChangeText={text => setDescription(text)}
                         style={{ height: 300 }}
-                    />
+                    />}
                 </View>
 
                 <TouchableOpacity
@@ -138,13 +139,13 @@ export default function AddPostOwner({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!description && !idWarehouse)
+                        (!description && !images)
                             ? showAlert()
                             : addPost(description, images)
                     }}>
 
                     <AntDesign name="edit" size={20} color="#fff" />
-                    <Text style={{ color: '#fff' }}>THÊM BÀI VIẾT</Text>
+                    <Text style={{ color: '#fff' }}>SỬA BÀI VIẾT</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

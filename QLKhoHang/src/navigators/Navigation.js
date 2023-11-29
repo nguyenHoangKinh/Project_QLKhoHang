@@ -31,6 +31,7 @@ import DetailAcount from "../components/Admin/DetailAccount"
 import ListBlogOwner from "../components/ListBlogOwner"
 import UpdateBlog from "../components/UpdateBlog"
 import AddPostOwner from "../components/AddPostOwner"
+import UpdatePostOwner from "../components/UpdatePostOwner"
 
 const Stack = createNativeStackNavigator();
 
@@ -186,6 +187,11 @@ const Navigation = () => {
         <Stack.Screen
           name="AddPostOwner"
           component={AddPostOwner}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdatePostOwner"
+          component={UpdatePostOwner}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

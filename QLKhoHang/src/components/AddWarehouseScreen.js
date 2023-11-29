@@ -35,6 +35,7 @@ export default function AddWarehouseScreen({ navigation }) {
     const [monney, setMonney] = useState();
     const [status, setStatus] = useState();
     const [description, setDescription] = useState();
+    const [categorie, setCategorie] = useState();
     const [images, setImages] = useState();
 
     useEffect(() => {
@@ -74,7 +75,7 @@ export default function AddWarehouseScreen({ navigation }) {
             monney: monney,
             status: status,
             description: description,
-            images: images,
+            imageWarehouse: images,
             owner: owner,
         }, {
             headers:
@@ -88,7 +89,7 @@ export default function AddWarehouseScreen({ navigation }) {
         }).then((res) => {
             navigation.navigate("HomeNavigation")
         }).catch((e) => {
-            console.log(`Add error ${e}`);
+            console.log(`Add error ${e.request.response}`);
         });
     };
 
@@ -152,16 +153,18 @@ export default function AddWarehouseScreen({ navigation }) {
                     // value={name}
                     onChange={item => {
                         setIdCategorie(item._id);
+                        setCategorie(item.acreage);
                     }}
                 />
                 <View style={AppStyle.StyleProfile.items}>
                     <MaterialIcons name="storage" size={20} color="black" />
                     <TextInput
                         placeholder="Nhập dung tích"
-                        keyboardType="default"
+                        keyboardType="numeric"
                         value={capacity}
                         onChangeText={text => setCapacity(text)}
                     />
+                    <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
                 </View>
                 <View style={AppStyle.StyleProfile.items}>
                     <FontAwesome name="money" size={20} color="black" /><Text> </Text>
@@ -211,7 +214,7 @@ export default function AddWarehouseScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description || !images)
+                        (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description)
                             ? showAlert()
                             : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, images, userInfo.others._id)
                     }}>
