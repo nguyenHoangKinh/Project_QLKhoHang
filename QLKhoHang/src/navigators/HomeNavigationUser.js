@@ -1,17 +1,14 @@
 import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
+import ListBlogPost from "../components/ListBlogPost";
 import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenUser from "../components/user/OrderScreenUser";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5, Octicons } from "@expo/vector-icons";
+import { FontAwesome,MaterialCommunityIcons,FontAwesome5,Entypo } from "@expo/vector-icons";
 import ListWareUser from "../components/user/ListWareUser";
 
 const HomeNavigationUser = () => {
@@ -33,9 +30,8 @@ const HomeNavigationUser = () => {
       <Tab.Screen
         name="ListWareUser"
         component={ListWareUser}
-        // name="Warehouse"
-        // component={WarehouseScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -56,11 +52,12 @@ const HomeNavigationUser = () => {
         name="OrderScreenUser"
         component={OrderScreenUser}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Entypo
-                  name="text-document"
+                  name={ focused ? "text-document-inverted" : "text-document"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -71,9 +68,10 @@ const HomeNavigationUser = () => {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="ListBlogPost"
+        component={ListBlogPost}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -101,11 +99,12 @@ const HomeNavigationUser = () => {
         name="Statistics"
         component={StatisticsScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Octicons
-                  name="bell"
+                <MaterialCommunityIcons
+                  name={focused ? "message-processing" : "message-processing-outline"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />
@@ -121,11 +120,12 @@ const HomeNavigationUser = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <Entypo
-                  name="user"
+                <FontAwesome
+                  name={focused ? "user-circle-o" : "user-circle"}
                   size={24}
                   color={focused ? "#16247d" : "#111"}
                 />

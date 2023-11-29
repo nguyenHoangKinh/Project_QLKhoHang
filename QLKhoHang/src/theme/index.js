@@ -7,6 +7,7 @@ import StyleStatistics from "./StyleStatistics";
 import StyleListProduct from "./StyleListProduct";
 import StyleWarehouse from "./StyleWarehouse";
 import StyleOderList from "./StyleOderList";
+import StyleImageUpload from './StyleImageUpload';
 
 const AppStyle = {
   StyleHome,
@@ -15,5 +16,6 @@ const AppStyle = {
   StyleListProduct,
   StyleWarehouse,
   StyleOderList,
+  StyleImageUpload,
 };
 export default AppStyle;

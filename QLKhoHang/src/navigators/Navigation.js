@@ -14,28 +14,28 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import ListComments from "../components/ListComments";
+import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
-import TotalProductScreen from "../components/TotalProductScreen";
-import ListProduct from "../components/ListProduct";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
-import ListAccountActive from "../components/Admin/ListAccountActive";
-import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
-import DetailAcount from "../components/Admin/DetailAccount";
+import ListAccountActive from "../components/Admin/ListAccountActive"
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
+import UploadImageProfile from "../components/UploadImageProfile"
+import Button from "../components/Button"
+import DetailAcount from "../components/Admin/DetailAccount"
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp, splashLoading, getProfile } =
+  const { userInfo, checkSignUp } =
     useContext(AuthContext);
-  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
-      {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName="Home">
         {userInfo.accessToken && userInfo.others.isOwner ? (
           <Stack.Screen
@@ -75,16 +75,6 @@ const Navigation = () => {
             />
           </>
         )}
-        {/* <Stack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen}
-          options={{ headerShown: false }}
-        /> */}
-        {/* <Stack.Screen
-          name="Register"
-          component={SignUpScreen}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="AuthContext"
           component={AuthContext}
@@ -98,16 +88,6 @@ const Navigation = () => {
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TotalProductScreen"
-          component={TotalProductScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListProduct"
-          component={ListProduct}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -141,6 +121,16 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="UploadImageProfile"
+          component={UploadImageProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Button"
+          component={Button}
+			options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="AddOrderScreen"
           component={AddOrderScreen}
           options={{ headerShown: false }}
@@ -170,6 +160,17 @@ const Navigation = () => {
           component={DetailAcount}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="DetaiBlogPost"
+          component={DetaiBlogPost}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListComments"
+          component={ListComments}
+          options={{ headerShown: false }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

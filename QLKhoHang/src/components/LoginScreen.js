@@ -70,14 +70,14 @@ export default function LoginScreen({ navigation }) {
               />
             </View>
           </View>
-          <TouchableOpacity className="flex items-end">
+          {/* <TouchableOpacity className="flex items-end">
             <Text className="text-gray-700 mb-5">Forgot Password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => {
               login(username, password);
             }}
-            className="py-3 bg-blue-300 rounded-xl"
+            className="py-3 bg-blue-300 rounded-xl top-2"
           >
             <Text className="text-xl font-bold text-center text-gray-700">
               Login
