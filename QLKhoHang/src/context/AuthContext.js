@@ -8,6 +8,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
   const [userInfo, setUserInfo] = useState({});
@@ -23,11 +25,17 @@ export const AuthProvider = ({ children }) => {
   const [list, setListWare] = useState({});
   const [listBlog, setListBlog] = useState({});
   const [detailBlog, setDetailBlog] = useState({});
-  const [showImgBlog, setShowImgBlog] = useState();
+  const [listCommnets, setListCommnets] = useState([]);
+  const [detailBlogListCommnetsId, setDetailBlogListCommnetsId] = useState("");
+  const [showImgBlog, setShowImgBlog] = useState([]);
   const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  console.log(userInfo);
+  const [numberLike, setNumberLike] = useState(0);
+  const [numberLikes, setNumberLikes] = useState(0);
+  const [index, setIndex] = useState("");
+  // console.log(userInfo);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numberLikes);
   const signUP = (
     usernames,
     passwords,
@@ -143,22 +151,46 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     // if (userInfo.accessToken) {
-      await axios
-        .get(`${BASE_URL}/logout`, {
-          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-        })
-        .then(async (res) => {
-          console.log(res.data);
-          // alert(res.data.message);
-          await AsyncStorage.removeItem("userInfo");
-          setUserInfo({});
-          setIsLoading(false);
-        })
-        .catch((e) => {
-          console.log(`logout error ${e.response.data.message}`);
-          userInfo.accessToken = null;
-          setIsLoading(false);
-        });
+    await axios
+      .get(`${BASE_URL}/logout`, {
+        headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+      })
+      .then(async (res) => {
+        // console.log(res.data);
+        // alert(res.data.message);
+        await AsyncStorage.removeItem("userInfo");
+        setUserInfo({});
+        setNumberLikes(0);
+        setNumberLike(0);
+        setFormErrorLogin("");
+        setFormErrorChangePass("");
+        setListCommnets([]);
+        setIsVisible(false);
+        setShowImgBlog([]);
+        setDetailBlogListCommnetsId("");
+        setDetailBlog({});
+        setListBlog({});
+        setListWare({});
+        setDetailOrder({});
+        setIdOrder({});
+        setListOrder({});
+        setCheckUpdate(false);
+        setFormError({});
+        setCheckSignUp(false);
+        setSplashLoading(false);
+        setIsLoading(false);
+        setCheckDetail(false);
+        setCheck(false);
+        setModalVisible(false);
+        setModalVisible(false);
+        setCheckValueSignUp(false);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(`logout error ${e.response.data.message}`);
+        userInfo.accessToken = null;
+        setIsLoading(false);
+      });
     // } else {
     //   alert("lopout error access token undefined");
     // }
@@ -180,7 +212,7 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(false);
       if (e.response.data.success === false) {
         alert(e.response.data.message);
-        logout()
+        logout();
       }
     }
   };
@@ -203,8 +235,8 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((e) => {
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
-          logout()
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
         }
       });
   };
@@ -230,12 +262,12 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`update error ${e.res}`);
+        // console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
-          logout()
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
         }
       });
   };
@@ -264,13 +296,13 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`error ${e.response.data.message}`);
+        // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
         setCheck(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
-          logout()
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
         }
       });
   };
@@ -294,11 +326,11 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           if (e.response.data.success === false) {
             alert(e.response.data.message);
-            logout()
+            logout();
           }
         });
     } else {
@@ -327,11 +359,11 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
@@ -358,12 +390,12 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
@@ -388,17 +420,17 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`update error ${e.response.data.message}`);
+        // console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
-          logout()
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
         }
       });
   };
   const DeleteOrderUser = (idUser, idOrder) => {
-    console.log(idUser, idOrder);
+    // console.log(idUser, idOrder);
     if (idUser && idOrder) {
       axios
         .delete(
@@ -417,8 +449,8 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
@@ -443,8 +475,8 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
@@ -466,18 +498,19 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
       alert("load bai viet that bai!");
     }
   };
-  const DetailBlog = (id) => {
-    if (userInfo.accessToken && id) {
+
+  const DetailBlog = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
-        .get(ORDER_URL + `/blog/get-by-id?id=${id}`, {
+        .get(ORDER_URL + `/blog/get-by-id?id=${detailBlogListCommnetsId}`, {
           headers: {
             Authorization: `Bearer ${userInfo.accessToken}`,
           },
@@ -486,22 +519,209 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data.data) {
             setDetailBlog(res.data.data);
             if (res.data.data.images) {
-              for (let i = 0; i < res.data.data.images.length; i++) {
-                setShowImgBlog({ uri: res.data.data.images[i] });
-              }
+                setShowImgBlog([{ uri: res.data.data.images[0] }]);
             } else {
               setShowImgBlog();
+            }
+            
+            if (res.data.data.comments != "") {
+              for (let i = 0; i < res.data.data.comments.length; i++) {
+                setIndex(i + 1);
+              }
+            }else{
+              setIndex(0);
+            }
+            if (res.data.data.likes != "") {
+              for (let i = 0; i < res.data.data.likes.length; i++) {
+                setNumberLikes(i + 1);
+                if (res.data.data.likes[i] == userInfo.others._id) {
+                  setNumberLike(1);
+                }
+              }
+            }else{
+              setNumberLikes(0);
+              setNumberLike(0);
             }
           }
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
-            logout()
+            alert("bạn đã hết hạng đăng nhập");
+            logout();
           }
         });
     } else {
       alert("load bai viet that bai!");
+    }
+  };
+  const ListComments = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .get(
+          ORDER_URL +
+            `/blog/comment/list-by-blog?idBlog=${detailBlogListCommnetsId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res && res.data.data) {
+            setListCommnets(res.data.data);
+          }
+        })
+        .catch((e) => {
+          alert(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const pustComments = (contents) => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .post(
+          ORDER_URL + `/blog/comment/create?idBlog=${detailBlogListCommnetsId}`,
+          {
+            content: contents,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data.data) {
+            // console.log(res.data);
+            ListComments();
+          }
+        })
+        .catch((e) => {
+          alert(e.response.data.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const DeleteTextCommentUser = (IdComment) => {
+    // console.log(IdComment);
+    if (userInfo.accessToken && IdComment) {
+      axios
+        .delete(ORDER_URL + `/blog/comment/delete?idComment=${IdComment}`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            alert(res.data.message);
+            setModalVisible(false);
+            ListComments();
+          }
+        })
+        .catch((e) => {
+          alert("bình luận này không phải của bạn nên bạn ko thể xóa!");
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const UpdataTextCommentUser = (contens,IdComment) => {
+    console.log(contens,IdComment);
+    if (userInfo.accessToken && IdComment) {
+      axios
+        .put(ORDER_URL + `/blog/comment/update?idComment=${IdComment}`, 
+        {
+          content: contens,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            alert(res.data.message);
+            setModalVisibleUpdateTextComment(false);
+            setModalVisible(false);
+            ListComments();
+            DetailBlog()
+          }
+        })
+        .catch((e) => {
+          alert("bình luận này không phải của bạn nên bạn ko thể sửa!");
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const LikeBlog = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
+      axios
+        .put(
+          ORDER_URL + `/blog/likes/${detailBlogListCommnetsId}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            console.log(res.data.blog);
+            if (res.data.blog.likes != "") {
+              for (let i = 0; i < res.data.blog.likes.length; i++) {
+                setNumberLikes(i + 1);
+                if (res.data.blog.likes[i] == userInfo.others._id) {
+                  setNumberLike(1);
+                } else {
+                  setNumberLike(0);
+                }
+              }
+            } else if(res.data.blog.likes == "") {
+              setNumberLikes(0);
+              setNumberLike(0);
+            }
+            DetailBlog();
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const DisLike = (id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id) {
+      axios
+        .put(
+          ORDER_URL + `/blog/dislikes/${id}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            // alert(res.data);
+            setNumberLike(0);
+            // console.log(res.data.blog.likes);
+            // if (res.data.blog.likes == "") {
+            //   setNumberLikes(0)
+            // }else if (res.data.blog.likes) {
+            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
+            //     console.log("helloasdasd", i);
+            //     setNumberLikes(i + 1);
+
+            //   }
+            // }
+            DetailBlog();
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
     }
   };
   useEffect(() => {
@@ -511,6 +731,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        modalVisibleUpdateTextComment,
+        detailBlogListCommnetsId,
         formErrorChangePass,
         checkValueSignUp,
         formErrorLogin,
@@ -518,14 +740,19 @@ export const AuthProvider = ({ children }) => {
         checkUpdate,
         DetailOrder,
         checkSignUp,
+        listCommnets,
+        modalVisible,
         ListOrder,
+        numberLikes,
         checkDetail,
         showImgBlog,
+        numberLike,
         detailBlog,
         formError,
         isLoading,
         warehouse,
         visible,
+        index,
         listBlog,
         userInfo,
         IdOrder,
@@ -535,16 +762,25 @@ export const AuthProvider = ({ children }) => {
         signUP,
         logout,
         setCheck,
+        setIndex,
         setCheck,
+        DisLike,
         ListBlog,
+        LikeBlog,
         setIsVisible,
+        setModalVisible,
+        setNumberLikes,
+        setNumberLike,
         getProfile,
         setIdOrder,
         DetailBlog,
+        ListComments,
         setListWare,
         SearchOrder,
         OrderDetail,
         orderListUser,
+        pustComments,
+        setListCommnets,
         setShowImgBlog,
         updateProfile,
         setDetailOrder,
@@ -553,7 +789,11 @@ export const AuthProvider = ({ children }) => {
         setCheckDetail,
         DeleteOrderUser,
         DeleteOrderOwner,
+        UpdataTextCommentUser,
+        DeleteTextCommentUser,
         setFormErrorChangePass,
+        setDetailBlogListCommnetsId,
+        setModalVisibleUpdateTextComment,
       }}
     >
       {children}
