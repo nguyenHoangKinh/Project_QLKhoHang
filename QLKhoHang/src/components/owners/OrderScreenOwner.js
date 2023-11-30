@@ -89,10 +89,9 @@ export default function OrderScreenOwner({ navigation }) {
               [
                 {
                   text: "Cancel", 
-                  onPress: () =>navigation.navigate("OrderScreenUser"),
                   style: "cancel",
                 },
-                { text: "OK", onPress: () => DeleteOrderUser(userInfo.others._id,item._id) },
+                { text: "OK", onPress: () => DeleteOrderOwner(userInfo.others._id,item._id) },
               ],
               { cancelable: false }
             );

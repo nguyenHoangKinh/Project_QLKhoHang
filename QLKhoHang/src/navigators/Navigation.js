@@ -31,8 +31,12 @@ import DetailAcount from "../components/Admin/DetailAccount"
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp } =
+  const { userInfo, checkSignUp,logout } =
     useContext(AuthContext);
+    if (userInfo.success === false) {
+      alert("bạn đã hết hạng đăng nhập");
+      logout();
+    }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

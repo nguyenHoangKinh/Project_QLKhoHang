@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
   const [userInfo, setUserInfo] = useState({});
@@ -32,7 +33,9 @@ export const AuthProvider = ({ children }) => {
   const [formErrorLogin, setFormErrorLogin] = useState("");
   const [numberLike, setNumberLike] = useState(0);
   const [numberLikes, setNumberLikes] = useState(0);
-  // console.log(numberLike);
+  const [index, setIndex] = useState("");
+  // console.log(userInfo);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numberLikes);
   const signUP = (
     usernames,
     passwords,
@@ -153,7 +156,7 @@ export const AuthProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${userInfo.accessToken}` },
       })
       .then(async (res) => {
-        console.log(res.data);
+        // console.log(res.data);
         // alert(res.data.message);
         await AsyncStorage.removeItem("userInfo");
         setUserInfo({});
@@ -232,7 +235,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((e) => {
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
+          alert("bạn đã hết hạng đăng nhập");
           logout();
         }
       });
@@ -259,11 +262,11 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`update error ${e.res}`);
+        // console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
+          alert("bạn đã hết hạng đăng nhập");
           logout();
         }
       });
@@ -293,12 +296,12 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`error ${e.response.data.message}`);
+        // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
         setCheck(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
+          alert("bạn đã hết hạng đăng nhập");
           logout();
         }
       });
@@ -323,7 +326,7 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           if (e.response.data.success === false) {
             alert(e.response.data.message);
@@ -356,10 +359,10 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -387,11 +390,11 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
+          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -417,17 +420,17 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(`update error ${e.response.data.message}`);
+        // console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
         if (e.response.data.success === false) {
-          alert(e.response.data.message);
+          alert("bạn đã hết hạng đăng nhập");
           logout();
         }
       });
   };
   const DeleteOrderUser = (idUser, idOrder) => {
-    console.log(idUser, idOrder);
+    // console.log(idUser, idOrder);
     if (idUser && idOrder) {
       axios
         .delete(
@@ -446,7 +449,7 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -472,7 +475,7 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -495,7 +498,7 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -515,39 +518,35 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data.data) {
             setDetailBlog(res.data.data);
-            console.log(res.data.data._id);
             if (res.data.data.images) {
-              for (let i = 0; i < res.data.data.images.length; i++) {
-                setShowImgBlog([{ uri: res.data.data.images[i] }]);
-              }
+                setShowImgBlog([{ uri: res.data.data.images[0] }]);
             } else {
               setShowImgBlog();
             }
-            // console.log(res.data.data);
+            
+            if (res.data.data.comments != "") {
+              for (let i = 0; i < res.data.data.comments.length; i++) {
+                setIndex(i + 1);
+              }
+            }else{
+              setIndex(0);
+            }
             if (res.data.data.likes != "") {
               for (let i = 0; i < res.data.data.likes.length; i++) {
-                // if (i) {
                 setNumberLikes(i + 1);
-                // }else{
-                //   setNumberLikes(0)
-
-                // }
-                console.log(res.data.data.likes[i], userInfo.others._id);
-                if (res.data.data.likes[i] === userInfo.others._id) {
+                if (res.data.data.likes[i] == userInfo.others._id) {
                   setNumberLike(1);
                 }
               }
-              // setNumberLike(0);
+            }else{
+              setNumberLikes(0);
+              setNumberLike(0);
             }
-          } else {
-            // alert("mang rong ");
-            setNumberLikes(0);
-            setNumberLike(0);
           }
         })
         .catch((e) => {
           if (e.response.data.success === false) {
-            alert(e.response.data.message);
+            alert("bạn đã hết hạng đăng nhập");
             logout();
           }
         });
@@ -570,21 +569,10 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data.data) {
             setListCommnets(res.data.data);
-            // setDetailBlog(res.data.data);
-            // if (res.data.data.images) {
-            //   for (let i = 0; i < res.data.data.images.length; i++) {
-            //     setShowImgBlog({ uri: res.data.data.images[i] });
-            //   }
-            // } else {
-            //   setShowImgBlog();
-            // }
           }
         })
         .catch((e) => {
-          // if (e.response.data.success === false) {
           alert(e.response.data.message);
-          //   logout()
-          // }
         });
     } else {
       alert("load binh luan that bai!");
@@ -604,7 +592,7 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data.data) {
-            console.log(res.data);
+            // console.log(res.data);
             ListComments();
           }
         })
@@ -616,7 +604,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DeleteTextCommentUser = (IdComment) => {
-    console.log(IdComment);
+    // console.log(IdComment);
     if (userInfo.accessToken && IdComment) {
       axios
         .delete(ORDER_URL + `/blog/comment/delete?idComment=${IdComment}`, {
@@ -625,25 +613,51 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data) {
             alert(res.data.message);
-            console.log(res.data.message);
             setModalVisible(false);
             ListComments();
-            DetailBlog();
           }
         })
         .catch((e) => {
+          alert("bình luận này không phải của bạn nên bạn ko thể xóa!");
           console.log(e.response.data.message);
         });
     } else {
       alert("load binh luan that bai!");
     }
   };
-  const LikeBlog = (id) => {
-    console.log(id);
-    if (userInfo.accessToken && id) {
+  const UpdataTextCommentUser = (contens,IdComment) => {
+    console.log(contens,IdComment);
+    if (userInfo.accessToken && IdComment) {
+      axios
+        .put(ORDER_URL + `/blog/comment/update?idComment=${IdComment}`, 
+        {
+          content: contens,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            alert(res.data.message);
+            setModalVisibleUpdateTextComment(false);
+            setModalVisible(false);
+            ListComments();
+            DetailBlog()
+          }
+        })
+        .catch((e) => {
+          alert("bình luận này không phải của bạn nên bạn ko thể sửa!");
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("load binh luan that bai!");
+    }
+  };
+  const LikeBlog = () => {
+    if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
         .put(
-          ORDER_URL + `/blog/likes/${id}`,
+          ORDER_URL + `/blog/likes/${detailBlogListCommnetsId}`,
           {},
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
@@ -651,17 +665,20 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            // alert(res.data.blog);
-            // console.log(res.data.blog.likes);
-            setNumberLike(0);
-            // if (res.data.blog.likes == "") {
-            //   setNumberLikes(0);
-            // } else {
-            //   setNumberLike(1);
-            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
-            //     setNumberLikes(i + 1);
-            //   }
-            // }
+            console.log(res.data.blog);
+            if (res.data.blog.likes != "") {
+              for (let i = 0; i < res.data.blog.likes.length; i++) {
+                setNumberLikes(i + 1);
+                if (res.data.blog.likes[i] == userInfo.others._id) {
+                  setNumberLike(1);
+                } else {
+                  setNumberLike(0);
+                }
+              }
+            } else if(res.data.blog.likes == "") {
+              setNumberLikes(0);
+              setNumberLike(0);
+            }
             DetailBlog();
           }
         })
@@ -673,7 +690,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DisLike = (id) => {
-    console.log(id);
+    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .put(
@@ -714,6 +731,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        modalVisibleUpdateTextComment,
         detailBlogListCommnetsId,
         formErrorChangePass,
         checkValueSignUp,
@@ -734,6 +752,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         warehouse,
         visible,
+        index,
         listBlog,
         userInfo,
         IdOrder,
@@ -743,6 +762,7 @@ export const AuthProvider = ({ children }) => {
         signUP,
         logout,
         setCheck,
+        setIndex,
         setCheck,
         DisLike,
         ListBlog,
@@ -769,9 +789,11 @@ export const AuthProvider = ({ children }) => {
         setCheckDetail,
         DeleteOrderUser,
         DeleteOrderOwner,
+        UpdataTextCommentUser,
         DeleteTextCommentUser,
         setFormErrorChangePass,
         setDetailBlogListCommnetsId,
+        setModalVisibleUpdateTextComment,
       }}
     >
       {children}
