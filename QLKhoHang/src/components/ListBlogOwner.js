@@ -69,10 +69,15 @@ const ListBlogPost = ({ navigation }) => {
                             <Text style={AppStyle.StyleListBlogOwner.money}>Giá: {item.warehouse.monney} VND</Text>
                             <Text className="pt-1">Diện tích: {item.warehouse.capacity}</Text>
                             <View className="flex-row pt-1">
-                                <TouchableOpacity>
-                                    <FontAwesome5 name="map-marker-alt" size={24} color="red" />
-                                </TouchableOpacity>
+                                <FontAwesome5 name="map-marker-alt" size={24} color="red" />
                                 <Text className="pl-2">{item.warehouse.address}</Text>
+                            </View>
+                            <View className="flex-row pt-1">
+                                <MaterialCommunityIcons name="comment-text-outline" size={24} color="black" />
+                                <Text className="pl-2">{item.comments.length}</Text>
+                                <Text>      </Text>
+                                <AntDesign name="like1" size={24} color="black" />
+                                <Text className="pl-2">{item.likes.length}</Text>
                             </View>
                             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
                                 <TouchableOpacity

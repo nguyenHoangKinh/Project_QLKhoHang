@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 import AppStyle from "../theme";
 
 const HomeScreen = ({ navigation }) => {
-  const { userInfo, isLoading, logout } = useContext(AuthContext);
+  const { userInfo, logout } = useContext(AuthContext);
 
   return (
     <View style={{ marginHorizontal: 16, marginTop: 20 }}>
@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={AppStyle.StyleHome.warehouse_view}>
         <View style={AppStyle.StyleHome.name_warehouse}>
           <Text style={AppStyle.StyleHome.tittle_warehouse}>
-            Tổng số kho hàng: <></>
+            Tổng số kho hàng: <>{userInfo.others.warehouses.length}</>
             <Text style={AppStyle.StyleHome.name_warehouse}></Text>
           </Text>
         </View>
@@ -53,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={AppStyle.StyleHome.warehouse_view}>
         <View style={AppStyle.StyleHome.name_warehouse}>
           <Text style={AppStyle.StyleHome.tittle_warehouse}>
-            Tổng số hóa đơn hiện có: <></>
+            Tổng số bài viết: <>{userInfo.others.blogs.length}</>
             <Text style={AppStyle.StyleHome.name_warehouse}></Text>
           </Text>
         </View>
@@ -61,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={AppStyle.StyleHome.warehouse_view}>
         <View style={AppStyle.StyleHome.name_warehouse}>
           <Text style={AppStyle.StyleHome.tittle_warehouse}>
-            Tổng số khách hàng thuê kho: <></>
+            Tổng số hóa đơn hiện có: <>{userInfo.others.orders.length}</>
             <Text style={AppStyle.StyleHome.name_warehouse}></Text>
           </Text>
         </View>
