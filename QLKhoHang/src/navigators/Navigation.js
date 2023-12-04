@@ -14,7 +14,6 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import ListComments from "../components/ListComments";
 import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -36,8 +35,12 @@ import UpdatePostOwner from "../components/UpdatePostOwner"
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp } =
+  const { userInfo, checkSignUp,logout } =
     useContext(AuthContext);
+    if (userInfo.success === false) {
+      alert("bạn đã hết hạng đăng nhập");
+      logout();
+    }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
