@@ -10,8 +10,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
-  const { userInfo, splashLoading, logout, setFormErrorChangePass, setCheck } =
-    useContext(AuthContext);
+  const { userInfo, logout, setFormErrorChangePass, setCheck } = useContext(AuthContext);
+
+  useEffect(() => {
+    
+}, [userInfo]);
+
   return (
     <View>
       <ScrollView>
@@ -74,8 +78,7 @@ export default function ProfileScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
-          onPress={() => navigation.navigate("EditProfileScreen")}
-        >
+          onPress={() => navigation.navigate("EditProfileScreen")}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>Cập nhật thông tin cá nhân</Text>
         </TouchableOpacity>

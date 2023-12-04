@@ -35,7 +35,7 @@ export default function EditProfileScreen({ navigation }) {
                 address: address,
                 email: email,
                 phone: phone,
-                avatar: avatar,
+                avatar: avatar.base64,
             }, {
                 headers: { Authorization: `Bearer ${userInfo.accessToken}` }
             })

@@ -27,6 +27,10 @@ import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 import UploadImageProfile from "../components/UploadImageProfile"
 import Button from "../components/Button"
 import DetailAcount from "../components/Admin/DetailAccount"
+import ListBlogOwner from "../components/ListBlogOwner"
+import UpdateBlog from "../components/UpdateBlog"
+import AddPostOwner from "../components/AddPostOwner"
+import UpdatePostOwner from "../components/UpdatePostOwner"
 
 const Stack = createNativeStackNavigator();
 
@@ -164,11 +168,35 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="ListBlogOwner"
+          component={ListBlogOwner}
+          options={{ headerShown: true }}
+        />
+         <Stack.Screen
+          name="UpdateBlog"
+          component={UpdateBlog}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="DetaiBlogPost"
           component={DetaiBlogPost}
           options={{ headerShown: false }}
         />
-        
+        <Stack.Screen
+          name="ListComments"
+          component={ListComments}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddPostOwner"
+          component={AddPostOwner}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdatePostOwner"
+          component={UpdatePostOwner}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
