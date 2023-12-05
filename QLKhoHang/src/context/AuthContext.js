@@ -8,12 +8,11 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] = useState(false);
+  const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
   const [checkSignUp, setCheckSignUp] = useState(false);
@@ -181,8 +180,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         setCheckDetail(false);
         setCheck(false);
-        setModalVisible(false);
-        setModalVisible(false);
         setCheckValueSignUp(false);
         setIsLoading(false);
       })
@@ -271,13 +268,15 @@ export const AuthProvider = ({ children }) => {
         }
       });
   };
-  const changePassword = (passwords, confirmPasswords) => {
+  const changePassword = (currentPasswords,passwords, confirmPasswords) => {
+    // console.log(currentPasswords,passwords, confirmPasswords);
     setFormErrorChangePass("");
     setIsLoading(true);
     axios
       .put(
         `${BASE_URL}/change-password?id=${userInfo._id}`,
         {
+          currentPassword:currentPasswords,
           password: passwords,
           confirmPassword: confirmPasswords,
         },
@@ -291,14 +290,12 @@ export const AuthProvider = ({ children }) => {
         let password = res.data;
         // console.log(password);
         alert(password.message);
-        setCheck(true);
         setFormErrorChangePass("");
         setIsLoading(false);
       })
       .catch((e) => {
         // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
-        setCheck(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
           alert("bạn đã hết hạng đăng nhập");
@@ -542,6 +539,7 @@ export const AuthProvider = ({ children }) => {
               setNumberLikes(0);
               setNumberLike(0);
             }
+            ListComments()
           }
         })
         .catch((e) => {
@@ -555,6 +553,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListComments = () => {
+    // console.log(detailBlogListCommnetsId);
     if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
         .get(
@@ -569,6 +568,7 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data.data) {
             setListCommnets(res.data.data);
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -594,6 +594,7 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data.data) {
             // console.log(res.data);
             ListComments();
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -603,18 +604,17 @@ export const AuthProvider = ({ children }) => {
       alert("load binh luan that bai!");
     }
   };
-  const DeleteTextCommentUser = (IdComment) => {
-    // console.log(IdComment);
-    if (userInfo.accessToken && IdComment) {
+  const DeleteTextCommentUser = (id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id) {
       axios
-        .delete(ORDER_URL + `/blog/comment/delete?idComment=${IdComment}`, {
+        .delete(ORDER_URL + `/blog/comment/delete?idComment=${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
           if (res && res.data) {
-            alert(res.data.message);
-            setModalVisible(false);
             ListComments();
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -622,14 +622,14 @@ export const AuthProvider = ({ children }) => {
           console.log(e.response.data.message);
         });
     } else {
-      alert("load binh luan that bai!");
+      alert("Xoa binh luan that bai!");
     }
   };
-  const UpdataTextCommentUser = (contens,IdComment) => {
-    console.log(contens,IdComment);
-    if (userInfo.accessToken && IdComment) {
+  const UpdataTextCommentUser = (contens,id) => {
+    // console.log(contens,id);
+    if (userInfo.accessToken && id) {
       axios
-        .put(ORDER_URL + `/blog/comment/update?idComment=${IdComment}`, 
+        .put(ORDER_URL + `/blog/comment/update?idComment=${id}`, 
         {
           content: contens,
         },
@@ -640,9 +640,9 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data) {
             alert(res.data.message);
             setModalVisibleUpdateTextComment(false);
-            setModalVisible(false);
+            // setModalVisibleComment(false);
             ListComments();
-            DetailBlog()
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -734,6 +734,7 @@ export const AuthProvider = ({ children }) => {
         modalVisibleUpdateTextComment,
         detailBlogListCommnetsId,
         formErrorChangePass,
+        modalVisibleComment,
         checkValueSignUp,
         formErrorLogin,
         splashLoading,
@@ -741,7 +742,6 @@ export const AuthProvider = ({ children }) => {
         DetailOrder,
         checkSignUp,
         listCommnets,
-        modalVisible,
         ListOrder,
         numberLikes,
         checkDetail,
@@ -750,7 +750,6 @@ export const AuthProvider = ({ children }) => {
         detailBlog,
         formError,
         isLoading,
-        warehouse,
         visible,
         index,
         listBlog,
@@ -768,7 +767,6 @@ export const AuthProvider = ({ children }) => {
         ListBlog,
         LikeBlog,
         setIsVisible,
-        setModalVisible,
         setNumberLikes,
         setNumberLike,
         getProfile,
@@ -791,6 +789,7 @@ export const AuthProvider = ({ children }) => {
         DeleteOrderOwner,
         UpdataTextCommentUser,
         DeleteTextCommentUser,
+        setModalVisibleComment,
         setFormErrorChangePass,
         setDetailBlogListCommnetsId,
         setModalVisibleUpdateTextComment,

@@ -1,7 +1,7 @@
 import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { AntDesign, Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons,MaterialIcons } from "@expo/vector-icons";
 import {
   FlatList,
   SafeAreaView,
@@ -26,7 +26,7 @@ export default function OrderScreenOwner({ navigation }) {
   const FlatListData = (item) => {
     return (
       <Pressable
-      className="border-2 border-blue-500 mt-1 bg-white m-2"
+      className="shadow-2xl mt-1 bg-white m-2"
         onPress={() => {
           setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
         }}
@@ -98,11 +98,7 @@ export default function OrderScreenOwner({ navigation }) {
           }}
           className="absolute right-5 top-10"
         >
-          <MaterialCommunityIcons
-            name="delete-circle-outline"
-            size={40}
-            color="#aa381e"
-          />
+          <MaterialIcons name="delete" size={34} color="red" />
         </Pressable>
       </Pressable>
     );
@@ -193,7 +189,7 @@ export default function OrderScreenOwner({ navigation }) {
               style={AppStyle.StyleOderList.iconFilter}
               name="options-outline"
               size={30}
-              color="#000"
+              color="#16247d"
               onPress={() => setModalVisible(true)}
             />
           </Pressable>

@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import {
   AntDesign,
   Ionicons,
-  MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 
 import {
@@ -38,7 +38,7 @@ export default function OrderScreenUser({ navigation }) {
   const FlatListData = (item) => {
     return (
       <Pressable
-      className="border-2 border-blue-500 mt-1 bg-white m-2"
+      className="shadow-2xl mt-1 bg-white m-2"
         onPress={() => {
           setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
         }}
@@ -110,11 +110,7 @@ export default function OrderScreenUser({ navigation }) {
           }}
           className="absolute right-5 top-10"
         >
-          <MaterialCommunityIcons
-            name="delete-circle-outline"
-            size={40}
-            color="#aa381e"
-          />
+          <MaterialIcons name="delete" size={34} color="red" />
         </Pressable>
       </Pressable>
     );
@@ -151,7 +147,7 @@ export default function OrderScreenUser({ navigation }) {
               style={AppStyle.StyleOderList.iconFilter}
               name="options-outline"
               size={30}
-              color="#000"
+              color="#16247d"
               onPress={() => setModalVisible(true)}
             />
           </Pressable>
@@ -169,7 +165,7 @@ export default function OrderScreenUser({ navigation }) {
               Đơn chưa hoàn thành
             </Text>
           </Pressable>
-          <Text style={{ borderWidth: 0.5 }}></Text>
+          <Text style={{ borderWidth: 0.5 ,backgroundColor:"#16247d" }}></Text>
           <Pressable
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
