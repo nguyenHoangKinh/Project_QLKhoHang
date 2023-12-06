@@ -539,7 +539,6 @@ export const AuthProvider = ({ children }) => {
               setNumberLikes(0);
               setNumberLike(0);
             }
-            ListComments()
           }
         })
         .catch((e) => {
@@ -553,7 +552,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListComments = () => {
-    // console.log(detailBlogListCommnetsId);
+    console.log(detailBlogListCommnetsId);
     if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
         .get(
@@ -568,7 +567,6 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data.data) {
             setListCommnets(res.data.data);
-            DetailBlog();
           }
         })
         .catch((e) => {
@@ -665,7 +663,7 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            console.log(res.data.blog);
+            // console.log(res.data.blog);
             if (res.data.blog.likes != "") {
               for (let i = 0; i < res.data.blog.likes.length; i++) {
                 setNumberLikes(i + 1);

@@ -24,7 +24,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
-import BottomSheet from "react-native-simple-bottom-sheet";
+// import BottomSheet from "react-native-simple-bottom-sheet";
 export default function DetaiBlogPost({ route, navigation }) {
   const {
     DetailBlog,
@@ -65,11 +65,6 @@ export default function DetaiBlogPost({ route, navigation }) {
 
   useEffect(() => {
     DetailBlog();
-    // ListComments();
-  }, []);
-  useEffect(() => {
-    // DetailBlog();
-    // ListComments();
   }, []);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
@@ -151,7 +146,7 @@ export default function DetaiBlogPost({ route, navigation }) {
     );
   };
   const FlatListComment = (item, index) => {
-    setIndex(index + 1);
+    // setIndex(index + 1);
     return (
       <View className="flex flex-row bg-slate-200 m-2 rounded-lg text-left p-2">
         <View style={{ width: "10%" }}>
@@ -213,7 +208,7 @@ export default function DetaiBlogPost({ route, navigation }) {
       style={{ backgroundColor: themeColors.bg }}
     >
       <View>
-        <View className=" top-3 start-50 translate-middle">
+        <View className=" top-4 start-50 translate-middle">
           <View className=" flex-row w-full top-5">
             <TouchableOpacity
               onPress={() => {
@@ -227,7 +222,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                   setcheckImageViewValue([]), setShowImgBlog([]);
                 }
               }}
-              className="left-4 top-2"
+              className="left-4 top-3"
               style={{ width: "15%" }}
             >
               <AntDesign name="arrowleft" size={30} color="#fff" />
@@ -243,7 +238,7 @@ export default function DetaiBlogPost({ route, navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View className="flex w-full h-full bg-white mt-12 pb-16 ">
+        <View className="flex w-full h-full bg-white mt-14 pb-16 ">
           {showImgBlog == "" ? (
             ""
           ) : (
@@ -389,7 +384,7 @@ export default function DetaiBlogPost({ route, navigation }) {
             <TouchableOpacity
               onPress={() => {
                 setModalVisibleComment(true);
-                // ListComments();
+                ListComments();
               }}
               className="flex-row top-2.5 ml-2.5"
             >
