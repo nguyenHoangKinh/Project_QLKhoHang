@@ -8,6 +8,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@fortawesome/fontawesome-free": "^6.4.2",
+    "@gorhom/bottom-sheet": "^4.5.1",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.7",

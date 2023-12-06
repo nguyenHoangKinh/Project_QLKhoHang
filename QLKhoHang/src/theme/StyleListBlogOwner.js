@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+const deviceHeight = Dimensions.get('window').height
 const StyleListBlogOwner = StyleSheet.create({
     container: {
         width: "100%",
@@ -54,6 +55,20 @@ const StyleListBlogOwner = StyleSheet.create({
     avatar: {
         width: 60,
         height: 60,
+    },
+    modal: {
+        backgroundColor: "#fff",
+        width: '100%',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        paddingHorizontal: 10,
+        maxHeight: deviceHeight * 0.5
+    },
+    title_modal: {
+        color: '#182e44',
+        fontSize: 20,
+        fontWeight: '500',
+        margin: 15,
     },
 });
 export default StyleListBlogOwner;

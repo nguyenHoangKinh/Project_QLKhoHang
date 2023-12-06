@@ -77,30 +77,30 @@ export default function DetaiBlogPost({ route, navigation }) {
     pustComments(message, detailBlogListCommnetsId);
     setMessage("");
   };
-  const checkModel= (item)=> {
+  const checkModel = (item) => {
     console.log(item);
     if (item === userInfo.others._id) {
       setModalVisible(true)
-    }else{
+    } else {
       alert("bạn không thể chỉnh sửa bình luận của người khác!")
     }
   }
   const DeleteItemComment = () => {
-      Alert.alert(
-        "",
-        "Bạn có chất là muốn xóa bình luận này?",
-        [
-          {
-            text: "Cancel",
-            onPress: () => {
-              navigation.navigate("DetaiBlogPost"), setIdComment("");
-            },
-            style: "cancel",
+    Alert.alert(
+      "",
+      "Bạn có chất là muốn xóa bình luận này?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            navigation.navigate("DetaiBlogPost"), setIdComment("");
           },
-          { text: "OK", onPress: () => DeleteTextCommentUser(idComment) },
-        ],
-        { cancelable: false }
-      );
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => DeleteTextCommentUser(idComment) },
+      ],
+      { cancelable: false }
+    );
   };
   const UpdataItemComment = () => {
     if (textCommnetUpdate == "") {
@@ -117,7 +117,7 @@ export default function DetaiBlogPost({ route, navigation }) {
             },
             style: "cancel",
           },
-          { text: "OK", onPress: () => UpdataTextCommentUser(textCommnetUpdate,idComment) },
+          { text: "OK", onPress: () => UpdataTextCommentUser(textCommnetUpdate, idComment) },
         ],
         { cancelable: false }
       );
@@ -466,7 +466,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                 }}
                 placeholder="nhập bình luận mới ... "
                 onChangeText={(text) => setTextCommnetUpdate(text)}
-                // value={text}
+              // value={text}
               />
             </View>
             <View className="flex-row absolute right-0 bottom-0">
