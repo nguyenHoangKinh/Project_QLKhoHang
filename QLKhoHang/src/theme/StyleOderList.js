@@ -105,7 +105,7 @@ const StyleOderList = StyleSheet.create({
   },
   modalView: {
     width: "90%",
-    height: "40%",
+    height: 500,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
@@ -113,7 +113,7 @@ const StyleOderList = StyleSheet.create({
   },
   buttonClose: {
     width: "10%",
-    left: 150,
+    left: 160,
   },
   modalView_1: {
     height: "50%",

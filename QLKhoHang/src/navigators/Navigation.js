@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigation from "./HomeNavigation";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
+import ListComments from "../components/ListComments";
 import DetaiBlogPost from "../components/DetaiBlogPost";
 import SeeWarehouseDetails from "../components/SeeOrderDetails";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
@@ -36,14 +37,12 @@ import ListComments from "../components/ListComments"
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp,logout } =
+  const { userInfo, checkSignUp, splashLoading, getProfile } =
     useContext(AuthContext);
-    if (userInfo.success === false) {
-      alert("bạn đã hết hạng đăng nhập");
-      logout();
-    }
+  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
+      {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName="Home">
         {userInfo.accessToken && userInfo.others.isOwner ? (
           <Stack.Screen
@@ -83,6 +82,16 @@ const Navigation = () => {
             />
           </>
         )}
+        {/* <Stack.Screen
+          name="WelcomeScreen"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        /> */}
+        {/* <Stack.Screen
+          name="Register"
+          component={SignUpScreen}
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
           name="AuthContext"
           component={AuthContext}

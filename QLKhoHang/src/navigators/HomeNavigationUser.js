@@ -38,7 +38,7 @@ const HomeNavigationUser = () => {
                 <FontAwesome5
                   name="warehouse"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Warehouse
@@ -59,7 +59,7 @@ const HomeNavigationUser = () => {
                 <Entypo
                   name={ focused ? "text-document-inverted" : "text-document"}
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>Order</Text>
               </View>
@@ -88,7 +88,7 @@ const HomeNavigationUser = () => {
                 <Entypo
                   name="home"
                   size={24}
-                  color={focused ? "#111" : "#fff"}
+                  color="#fff"
                 />
               </View>
             );
@@ -106,7 +106,7 @@ const HomeNavigationUser = () => {
                 <MaterialCommunityIcons
                   name={focused ? "message-processing" : "message-processing-outline"}
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Notification
@@ -127,7 +127,7 @@ const HomeNavigationUser = () => {
                 <FontAwesome
                   name={focused ? "user-circle-o" : "user-circle"}
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>Profile</Text>
               </View>

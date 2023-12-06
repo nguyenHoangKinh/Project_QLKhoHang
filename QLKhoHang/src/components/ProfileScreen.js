@@ -10,12 +10,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
-  const { userInfo, logout, setFormErrorChangePass, setCheck } = useContext(AuthContext);
-
-  useEffect(() => {
-    
-}, [userInfo]);
-
+  const { userInfo, splashLoading, logout, setFormErrorChangePass } =
+    useContext(AuthContext);
   return (
     <View>
       <ScrollView>
@@ -69,7 +65,6 @@ export default function ProfileScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ChangePasswordScreen"),
-              setCheck(false),
               setFormErrorChangePass("");
           }}
           className="flex items-end top-5 right-7"
