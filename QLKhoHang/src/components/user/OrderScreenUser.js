@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import {
   AntDesign,
   Ionicons,
-  MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 
 import {
@@ -21,35 +21,29 @@ import {
 } from "react-native";
 
 export default function OrderScreenUser({ navigation }) {
-  const { orderListUser, ListOrder, setIdOrder, userInfo, SearchOrder } =
-    useContext(AuthContext);
+  const {
+    orderListUser,
+    ListOrder,
+    setIdOrder,
+    userInfo,
+    SearchOrder,
+    DeleteOrderUser,
+  } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // console.log(ListOrder);
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
   }, []);
 
   const FlatListData = (item) => {
-    // if (
-    //   ListOrder === "" ||
-    //   item.TenKhoHang.toLowerCase().includes(ListOrder.toLowerCase())
-    // ) {
     return (
       <Pressable
+      className="shadow-2xl mt-1 bg-white m-2"
         onPress={() => {
           setIdOrder(item._id), navigation.navigate("SeeOrderDetails");
         }}
       >
-        {/* <Text>{console.log(item._id)}</Text> */}
-        <View className="p-1" style={AppStyle.StyleOderList.item}>
-          {/* <View style={AppStyle.StyleOderList.leftItem}>
-              <Text style={AppStyle.StyleOderList.text}>{item.TenKhoHang}</Text>
-              <Image
-                source={{ uri: item.AnhKhoHang }}
-                style={{ width: 60, height: 60, borderRadius: 50 }}
-              />
-            </View> */}
+        <View className="" style={AppStyle.StyleOderList.item}>
           <View>
             <View className="flex flex-row">
               <Text
@@ -58,7 +52,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Đơn Hàng:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial text-base">
                 {" "}
                 {item.name}
               </Text>
@@ -70,7 +64,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Chủ Kho:
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {" "}
                 {item.owner.username}
               </Text>
@@ -82,7 +76,7 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Tên Khách Hàng:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.user.username}
               </Text>
             </View>
@@ -93,29 +87,33 @@ export default function OrderScreenUser({ navigation }) {
               >
                 Thời Gian Thuê:{" "}
               </Text>
-              <Text className="flex-initial text-white text-base">
+              <Text className="flex-initial  text-base">
                 {item.rentalTime}
               </Text>
             </View>
-            {/* <Text style={AppStyle.StyleOderList.text}>LuuLuong: {item.LuuLuongHangHoa}</Text> */}
           </View>
-          {/* <TouchableOpacity
-            className="top-7 text-center bg-red-600 rounded-xl h-8 p-1"
-            // onPress={() => {
-            //   deleteOrderListOwner()
-            // }}
-          >
-            <Text className="text-sm font-bold text-white">
-              Hủy Don 
-            </Text>
-          </TouchableOpacity> */}
         </View>
-        {/* <Pressable className="absolute right-0 ">
-        <MaterialCommunityIcons name="delete-circle-outline" size={24} color="black" />
-        </Pressable> */}
+        <Pressable
+          onPress={() => {
+            Alert.alert(
+              "",
+              "Are you sure you want to delete?",
+              [
+                {
+                  text: "Cancel", 
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => DeleteOrderUser(userInfo.others._id,item._id) },
+              ],
+              { cancelable: false }
+            );
+          }}
+          className="absolute right-5 top-10"
+        >
+          <MaterialIcons name="delete" size={34} color="red" />
+        </Pressable>
       </Pressable>
     );
-    // }
   };
 
   return (
@@ -145,65 +143,11 @@ export default function OrderScreenUser({ navigation }) {
             />
           </View>
           <Pressable style={AppStyle.StyleOderList.listFilter}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={AppStyle.StyleOderList.centeredView}>
-                <Pressable
-                  style={[AppStyle.StyleOderList.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Ionicons
-                    name="close-outline"
-                    size={35}
-                    color="#000"
-                    style={AppStyle.StyleOderList.textStyle}
-                  />
-                </Pressable>
-                <View style={AppStyle.StyleOderList.modalView}>
-                  {/* <View style={AppStyle.StyleOderList.modalView_1}>
-                <Text>Loc Don Hang Theo Kho Hang</Text>
-                <FlatList
-                  data={warehouseList}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      // onChange={() => {
-                      //   warehouseFilter(item.id);
-                      // }}
-                      style={[AppStyle.StyleOderList.text, { margin: 5 }]}
-                    >
-                      <Text>{AppStyle.StyleOderList.kho}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-              <View style={AppStyle.StyleOderList.modalView_2}>
-                <Text>Loc Don Hang Theo Thang - tuan</Text>
-
-                <TouchableOpacity>
-                  <Text
-                    style={AppStyle.StyleOderList.Fliter}
-                    >Loc Theo Thang</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={AppStyle.StyleOderList.Fliter}>
-                  <Text>Loc Theo Tuan </Text>
-                </TouchableOpacity>
-              </View> */}
-                </View>
-              </View>
-            </Modal>
             <Ionicons
               style={AppStyle.StyleOderList.iconFilter}
               name="options-outline"
               size={30}
-              color="#000"
+              color="#16247d"
               onPress={() => setModalVisible(true)}
             />
           </Pressable>
@@ -221,7 +165,7 @@ export default function OrderScreenUser({ navigation }) {
               Đơn chưa hoàn thành
             </Text>
           </Pressable>
-          <Text style={{ borderWidth: 0.5 }}></Text>
+          <Text style={{ borderWidth: 0.5 ,backgroundColor:"#16247d" }}></Text>
           <Pressable
             style={AppStyle.StyleOderList.button}
             onPress={() => Alert.alert("Left button pressed")}
@@ -242,14 +186,14 @@ export default function OrderScreenUser({ navigation }) {
           />
         </View>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {
           navigation.navigate("AddOrderScreen");
         }}
       >
         <AntDesign name="pluscircleo" size={48} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 }

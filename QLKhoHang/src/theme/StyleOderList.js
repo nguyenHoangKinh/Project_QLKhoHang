@@ -12,23 +12,20 @@ const StyleOderList = StyleSheet.create({
     color: "balck",
   },
   text: {
-    color: "#06bcee",
     fontSize: 18,
     fontWeight: "600",
     lineHeight: 21,
     letterSpacing: 0.25,
-    opacity: 1,
   },
   //FlatList
   item: {
-    backgroundColor: "#2a53c5",
     flexDirection: "row",
     height: 100,
     margin: 10,
     borderRadius: 10,
   },
   boxesList: {
-    // backgroundColor:"red"
+    paddingBottom: 200
   },
   //boxes
   leftItem: {
@@ -103,10 +100,12 @@ const StyleOderList = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   modalView: {
     width: "90%",
-    height: "40%",
+    height: 500,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
@@ -114,7 +113,7 @@ const StyleOderList = StyleSheet.create({
   },
   buttonClose: {
     width: "10%",
-    left: 150,
+    left: 160,
   },
   modalView_1: {
     height: "50%",
