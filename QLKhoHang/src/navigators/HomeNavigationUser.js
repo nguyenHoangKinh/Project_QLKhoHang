@@ -3,12 +3,17 @@ import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ListBlogPost from "../components/ListBlogPost";
 import ProfileScreen from "../components/ProfileScreen";
-import OrderScreenUser from "../components/user/OrderScreenUser";
+import OrderScreenUser from "./TabOrderUser";
 import StatisticsScreen from "../components/StatisticsScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome,MaterialCommunityIcons,FontAwesome5,Entypo } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  FontAwesome5,
+  Entypo,
+} from "@expo/vector-icons";
 import ListWareUser from "../components/user/ListWareUser";
 
 const HomeNavigationUser = () => {
@@ -57,7 +62,7 @@ const HomeNavigationUser = () => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Entypo
-                  name={ focused ? "text-document-inverted" : "text-document"}
+                  name={focused ? "text-document-inverted" : "text-document"}
                   size={24}
                   color={focused ? "#16247d" : "#16247d"}
                 />
@@ -85,11 +90,7 @@ const HomeNavigationUser = () => {
                   borderRadius: Platform.OS == "ios" ? 25 : 30,
                 }}
               >
-                <Entypo
-                  name="home"
-                  size={24}
-                  color="#fff"
-                />
+                <Entypo name="home" size={24} color="#fff" />
               </View>
             );
           },
@@ -104,7 +105,11 @@ const HomeNavigationUser = () => {
             return (
               <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <MaterialCommunityIcons
-                  name={focused ? "message-processing" : "message-processing-outline"}
+                  name={
+                    focused
+                      ? "message-processing"
+                      : "message-processing-outline"
+                  }
                   size={24}
                   color={focused ? "#16247d" : "#16247d"}
                 />

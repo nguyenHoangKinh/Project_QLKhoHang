@@ -72,16 +72,23 @@ const ListBlogPost = ({ navigation }) => {
               </View>
             </View>
             <View className="flex p-2">
+            <Text className="pt-1 text-base">
+                  Diện tích: {item.warehouse.capacity}
+                </Text>
               <View className="flex-row">
-              <Text className="pt-1 text-base">Diện tích: {item.warehouse.capacity}</Text>
-              <View className="flex-row pt-1 absolute right-0">
-                <TouchableOpacity>
-                  <FontAwesome5 name="map-marker-alt" size={24} color="red" />
-                </TouchableOpacity>
-                <Text className="pl-2">{item.warehouse.address}</Text>
+                <Text className="pt-1 text-base">
+                {item.warehouse.capacity}
+                </Text>
+                <View className="flex-row pt-1 absolute right-0">
+                  <TouchableOpacity>
+                    <FontAwesome5 name="map-marker-alt" size={24} color="red" />
+                  </TouchableOpacity>
+                  <Text className="pl-2">{item.warehouse.address}</Text>
+                </View>
               </View>
-              </View>
-              <Text className="text-red-600 text-lg" style={styles.title}>Giá:~{item.warehouse.monney}</Text>
+              <Text className="text-red-600 text-lg" style={styles.title}>
+                Giá:~{item.warehouse.monney}
+              </Text>
             </View>
           </View>
         </Pressable>
@@ -89,7 +96,7 @@ const ListBlogPost = ({ navigation }) => {
     );
   };
   return (
-    <View className="flex-auto h-full">
+    <View className="flex h-full">
       <View className="w-full mb-3" style={AppStyle.StyleOderList.header}>
         <View className="h-8" style={AppStyle.StyleOderList.searchBar}>
           <Ionicons
@@ -123,12 +130,21 @@ const ListBlogPost = ({ navigation }) => {
           />
         </Pressable>
       </View>
-      <FlatList
-        className="mb-6"
-        data={listBlog}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListBlog(item)}
-      />
+      {listBlog != "" ? (
+        <FlatList
+          className="mb-6"
+          data={listBlog}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListBlog(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1/2"
+          style={{ color: "#16247d" }}
+        >
+          Không có Dơn Hàng!
+        </Text>
+      )}
     </View>
   );
 };
@@ -152,7 +168,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
-    fontSize: 19  ,
+    fontSize: 19,
     fontWeight: "500",
     marginTop: 10,
   },
