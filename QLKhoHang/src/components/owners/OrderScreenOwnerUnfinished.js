@@ -113,11 +113,15 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
 
   return (
     <>
-      <FlatList
+    {ListOrder != "" ? 
+    <FlatList
         data={ListOrder}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />
+      : 
+      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
+    }
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {

@@ -26,7 +26,7 @@ export default function OrderScreenUserComplete({ navigation }) {
     DeleteOrderUser,
   } = useContext(AuthContext);
   // console.log(ListOrderTrue);
-  console.log(ListOrder);
+  // console.log(ListOrder);
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
@@ -95,11 +95,15 @@ export default function OrderScreenUserComplete({ navigation }) {
 
   return (
     <>
+    {ListOrder != "" ? 
       <FlatList
         data={ListOrder}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />
+      : 
+      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
+    }
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {

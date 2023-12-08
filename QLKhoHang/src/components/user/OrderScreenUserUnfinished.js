@@ -26,7 +26,7 @@ export default function OrderScreenUserUnfinished({ navigation }) {
     DeleteOrderUser,
   } = useContext(AuthContext);
   // const [modalVisible, setModalVisible] = useState(false);
-  const [listOrderFalse, setListOrderFalse] = useState([]);
+  // const [listOrderFalse, setListOrderFalse] = useState([]);
   // console.log(ListOrder);
   // function checkListOrder() {
   //   for (let i = 0; i < ListOrder.length; i++) {
@@ -105,11 +105,15 @@ export default function OrderScreenUserUnfinished({ navigation }) {
 
   return (
     <>
+    {ListOrder != "" ? 
       <FlatList
         data={ListOrder}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />
+      : 
+      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
+    }
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {

@@ -35,7 +35,7 @@ export default TabOrderOwner = () => {
               if (text.length > 0) {
                 SearchOrder(text);
               } else {
-                orderListUser(userInfo.accessToken);
+                orderListOwner(userInfo.accessToken);
               }
             }}
           />
