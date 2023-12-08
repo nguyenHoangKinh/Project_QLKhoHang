@@ -35,7 +35,6 @@ export default function OrderScreenUserUnfinished({ navigation }) {
   //     }
   //   }
   // }
-  console.log(ListOrder);
   useEffect(() => {
     // call api
     orderListUser(userInfo.accessToken);
