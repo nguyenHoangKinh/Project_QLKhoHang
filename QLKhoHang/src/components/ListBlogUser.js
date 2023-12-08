@@ -40,7 +40,7 @@ const ListBlogPost = ({ navigation }) => {
           className=" rounded "
           style={styles.container}
           onPress={() => {
-            navigation.navigate("DetaiBlogPost"),
+            navigation.navigate("DetaiBlogUser"),
               setDetailBlogListCommnetsId(item._id),
               setModalVisibleComment(false),
               setShowImgBlog([]),

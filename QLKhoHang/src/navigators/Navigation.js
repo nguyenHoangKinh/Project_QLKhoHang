@@ -15,7 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigationOwner from "./HomeNavigationOwner";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import DetaiBlogPost from "../components/DetaiBlogPost";
+import DetaiBlogUser from "../components/DetaiBlogUser";
 import OrderScreenUser1 from "../components/user/OrderScreenUserUnfinished";
 import OrderScreenUser2 from "../components/user/OrderScreenUserComplete";
 import SeeWarehouseDetails from "../components/user/DetailOrderUser";
@@ -199,8 +199,8 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="DetaiBlogPost"
-          component={DetaiBlogPost}
+          name="DetaiBlogUser"
+          component={DetaiBlogUser}
           options={{ headerShown: false }}
         />
         <Stack.Screen

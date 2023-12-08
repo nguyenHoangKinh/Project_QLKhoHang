@@ -150,24 +150,27 @@ export default function DetaiBlogPost({ route, navigation }) {
     return (
       <View className="flex flex-row bg-slate-200 m-2 rounded-lg text-left p-2">
         <View style={{ width: "10%" }}>
-        <View className="flex-row absolute w-8 h-8" style={{top:-20, left:-12}}>
-          <Image
-            className="w-full h-full rounded-full"
-            source={{
-              uri: `${item.account.avatar}`
-            }}
-          />
-        <Text
-            style={{
-              fontSize: 9,
-              color: "black",
-              width:100
-            }}
-            className=" top-3 left-1"
+          <View
+            className="flex-row absolute w-8 h-8"
+            style={{ top: -20, left: -12 }}
           >
-            {item.account.username}
-          </Text>
-        </View>
+            <Image
+              className="w-full h-full rounded-full"
+              source={{
+                uri: `${item.account.avatar}`,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 9,
+                color: "black",
+                width: 100,
+              }}
+              className=" top-3 left-1"
+            >
+              {item.account.username}
+            </Text>
+          </View>
         </View>
         <View className="top-1" style={{ width: "70%" }}>
           <Text className="">{item.content}</Text>
@@ -433,11 +436,20 @@ export default function DetaiBlogPost({ route, navigation }) {
                   Bình luận
                 </Text>
               </View>
-              <FlatList
-                data={listCommnets}
-                // keyExtractor={(item) => String(item)}
-                renderItem={({ item, index }) => FlatListComment(item, index)}
-              />
+              {listCommnets != "" ? (
+                <FlatList
+                  data={listCommnets}
+                  // keyExtractor={(item) => String(item)}
+                  renderItem={({ item, index }) => FlatListComment(item, index)}
+                />
+              ) : (
+                <Text
+                  className="flex text-center text-lg font-bold top-1/2"
+                  style={{ color: "#16247d" }}
+                >
+                  Không có Dơn Hàng!
+                </Text>
+              )}
             </View>
             <View className="w-full  mb-3 flex-row border-t-2 border-indigo-500">
               <View className="" style={{ width: "92%" }}>
