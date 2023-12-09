@@ -57,7 +57,7 @@ const HomeNavigation = () => {
                 <MaterialCommunityIcons
                   name="account-cancel"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Acc Not Active
@@ -88,7 +88,7 @@ const HomeNavigation = () => {
                 <Entypo
                   name="home"
                   size={24}
-                  color={focused ? "#111" : "#fff"}
+                  color="#fff"
                 />
               </View>
             );
@@ -123,7 +123,7 @@ const HomeNavigation = () => {
                 <Entypo
                   name="user"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>Profile</Text>
               </View>

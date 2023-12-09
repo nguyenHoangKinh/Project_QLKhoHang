@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text,  } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from "expo-document-picker";
 import { useRoute } from '@react-navigation/native';
@@ -14,29 +14,32 @@ export default function UploadImageProfile({ navigation }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const route = useRoute();
   const image = route.params?.selectedImage;
-  
-  // const pickImageAsync = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   if (!result.canceled) {
-  //     setSelectedImage(result.assets[0].uri);
-  //   } else {
-  //     alert("You did not select any image.");
-  //   }
-  // };
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     
     if (!result.canceled) {
       setSelectedImage(result);
+      console.log(result)
     } else {
       alert("You did not select any image.");
     }
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+    })
+     
+    if (!result.canceled) {
+      setSelectedImage(result);
+      console.log(result.base64)
+    }
+}
 
   return (
     <View style={AppStyle.StyleImageUpload.container}>
@@ -44,7 +47,7 @@ export default function UploadImageProfile({ navigation }) {
         <ImageViewer placeholderImageSource={PlaceholderImage} selectedImage={selectedImage ? selectedImage.assets[0].uri : image} />
       </View>
       <View style={AppStyle.StyleImageUpload.footerContainer}>
-        <Button theme="primary" label="Choose a photo" onPress={pickDocument} />
+        <Button theme="primary" label="Choose a photo" onPress={pickImage} />
         <TouchableOpacity label="Use this photo" onPress={
           () => navigation.navigate('EditProfileScreen', { nameImage: selectedImage })
         }>

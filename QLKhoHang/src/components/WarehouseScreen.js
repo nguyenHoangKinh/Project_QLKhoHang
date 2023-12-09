@@ -31,7 +31,7 @@ const TodoScreen = ({ navigation }) => {
           logout()
         }
       });
-  }, []);
+  }, [warehouse]);
 
   // Handle Delete
   const handleDeleteTodo = (id) => {
@@ -46,7 +46,7 @@ const TodoScreen = ({ navigation }) => {
           },
         }
       ).then((res) => {
-        navigation.navigate("Home");
+        alert("Xóa thành công");
       }).catch((e) => {
         console.log(`delete warehouse error ${e.res}`);
       });
@@ -89,8 +89,9 @@ const TodoScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <IconButton
+          style={{marginLeft: -10}}
           icon="pencil"
-          iconColor="#fff"
+          iconColor="#000"
           onPress={() => {
             navigation.navigate("UpdateWarehouseScreen", {
               idWarehouse: item._id,
@@ -98,8 +99,9 @@ const TodoScreen = ({ navigation }) => {
           }}
         />
         <IconButton
+        style={{marginLeft: -15, marginRight: -10}}
           icon="trash-can"
-          iconColor="#fff"
+          iconColor="#000"
           onPress={() => handleDeleteTodo(item._id)}
         />
       </View>
@@ -123,7 +125,6 @@ const TodoScreen = ({ navigation }) => {
       <TextInput
         style={AppStyle.StyleWarehouse.search}
         placeholder="Tìm kiếm"
-        // value={userInput}
         onChangeText={(text) => {
           handleSearch(text);
         }}

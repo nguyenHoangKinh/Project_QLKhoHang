@@ -7,13 +7,14 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
 export default function ChangePasswordScreen({ navigation }) {
+  const [currentPasswords, setCurrentPasswords] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isShowCurrentPasswords, setIsShowCurrentPasswords] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
-  const { isLoading, changePassword, formErrorChangePass, check, setCheck } =
+  const { isLoading, changePassword, formErrorChangePass, } =
     useContext(AuthContext);
-  // console.log(check);
   return (
     <View
       className="flex-1 bg-white"
@@ -46,9 +47,26 @@ export default function ChangePasswordScreen({ navigation }) {
         {formErrorChangePass && (
           <Text className="text-yellow-950  mr-3">{formErrorChangePass}</Text>
         )}
-        {check ? navigation.navigate("ProfileScreen") : ""}
         <View className="form space-y-2">
-          <Text className="text-gray-700 ml-2 w-55 ">Password</Text>
+          <Text className="text-gray-700 ml-2 w-55 ">Nhập lại mật khẩu cũ</Text>
+          <View className="flex flex-row relative">
+            <TextInput
+              className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 w-full"
+              value={currentPasswords}
+              onChangeText={(text) => setCurrentPasswords(text)}
+              placeholder="Enter ol Password"
+              secureTextEntry={isShowCurrentPasswords ? false : true}
+            />
+            <View className="absolute right-6 top-4">
+              <Feather
+                name={isShowCurrentPasswords === true ? "eye" : "eye-off"}
+                size={24}
+                color="black"
+                onPress={() => setIsShowCurrentPasswords(!isShowCurrentPasswords)}
+              />
+            </View>
+            </View>
+          <Text className="text-gray-700 ml-2 w-55 ">Nhập mật khẩu mới</Text>
           <View className="flex flex-row relative">
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-1.5 w-full"
@@ -66,7 +84,7 @@ export default function ChangePasswordScreen({ navigation }) {
               />
             </View>
           </View>
-          <Text className="text-gray-700 ml-2 w-55 ">ConfirmPassword</Text>
+          <Text className="text-gray-700 ml-2 w-55 ">Nhập lại mật khẩu mới</Text>
           <View className="flex flex-row relative">
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2 w-full"
@@ -89,8 +107,8 @@ export default function ChangePasswordScreen({ navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              changePassword(password, confirmPassword),
-                setCheck(false),
+              changePassword(currentPasswords,password, confirmPassword),
+              setCurrentPasswords("")
                 setPassword(""),
                 setConfirmPassword("");
             }}
