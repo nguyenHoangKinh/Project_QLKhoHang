@@ -147,6 +147,7 @@ export default function DetaiBlogPost({ route, navigation }) {
   };
   const FlatListComment = (item, index) => {
     // setIndex(index + 1);
+    // console.log(item);
     return (
       <View className="flex flex-row bg-slate-200 m-2 rounded-lg text-left p-2">
         <View style={{ width: "10%" }}>
@@ -184,24 +185,31 @@ export default function DetaiBlogPost({ route, navigation }) {
             {formatTime(item.createdAt)}
           </Text>
         </View>
-        <View className="flex-row justify-self-center" style={{ width: "10%" }}>
-          <TouchableOpacity
-            onPress={() => {
-              DeleteItemComment(item._id, item.account._id);
-            }}
+        {item.account._id == userInfo.others._id ? (
+          <View
+            className="flex-row justify-self-center"
+            style={{ width: "10%" }}
           >
-            <MaterialIcons name="delete" size={24} color="red" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="relative left-2"
-            onPress={() => {
-              setIdCommentUpdata(item);
-              setModalVisibleUpdateTextComment(true);
-            }}
-          >
-            <MaterialCommunityIcons name="pencil" size={24} color="blue" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={() => {
+                DeleteItemComment(item._id, item.account._id);
+              }}
+            >
+              <MaterialIcons name="delete" size={24} color="red" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="relative left-2"
+              onPress={() => {
+                setIdCommentUpdata(item);
+                setModalVisibleUpdateTextComment(true);
+              }}
+            >
+              <MaterialCommunityIcons name="pencil" size={24} color="blue" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          ""
+        )}
       </View>
     );
   };
@@ -447,7 +455,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                   className="flex text-center text-lg font-bold top-1/2"
                   style={{ color: "#16247d" }}
                 >
-                  Không có Dơn Hàng!
+                  Không có bình luận!
                 </Text>
               )}
             </View>

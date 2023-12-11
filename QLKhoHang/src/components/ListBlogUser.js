@@ -142,7 +142,7 @@ const ListBlogPost = ({ navigation }) => {
           className="flex text-center text-lg font-bold top-1/2"
           style={{ color: "#16247d" }}
         >
-          Không có Dơn Hàng!
+          Không có Bài đăng!
         </Text>
       )}
     </View>
