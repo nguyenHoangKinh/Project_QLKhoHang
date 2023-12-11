@@ -8,19 +8,21 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] = useState(false);
+  const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] =
+    useState(false);
+  const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkDetail, setCheckDetail] = useState(false);
+  const [checkUpdate, setCheckUpdate] = useState(false);
+  const [checkSignUp, setCheckSignUp] = useState(false);
+  const [checkAddOrder, setCheckAddOrder] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [warehouse, setWarehouse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
-  const [checkSignUp, setCheckSignUp] = useState(false);
   const [formError, setFormError] = useState({});
-  const [checkUpdate, setCheckUpdate] = useState(false);
   const [ListOrder, setListOrder] = useState({});
-  const [IdOrder, setIdOrder] = useState({});
+  // const [idDetai, setIdOrder] = useState({});
+  const [OrderItem, setOrderItem] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
   const [list, setListWare] = useState({});
   const [listBlog, setListBlog] = useState({});
@@ -35,7 +37,6 @@ export const AuthProvider = ({ children }) => {
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
   // console.log(userInfo);
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", numberLikes);
   const signUP = (
     usernames,
     passwords,
@@ -172,7 +173,6 @@ export const AuthProvider = ({ children }) => {
         setListBlog({});
         setListWare({});
         setDetailOrder({});
-        setIdOrder({});
         setListOrder({});
         setCheckUpdate(false);
         setFormError({});
@@ -181,8 +181,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
         setCheckDetail(false);
         setCheck(false);
-        setModalVisible(false);
-        setModalVisible(false);
         setCheckValueSignUp(false);
         setIsLoading(false);
       })
@@ -271,13 +269,15 @@ export const AuthProvider = ({ children }) => {
         }
       });
   };
-  const changePassword = (passwords, confirmPasswords) => {
+  const changePassword = (currentPasswords, passwords, confirmPasswords) => {
+    // console.log(currentPasswords,passwords, confirmPasswords);
     setFormErrorChangePass("");
     setIsLoading(true);
     axios
       .put(
         `${BASE_URL}/change-password?id=${userInfo._id}`,
         {
+          currentPassword: currentPasswords,
           password: passwords,
           confirmPassword: confirmPasswords,
         },
@@ -291,26 +291,19 @@ export const AuthProvider = ({ children }) => {
         let password = res.data;
         // console.log(password);
         alert(password.message);
-        setCheck(true);
         setFormErrorChangePass("");
         setIsLoading(false);
       })
       .catch((e) => {
         // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
-        setCheck(false);
         setIsLoading(false);
-        if (e.response.data.success === false) {
-          alert("bạn đã hết hạng đăng nhập");
-          logout();
-        }
       });
   };
 
   const orderListUser = (Token) => {
-    setListOrder({});
     setIsLoading(true);
-    if (IdOrder && userInfo.accessToken) {
+    if (userInfo.accessToken) {
       axios
         .get(
           `${ORDER_URL}/order/listOrderByUser?id_user=${userInfo.others._id}`,
@@ -328,7 +321,7 @@ export const AuthProvider = ({ children }) => {
         .catch((e) => {
           // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
-          if (e.response.data.success === false) {
+          if (e.responsxe.data.success === false) {
             alert(e.response.data.message);
             logout();
           }
@@ -340,9 +333,6 @@ export const AuthProvider = ({ children }) => {
   const orderListOwner = (Token) => {
     setIsLoading(true);
     if (Token) {
-      setListOrder({});
-      // console.log(userInfo.others._id);
-      // console.log(Token);
       axios
         .get(
           `${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}`,
@@ -370,12 +360,12 @@ export const AuthProvider = ({ children }) => {
       alert("error access token undefined");
     }
   };
-  const OrderDetail = () => {
-    // console.log(IdOrder);
+  const OrderDetail = (id) => {
+    setListOrder({});
     setIsLoading(true);
-    if (IdOrder && userInfo.accessToken) {
+    if (id && userInfo.accessToken) {
       axios
-        .get(ORDER_URL + `/order/getAOrder?id=${IdOrder}`, {
+        .get(ORDER_URL + `/order/getAOrder?id=${id}`, {
           headers: {
             Authorization: `Bearer ${userInfo.accessToken} `,
           },
@@ -403,7 +393,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const SearchOrder = (Name) => {
-    setListOrder({});
+    console.log(Name);
+    // setListOrder({});
     setIsLoading(true);
     axios
       .get(ORDER_URL + `/order/searchOrder?name=${Name}`, {
@@ -414,6 +405,7 @@ export const AuthProvider = ({ children }) => {
       .then((res) => {
         if (res && res.data) {
           let Detail = res.data.Order;
+          console.log(Detail);
           setListOrder(Detail);
           setCheck(true);
         }
@@ -519,16 +511,16 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data.data) {
             setDetailBlog(res.data.data);
             if (res.data.data.images) {
-                setShowImgBlog([{ uri: res.data.data.images[0] }]);
+              setShowImgBlog([{ uri: res.data.data.images[0] }]);
             } else {
               setShowImgBlog();
             }
-            
+
             if (res.data.data.comments != "") {
               for (let i = 0; i < res.data.data.comments.length; i++) {
                 setIndex(i + 1);
               }
-            }else{
+            } else {
               setIndex(0);
             }
             if (res.data.data.likes != "") {
@@ -538,7 +530,7 @@ export const AuthProvider = ({ children }) => {
                   setNumberLike(1);
                 }
               }
-            }else{
+            } else {
               setNumberLikes(0);
               setNumberLike(0);
             }
@@ -555,6 +547,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListComments = () => {
+    console.log(detailBlogListCommnetsId);
     if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
         .get(
@@ -594,6 +587,7 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data.data) {
             // console.log(res.data);
             ListComments();
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -603,18 +597,17 @@ export const AuthProvider = ({ children }) => {
       alert("load binh luan that bai!");
     }
   };
-  const DeleteTextCommentUser = (IdComment) => {
-    // console.log(IdComment);
-    if (userInfo.accessToken && IdComment) {
+  const DeleteTextCommentUser = (id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id) {
       axios
-        .delete(ORDER_URL + `/blog/comment/delete?idComment=${IdComment}`, {
+        .delete(ORDER_URL + `/blog/comment/delete?idComment=${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
           if (res && res.data) {
-            alert(res.data.message);
-            setModalVisible(false);
             ListComments();
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -622,27 +615,29 @@ export const AuthProvider = ({ children }) => {
           console.log(e.response.data.message);
         });
     } else {
-      alert("load binh luan that bai!");
+      alert("Xoa binh luan that bai!");
     }
   };
-  const UpdataTextCommentUser = (contens,IdComment) => {
-    console.log(contens,IdComment);
-    if (userInfo.accessToken && IdComment) {
+  const UpdataTextCommentUser = (contens, id) => {
+    // console.log(contens,id);
+    if (userInfo.accessToken && id) {
       axios
-        .put(ORDER_URL + `/blog/comment/update?idComment=${IdComment}`, 
-        {
-          content: contens,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-        })
+        .put(
+          ORDER_URL + `/blog/comment/update?idComment=${id}`,
+          {
+            content: contens,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
         .then((res) => {
           if (res && res.data) {
             alert(res.data.message);
             setModalVisibleUpdateTextComment(false);
-            setModalVisible(false);
+            // setModalVisibleComment(false);
             ListComments();
-            DetailBlog()
+            DetailBlog();
           }
         })
         .catch((e) => {
@@ -665,7 +660,7 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            console.log(res.data.blog);
+            // console.log(res.data.blog);
             if (res.data.blog.likes != "") {
               for (let i = 0; i < res.data.blog.likes.length; i++) {
                 setNumberLikes(i + 1);
@@ -675,7 +670,7 @@ export const AuthProvider = ({ children }) => {
                   setNumberLike(0);
                 }
               }
-            } else if(res.data.blog.likes == "") {
+            } else if (res.data.blog.likes == "") {
               setNumberLikes(0);
               setNumberLike(0);
             }
@@ -734,6 +729,7 @@ export const AuthProvider = ({ children }) => {
         modalVisibleUpdateTextComment,
         detailBlogListCommnetsId,
         formErrorChangePass,
+        modalVisibleComment,
         checkValueSignUp,
         formErrorLogin,
         splashLoading,
@@ -741,7 +737,6 @@ export const AuthProvider = ({ children }) => {
         DetailOrder,
         checkSignUp,
         listCommnets,
-        modalVisible,
         ListOrder,
         numberLikes,
         checkDetail,
@@ -749,13 +744,13 @@ export const AuthProvider = ({ children }) => {
         numberLike,
         detailBlog,
         formError,
+        OrderItem,
         isLoading,
-        warehouse,
         visible,
         index,
         listBlog,
         userInfo,
-        IdOrder,
+        // IdOrder,
         check,
         list,
         login,
@@ -768,11 +763,9 @@ export const AuthProvider = ({ children }) => {
         ListBlog,
         LikeBlog,
         setIsVisible,
-        setModalVisible,
         setNumberLikes,
         setNumberLike,
         getProfile,
-        setIdOrder,
         DetailBlog,
         ListComments,
         setListWare,
@@ -791,6 +784,7 @@ export const AuthProvider = ({ children }) => {
         DeleteOrderOwner,
         UpdataTextCommentUser,
         DeleteTextCommentUser,
+        setModalVisibleComment,
         setFormErrorChangePass,
         setDetailBlogListCommnetsId,
         setModalVisibleUpdateTextComment,

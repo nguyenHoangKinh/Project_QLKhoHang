@@ -87,7 +87,6 @@ export default function ProfileScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ChangePasswordScreen"),
-              setCheck(false),
               setFormErrorChangePass("");
           }}
           className="flex items-end top-5 right-7"

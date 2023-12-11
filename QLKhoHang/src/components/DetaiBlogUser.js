@@ -24,15 +24,13 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
-import BottomSheet from "react-native-simple-bottom-sheet";
+// import BottomSheet from "react-native-simple-bottom-sheet";
 export default function DetaiBlogPost({ route, navigation }) {
   const {
     DetailBlog,
     detailBlog,
     showImgBlog,
-    modalVisible,
     setShowImgBlog,
-    setModalVisible,
     visible,
     userInfo,
     LikeBlog,
@@ -48,79 +46,86 @@ export default function DetaiBlogPost({ route, navigation }) {
     setNumberLike,
     setNumberLikes,
     numberLikes,
+    modalVisibleComment,
     UpdataTextCommentUser,
     detailBlogListCommnetsId,
     DeleteTextCommentUser,
+    setModalVisibleComment,
     modalVisibleUpdateTextComment,
     setModalVisibleUpdateTextComment,
   } = useContext(AuthContext);
   const [imageView, setImageView] = useState("");
-
-  const [idComment, setIdComment] = useState("");
+  const [idCommentUpdata, setIdCommentUpdata] = useState("");
   const [message, setMessage] = useState("");
   const [textCommnetUpdate, setTextCommnetUpdate] = useState("");
-  const [messagedate, setMessagedate] = useState("");
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   // const { itemId } = route.params;
-  const panelRef = useRef(null);
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", idComment);
+  // const panelRef = useRef(null);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", idCommentUpdata);
 
   useEffect(() => {
     DetailBlog();
-    ListComments();
   }, []);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
   const pustTextComment = () => {
-    pustComments(message, detailBlogListCommnetsId);
+    pustComments(message);
     setMessage("");
   };
-  const checkModel = (item) => {
-    console.log(item);
-    if (item === userInfo.others._id) {
-      setModalVisible(true)
-    } else {
-      alert("bạn không thể chỉnh sửa bình luận của người khác!")
-    }
-  }
-  const DeleteItemComment = () => {
-    Alert.alert(
-      "",
-      "Bạn có chất là muốn xóa bình luận này?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => {
-            navigation.navigate("DetaiBlogPost"), setIdComment("");
-          },
-          style: "cancel",
-        },
-        { text: "OK", onPress: () => DeleteTextCommentUser(idComment) },
-      ],
-      { cancelable: false }
-    );
-  };
-  const UpdataItemComment = () => {
-    if (textCommnetUpdate == "") {
-      alert("bạn chưa nhập văn bản !");
-    } else {
+  const DeleteItemComment = (idComment, id) => {
+    if (id === userInfo.others._id) {
       Alert.alert(
         "",
-        "bạn có chất là muốn sửa bình luận này?",
+        "Bạn có chất là muốn xóa bình luận này?",
         [
           {
             text: "Cancel",
             onPress: () => {
-              navigation.navigate("DetaiBlogPost"), setIdComment("");
+              navigation.navigate("DetaiBlogPost");
             },
             style: "cancel",
           },
-          { text: "OK", onPress: () => UpdataTextCommentUser(textCommnetUpdate, idComment) },
+          { text: "OK", onPress: () => DeleteTextCommentUser(idComment) },
         ],
         { cancelable: false }
       );
+    } else {
+      alert("bạn không thể chỉnh sửa bình luận của người khác!");
+    }
+  };
+  const UpdataItemComment = () => {
+    if (idCommentUpdata) {
+      if (idCommentUpdata.account._id === userInfo.others._id) {
+        if (textCommnetUpdate == "") {
+          alert("bạn chưa nhập văn bản !");
+        } else {
+          Alert.alert(
+            "",
+            "bạn có chất là muốn sửa bình luận này?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => {
+                  navigation.navigate("DetaiBlogPost");
+                },
+                style: "cancel",
+              },
+              {
+                text: "OK",
+                onPress: () =>
+                  UpdataTextCommentUser(textCommnetUpdate, idCommentUpdata._id),
+              },
+            ],
+            { cancelable: false }
+          );
+        }
+      } else {
+        alert("bạn không thể chỉnh sửa bình luận của người khác!");
+      }
+    } else {
+      alert(" cap nhat comment khong thanh cong");
     }
   };
   const FlatListData = (item, index) => {
@@ -129,7 +134,7 @@ export default function DetaiBlogPost({ route, navigation }) {
         onPress={() => {
           setcheckImageViewValue([{ uri: item }]), setImageView(item);
         }}
-        className="w-28 h-28 m-0.5"
+        className="w-28 h-28 m-0.5 p-"
       >
         <Image
           source={{
@@ -141,18 +146,37 @@ export default function DetaiBlogPost({ route, navigation }) {
     );
   };
   const FlatListComment = (item, index) => {
-    setIndex(index + 1);
+    // setIndex(index + 1);
+    // console.log(item);
     return (
-      <TouchableOpacity
-        onLongPress={() => {
-          checkModel(item.account), setIdComment(item._id);
-        }}
-      >
-        <View className="flex flex-col w-36 h-auto bg-slate-200 m-2 rounded-lg text-left p-2">
+      <View className="flex flex-row bg-slate-200 m-2 rounded-lg text-left p-2">
+        <View style={{ width: "10%" }}>
+          <View
+            className="flex-row absolute w-8 h-8"
+            style={{ top: -20, left: -12 }}
+          >
+            <Image
+              className="w-full h-full rounded-full"
+              source={{
+                uri: `${item.account.avatar}`,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 9,
+                color: "black",
+                width: 100,
+              }}
+              className=" top-3 left-1"
+            >
+              {item.account.username}
+            </Text>
+          </View>
+        </View>
+        <View className="top-1" style={{ width: "70%" }}>
           <Text className="">{item.content}</Text>
           <Text
             style={{
-              textAlign: "right",
               fontSize: 9,
               color: "gray",
               marginTop: 5,
@@ -161,22 +185,46 @@ export default function DetaiBlogPost({ route, navigation }) {
             {formatTime(item.createdAt)}
           </Text>
         </View>
-      </TouchableOpacity>
+        {item.account._id == userInfo.others._id ? (
+          <View
+            className="flex-row justify-self-center"
+            style={{ width: "10%" }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                DeleteItemComment(item._id, item.account._id);
+              }}
+            >
+              <MaterialIcons name="delete" size={24} color="red" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="relative left-2"
+              onPress={() => {
+                setIdCommentUpdata(item);
+                setModalVisibleUpdateTextComment(true);
+              }}
+            >
+              <MaterialCommunityIcons name="pencil" size={24} color="blue" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          ""
+        )}
+      </View>
     );
   };
   return (
-    <>
-      <ScrollView
-        className="flex-1 bg-white "
-        style={{ backgroundColor: themeColors.bg }}
-      >
-        <SafeAreaView className="flex h-120">
-          <View className="flex-row justify-start top-5">
+    <ScrollView
+      className="w-full h-auto bg-white "
+      style={{ backgroundColor: themeColors.bg }}
+    >
+      <View>
+        <View className=" top-4 start-50 translate-middle">
+          <View className=" flex-row w-full top-5">
             <TouchableOpacity
               onPress={() => {
                 {
                   navigation.goBack(),
-                    setIdComment(""),
                     setIndex(""),
                     setNumberLike(0),
                     setNumberLikes(0),
@@ -185,28 +233,31 @@ export default function DetaiBlogPost({ route, navigation }) {
                   setcheckImageViewValue([]), setShowImgBlog([]);
                 }
               }}
-              className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+              className="left-4 top-3"
+              style={{ width: "15%" }}
             >
-              <AntDesign name="arrowleft" size={24} color="black" />
+              <AntDesign name="arrowleft" size={30} color="#fff" />
             </TouchableOpacity>
-            <Text className="text-2xl text-center font-semibold left-20">
+            <Text
+              className="text-2xl text-center font-semibold top-2 "
+              style={{ color: "#fff", width: "70%" }}
+            >
               Thông Tin Kho
             </Text>
+            <TouchableOpacity style={{ width: "15%" }} className="top-2 ">
+              <AntDesign name="pluscircleo" size={36} color="#fff" />
+            </TouchableOpacity>
           </View>
-          <View
-            className="flex-row justify-center mt-3 mb-3"
-            style={{ width: 390, height: 70 }}
-          ></View>
-        </SafeAreaView>
-        <View className="flex-1 bg-white px-5 pt-6 pb-16 rounded-2xl">
+        </View>
+        <View className="flex w-full h-full bg-white mt-14 pb-16 ">
           {showImgBlog == "" ? (
             ""
           ) : (
-            <View className=" w-full top-12  border-solid border-2 border-sky-500 pb-1">
+            <View className=" w-full border-solid drop-shadow-xl">
               <View className="w-full h-96">
                 <TouchableOpacity
                   onPress={() => setIsVisible(true)}
-                  className="p-1 w-full "
+                  className="w-full "
                   style={{ height: 270 }}
                 >
                   <Image
@@ -240,53 +291,72 @@ export default function DetaiBlogPost({ route, navigation }) {
               onRequestClose={() => setIsVisible(false)}
             />
           )}
-          <View className="border-2 border-blue-400 mt-16">
-            <Text className="text-gray-700 ml-2 w-55 text-lg">
-              {detailBlog.description}
-            </Text>
+          <View
+            className="w-full h-3"
+            style={{ backgroundColor: "#f5f5f5" }}
+          ></View>
+          <View className=" drop-shadow-xl">
+            <Text className="text-lg ml-2">{detailBlog.description}</Text>
           </View>
-          <View className="border-2 border-blue-400 mt-1">
-            <Text className="text-gray-700 ml-2 w-55 text-lg">
+          <View
+            className="w-full h-3"
+            style={{ backgroundColor: "#f5f5f5" }}
+          ></View>
+          <View className=" mt-1">
+            <Text className="font-medium ml-2 w-55 text-2xl">
               Thông tin kho
             </Text>
-            <View className=" justify-between pt-2 pb-5">
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Mã kho:{" "}
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Tên kho: </Text>
+              <Text className="top-1">
                 {detailBlog.warehouse == null
                   ? ""
                   : detailBlog.warehouse.wareHouseName}
               </Text>
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Diện tích:{" "}
+            </View>
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Diện tích: </Text>
+              <Text className="top-1">
                 {detailBlog.warehouse == null
                   ? ""
                   : detailBlog.warehouse.capacity}
               </Text>
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Giá thuê:{" "}
+            </View>
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Giá thuê: </Text>
+              <Text className="top-1">
                 {detailBlog.warehouse == null
                   ? ""
                   : detailBlog.warehouse.monney}
               </Text>
             </View>
-            <Text className="text-gray-700 ml-2 w-55 text-lg">
+            <Text className="font-medium text-2xl ml-2 w-55 ">
               Thông tin chủ kho
             </Text>
-            <View className=" justify-between pt-2 pb-5">
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Tên chủ kho:{" "}
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Tên chủ kho: </Text>
+              <Text className="top-1">
                 {detailBlog.owner == null ? "" : detailBlog.owner.username}
               </Text>
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Email: {detailBlog.owner == null ? "" : detailBlog.owner.email}
-              </Text>
-              <Text className="text-gray-700 ml-2 w-55 ">
-                Phone: {detailBlog.owner == null ? "" : detailBlog.owner.phone}
+            </View>
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Email: </Text>
+              <Text className="top-1">
+                {detailBlog.owner == null ? "" : detailBlog.owner.email}
               </Text>
             </View>
-            <View className="flex flex-row justify-between pt-5 pb-5"></View>
+            <View className="flex-row ml-2 ">
+              <Text className="text-base font-medium">Phone: </Text>
+              <Text className="top-1">
+                {detailBlog.owner == null ? "" : detailBlog.owner.phone}
+              </Text>
+            </View>
           </View>
-          <View className="flex-row w-full h-10">
+          <View
+            className="w-full h-3"
+            style={{ backgroundColor: "#f5f5f5" }}
+          ></View>
+          <View className="flex-row w-full h-10 ml-2">
             {numberLike == 0 ? (
               <TouchableOpacity
                 onPress={() => {
@@ -309,7 +379,12 @@ export default function DetaiBlogPost({ route, navigation }) {
                 className=" flex-row "
               >
                 <View className="flex-row top-2">
-                  <AntDesign name="like1" size={24} color="blue" />
+                  <AntDesign
+                    style={{ opacity: 0.85 }}
+                    name="like1"
+                    size={24}
+                    color="#6d2bf1"
+                  />
                   <Text className="pl-1 top-1">
                     {numberLikes != 0 ? numberLikes : 0}
                   </Text>
@@ -319,7 +394,8 @@ export default function DetaiBlogPost({ route, navigation }) {
 
             <TouchableOpacity
               onPress={() => {
-                panelRef.current.togglePanel();
+                setModalVisibleComment(true);
+                ListComments();
               }}
               className="flex-row top-2.5 ml-2.5"
             >
@@ -331,97 +407,85 @@ export default function DetaiBlogPost({ route, navigation }) {
               <Text className="pl-1 ">{index == "" ? 0 : index}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity className="py-3 bg-blue-300 rounded-xl top-5">
-            <Text className="text-xl font-bold text-center text-gray-700">
+
+          <TouchableOpacity className="py-3 bg-blue-300 rounded-xl top-5 w-2/3 left-16">
+            <Text className="text-xl font-bold text-center text-white">
               Thuê Kho
             </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
-      <View className="absolute bottom-0 w-full h-96">
-        <BottomSheet
-          isOpen={visible}
-          ref={(ref) => {
-            panelRef.current = ref;
-          }}
-          sliderMinHeight={0}
-        >
-          <View style={{ width: "100%", height: 300 }} className="">
-            <View className="border-b-2 border-indigo-500">
-              <Text className="font-bold text-xl text-center ">Bình luận</Text>
-            </View>
-            <FlatList
-              data={listCommnets}
-              // keyExtractor={(item) => String(item)}
-              renderItem={({ item, index }) => FlatListComment(item, index)}
-            />
-          </View>
-          <View className="w-full h-9  mb-3 flex-row border-t-2 border-indigo-500">
-            {/* <Ionicons className="" name="send" size={23} color="black" /> */}
-            <View className="" style={{ width: "92%" }}>
-              <TextInput
-                className=" w-full h-9"
-                placeholder="nhập bình luận... "
-                value={message}
-                // clearButtonMode="always"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={(text) => setMessage(text)}
-              />
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                pustTextComment();
-              }}
-              className=" absolute right-0 top-1.5"
-            >
-              <Ionicons className="" name="send" size={23} color="black" />
-            </TouchableOpacity>
-          </View>
-        </BottomSheet>
       </View>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={modalVisibleComment}
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setModalVisibleComment(!modalVisibleComment);
         }}
       >
         <View style={AppStyle.StyleOderList.centeredView}>
           <Pressable
             style={[AppStyle.StyleOderList.buttonClose]}
             onPress={() => {
-              setModalVisible(!modalVisible), setIdComment("");
+              setModalVisibleComment(!modalVisibleComment);
             }}
           >
             <Ionicons
               name="close-outline"
               size={35}
-              color="#000"
+              color="#fff"
               style={AppStyle.StyleOderList.textStyle}
             />
           </Pressable>
           <View style={AppStyle.StyleOderList.modalView}>
-            <TouchableOpacity
-              onPress={() => DeleteItemComment()}
-              className="w-full h-10 bg-blue-500 flex flex-row items-center m-1 rounded-md"
-            >
-              <MaterialIcons name="delete" size={24} color="black" />
-              <Text>Xóa Bình Luận </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setModalVisibleUpdateTextComment(true)}
-              className="w-full h-10 bg-blue-500 flex flex-row items-center m-1 rounded-md"
-            >
-              <MaterialCommunityIcons name="pencil" size={24} color="black" />
-              <Text>Sửa Bình Luận</Text>
-            </TouchableOpacity>
+            <View style={{ width: "100%", height: 400 }}>
+              <View className="border-b-2 border-indigo-500">
+                <Text className="font-bold text-xl text-center ">
+                  Bình luận
+                </Text>
+              </View>
+              {listCommnets != "" ? (
+                <FlatList
+                  data={listCommnets}
+                  // keyExtractor={(item) => String(item)}
+                  renderItem={({ item, index }) => FlatListComment(item, index)}
+                />
+              ) : (
+                <Text
+                  className="flex text-center text-lg font-bold top-1/2"
+                  style={{ color: "#16247d" }}
+                >
+                  Không có bình luận!
+                </Text>
+              )}
+            </View>
+            <View className="w-full  mb-3 flex-row border-t-2 border-indigo-500">
+              <View className="" style={{ width: "92%" }}>
+                <TextInput
+                  className=" w-full h-9"
+                  placeholder="nhập bình luận... "
+                  value={message}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={(text) => setMessage(text)}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  {
+                    message != "" ? pustTextComment() : "";
+                  }
+                }}
+                className=" absolute right-0 top-1.5"
+              >
+                <Ionicons className="" name="send" size={23} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
       <Modal
-        animationType="slide"
+        animationType="none"
         transparent={true}
         visible={modalVisibleUpdateTextComment}
         onRequestClose={() => {
@@ -432,14 +496,13 @@ export default function DetaiBlogPost({ route, navigation }) {
           <Pressable
             style={[AppStyle.StyleOderList.buttonClose]}
             onPress={() => {
-              setModalVisibleUpdateTextComment(!modalVisibleUpdateTextComment),
-                setIdComment("");
+              setModalVisibleUpdateTextComment(!modalVisibleUpdateTextComment);
             }}
           >
             <Ionicons
               name="close-outline"
               size={35}
-              color="#000"
+              color="#fff"
               style={AppStyle.StyleOderList.textStyle}
             />
           </Pressable>
@@ -474,8 +537,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                 onPress={() => {
                   setModalVisibleUpdateTextComment(
                     !modalVisibleUpdateTextComment
-                  ),
-                    setIdComment("");
+                  );
                 }}
                 className="w-20 h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
               >
@@ -483,7 +545,9 @@ export default function DetaiBlogPost({ route, navigation }) {
                 <Text>Hủy</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => UpdataItemComment()}
+                onPress={() => {
+                  textCommnetUpdate != "" ? UpdataItemComment() : "";
+                }}
                 className="w-auto h-10 bg-blue-500 flex flex-row items-center m-1 rounded-md"
               >
                 <MaterialCommunityIcons name="pencil" size={24} color="black" />
@@ -493,6 +557,6 @@ export default function DetaiBlogPost({ route, navigation }) {
           </View>
         </View>
       </Modal>
-    </>
+    </ScrollView>
   );
 }

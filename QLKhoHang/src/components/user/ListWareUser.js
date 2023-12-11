@@ -15,7 +15,7 @@ import AppStyle from "../../theme";
 export default function ListWareUser({ navigation }) {
   const [warehouse, setWarehouse] = useState({});
   const [check, setCheck] = useState(false);
-  const [warehousecateName, setWarehouseCatename] = useState({});
+  // const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
   const { userInfo, setListWare,logout } = useContext(AuthContext);
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ListWareUser({ navigation }) {
         let warehouseUser = res.data.warehouse;
         setList(warehouseUser);
         setWarehouse(warehouseUser);
-        console.log(res.data.warehouse.name);
+        // console.log(res.data.warehouse.name);
         // console.log(warehouseUser.address);
       })
       .catch((e) => {
@@ -85,7 +85,7 @@ export default function ListWareUser({ navigation }) {
             Loại kho: <></>
             <Text style={AppStyle.StyleWarehouse.name_warehouse}>
               {item.category.name}
-              {setWarehouseCatename(item.category.name)}
+              {/* {setWarehouseCatename(item.category.name)} */}
             </Text>
           </Text>
           <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>

@@ -6,16 +6,19 @@ import HomeScreen from "../components/HomeScreen";
 import LoginScreen from "../components/LoginScreen";
 import SignUpScreen from "../components/SignUpScreen";
 import WelcomeScreen from "../components/WelcomeScreen";
-import AddOrderScreen from "../components/AddOrderScreen";
-import SeeOrderDetails from "../components/SeeOrderDetails";
-import SplashScreen from "../components/SplashScreen";
+import AddOrderScreen from "../components/user/AddOrderScreen";
+import DetailOrderUser from "../components/user/DetailOrderUser";
+import DetailOrderOwner from "../components/owners/DetailOrderOwner";
+import TabOrderUser from "./TabOrderUser";
 import ChangePasswordScreen from "../components/ChangePasswordScreen";
 import { AuthContext } from "../context/AuthContext";
-import HomeNavigation from "./HomeNavigation";
+import HomeNavigationOwner from "./HomeNavigationOwner";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import DetaiBlogPost from "../components/DetaiBlogPost";
-import SeeWarehouseDetails from "../components/SeeOrderDetails";
+import DetaiBlogUser from "../components/DetaiBlogUser";
+import OrderScreenUser1 from "../components/user/OrderScreenUserUnfinished";
+import OrderScreenUser2 from "../components/user/OrderScreenUserComplete";
+import SeeWarehouseDetails from "../components/user/DetailOrderUser";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";
 import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
@@ -31,24 +34,22 @@ import ListBlogOwner from "../components/ListBlogOwner"
 import UpdateBlog from "../components/UpdateBlog"
 import AddPostOwner from "../components/AddPostOwner"
 import UpdatePostOwner from "../components/UpdatePostOwner"
-import ListComments from "../components/ListComments"
+// import ListComments from "../components/ListComments"
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userInfo, checkSignUp,logout } =
+  const { userInfo, checkSignUp, splashLoading, getProfile } =
     useContext(AuthContext);
-    if (userInfo.success === false) {
-      alert("bạn đã hết hạng đăng nhập");
-      logout();
-    }
+  // console.log(">>> hello",userInfo);
   return (
     <NavigationContainer>
+      {/* initialRouteName='Welcome' */}
       <Stack.Navigator initialRouteName="Home">
         {userInfo.accessToken && userInfo.others.isOwner ? (
           <Stack.Screen
-            name="HomeNavigation"
-            component={HomeNavigation}
+            name="HomeNavigationOwner"
+            component={HomeNavigationOwner}
             options={{ headerShown: false }}
           />
         ) : userInfo.accessToken && userInfo.others.isAdmin ? (
@@ -83,6 +84,16 @@ const Navigation = () => {
             />
           </>
         )}
+        {/* <Stack.Screen
+          name="WelcomeScreen"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
+        /> */}
+        <Stack.Screen
+          name="TabOrderUser"
+          component={TabOrderUser}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="AuthContext"
           component={AuthContext}
@@ -136,16 +147,26 @@ const Navigation = () => {
         <Stack.Screen
           name="Button"
           component={Button}
-			options={{ headerShown: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="AddOrderScreen"
           component={AddOrderScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SeeOrderDetails"
           component={SeeOrderDetails}
+          options={{ headerShown: false }}
+        /> */}
+        <Stack.Screen
+          name="DetailOrderUser"
+          component={DetailOrderUser}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailOrderOwner"
+          component={DetailOrderOwner}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -173,19 +194,14 @@ const Navigation = () => {
           component={ListBlogOwner}
           options={{ headerShown: true }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="UpdateBlog"
           component={UpdateBlog}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="DetaiBlogPost"
-          component={DetaiBlogPost}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ListComments"
-          component={ListComments}
+          name="DetaiBlogUser"
+          component={DetaiBlogUser}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -197,6 +213,16 @@ const Navigation = () => {
           name="UpdatePostOwner"
           component={UpdatePostOwner}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OrderScreenUser1"
+          component={OrderScreenUser1}
+          options={{ tabBarLabel: "Đơn Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="OrderScreenUser2"
+          component={OrderScreenUser2}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
