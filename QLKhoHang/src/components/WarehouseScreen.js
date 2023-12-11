@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
 import { uuid } from "react-native-uuid";
@@ -98,7 +98,22 @@ const TodoScreen = ({ navigation }) => {
           style={{ marginLeft: -15, marginRight: -10 }}
           icon="trash-can"
           iconColor="#000"
-          onPress={() => handleDeleteTodo(item._id)}
+          onPress={() => {
+            Alert.alert(
+              "",
+              "Bạn có muốn xóa kho hàng này không?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK", onPress: () => handleDeleteTodo(item._id)
+                },
+              ],
+              { cancelable: false }
+            )
+          }}
         />
       </View>
     );

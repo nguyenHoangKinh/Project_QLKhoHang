@@ -36,7 +36,6 @@ export default function AddWarehouseScreen({ navigation }) {
     const [status, setStatus] = useState();
     const [description, setDescription] = useState();
     const [categorie, setCategorie] = useState();
-    const [images, setImages] = useState();
 
     useEffect(() => {
         axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
@@ -65,7 +64,7 @@ export default function AddWarehouseScreen({ navigation }) {
             ],
         );
 
-    const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, images, owner) => {
+    const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, owner) => {
         axios.post(`https://warehouse-management-api.vercel.app/v1/warehouse/create`, {
             wareHouseName: wareHouseName,
             address: address,
@@ -75,8 +74,9 @@ export default function AddWarehouseScreen({ navigation }) {
             monney: monney,
             status: status,
             description: description,
-            imageWarehouse: images,
             owner: owner,
+            imageWarehouse: "null",
+
         }, {
             headers:
             {
@@ -92,30 +92,6 @@ export default function AddWarehouseScreen({ navigation }) {
             console.log(`Add error ${e.request.response}`);
         });
     };
-
-    const pickFromGalary = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status) {
-            let data = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.5,
-                base64: true
-            });
-
-            console.log(data.assets)
-
-            if (!data.canceled) {
-                let newFile = {
-                    uri: data.assets[0].uri,
-                    type: data.assets[0].type,
-                    name: data.assets[0].name,
-                };
-                setImages(data.assets.base64);
-            }
-        } else { Alert.alert('Chưa chọn hình ảnh'); }
-    }
 
     return (
         <View>
@@ -204,19 +180,13 @@ export default function AddWarehouseScreen({ navigation }) {
                     <Entypo name="user" size={20} color="black" />
                     <Text>{userInfo.others.username}</Text>
                 </View>
-                <TouchableOpacity
-                    style={AppStyle.StyleProfile.btn_upload}
-                    onPress={
-                        () => pickFromGalary()
-                    }>
-                    <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
-                </TouchableOpacity>
+
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
                         (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description)
                             ? showAlert()
-                            : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, images, userInfo.others._id)
+                            : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, userInfo.others._id)
                     }}>
 
                     <AntDesign name="edit" size={20} color="#fff" />
