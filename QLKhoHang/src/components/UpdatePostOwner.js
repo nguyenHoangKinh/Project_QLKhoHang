@@ -4,18 +4,16 @@ import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
-import { Dropdown } from "react-native-element-dropdown";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 
 export default function UpdatePostOwner({ navigation }) {
     const { userInfo } = useContext(AuthContext);
     const [post, setPost] = useState();
-    const [idWarehouse, setIdWarehouse] = useState("");
+    // const [idWarehouse, setIdWarehouse] = useState("");
     const [description, setDescription] = useState();
-    const [images, setImages] = useState();
+    // const [images, setImages] = useState();
     const route = useRoute();
     const idPost = route.params?.idPost;
 
@@ -47,27 +45,20 @@ export default function UpdatePostOwner({ navigation }) {
             ],
         );
 
-    const addPost = (description, images) => {
-        const formData = new FormData();
-
-        // for (let i = 0; i < images.length; i++) {
-        //     formData.append("images", images[i].images);
-        // }
-
-        formData.append("description", description)
-        axios.put("https://warehouse-management-api.vercel.app/v1//blog/update", {
-                description: description,
-                images: images
-            },
+    const updatePost = async (description) => {
+        axios.put("https://warehouse-management-api.vercel.app/v1/blog/update", {
+            description: description,
+        },
             {
                 headers: {
-                    Authorization: `Bearer ${userInfo.accessToken}`
+                    Authorization: `Bearer ${userInfo.accessToken}`,
+                    'content-type': 'multipart/form-data',
                 },
                 params: {
                     id: idPost
                 }
             }).then((res) => {
-                Alert.alert("Cập nhật bài viết thành công");
+                Alert.alert("Cập nhật mô tả thành công");
                 navigation.navigate("ListBlogOwner")
             }).catch((err) => {
                 console.log(err)
@@ -75,27 +66,36 @@ export default function UpdatePostOwner({ navigation }) {
     };
 
     const pickFromGalary = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status) {
-            let data = await ImagePicker.launchImageLibraryAsync({
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.5,
-                base64: true
+                quality: 1,
             });
 
-            console.log(data.assets)
+            if (!result.canceled) {
+                const formData = new FormData();
+                formData.append('images', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
 
-            if (!data.canceled) {
-                let newFile = {
-                    uri: data.assets[0].uri,
-                    type: data.assets[0].type,
-                    name: data.assets[0].name,
-                };
-                setImages(data.assets.base64);
+                const cloudinaryResponse = await axios.put(
+                    `https://warehouse-management-api.vercel.app/v1/blog/update`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${userInfo.accessToken}`,
+                        },
+                        params: {
+                            id: idPost
+                        }
+                    }
+                );
+
+                Alert.alert("Cập nhật hình ảnh thành công");
             }
-        } else { Alert.alert('Chưa chọn hình ảnh'); }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
     }
 
     return (
@@ -113,25 +113,38 @@ export default function UpdatePostOwner({ navigation }) {
                 <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: "bold" }}>Tên bài viết</Text>
                 <View style={AppStyle.StyleProfile.items}>
                     {post &&
-                    <Text>{post.warehouse.wareHouseName}</Text>}
+                        <Text>{post.warehouse.wareHouseName}</Text>}
                 </View>
 
                 <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: "bold" }}>Mô tả</Text>
                 <View style={AppStyle.StyleProfile.items}>
                     {post &&
-                    <TextInput
-                        placeholder={post.description}
-                        keyboardType="default"
-                        value={description}
-                        onChangeText={text => setDescription(text)}
-                        style={{ height: 300 }}
-                    />}
+                        <TextInput
+                            placeholder={post.description}
+                            keyboardType="default"
+                            value={description}
+                            onChangeText={text => setDescription(text)}
+                            style={{ height: 300 }}
+                        />}
                 </View>
 
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_upload}
-                    onPress={
-                        () => pickFromGalary()
+                    onPress={() =>
+                        Alert.alert(
+                            "",
+                            "Bạn có muốn cập nhật hình ảnh không?",
+                            [
+                                {
+                                    text: "Cancel",
+                                    style: "cancel",
+                                },
+                                {
+                                    text: "OK", onPress: () => pickFromGalary()
+                                },
+                            ],
+                            { cancelable: false }
+                        )
                     }>
                     <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
                 </TouchableOpacity>
@@ -139,13 +152,13 @@ export default function UpdatePostOwner({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!description && !images)
+                        (!description)
                             ? showAlert()
-                            : addPost(description, images)
+                            : updatePost(description, images)
                     }}>
 
                     <AntDesign name="edit" size={20} color="#fff" />
-                    <Text style={{ color: '#fff' }}>SỬA BÀI VIẾT</Text>
+                    <Text style={{ color: '#fff' }}>CẬP NHẬT MÔ TẢ</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

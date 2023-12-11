@@ -25,15 +25,16 @@ import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
-import ListAccountActive from "../components/Admin/ListAccountActive";
-import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
-import UploadImageProfile from "../components/UploadImageProfile";
-import Button from "../components/Button";
-import DetailAcount from "../components/Admin/DetailAccount";
-import ListBlogOwner from "../components/ListBlogOwner";
-import UpdateBlog from "../components/UpdateBlog";
-import AddPostOwner from "../components/AddPostOwner";
-import UpdatePostOwner from "../components/UpdatePostOwner";
+import ListAccountActive from "../components/Admin/ListAccountActive"
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
+import UploadImageProfile from "../components/UploadImageProfile"
+import Button from "../components/Button"
+import DetailAcount from "../components/Admin/DetailAccount"
+import ListBlogOwner from "../components/ListBlogOwner"
+import UpdateBlog from "../components/UpdateBlog"
+import AddPostOwner from "../components/AddPostOwner"
+import UpdatePostOwner from "../components/UpdatePostOwner"
+import ListComments from "../components/ListComments"
 
 const Stack = createNativeStackNavigator();
 

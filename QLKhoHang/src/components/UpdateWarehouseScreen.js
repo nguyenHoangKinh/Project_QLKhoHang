@@ -33,7 +33,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [wareHouseName, setWareHouseName] = useState();
   const [address, setAddress] = useState();
   const [idCategorie, setIdCategorie] = useState();
-  const [capacity, setCapacity] = useState();
   const [currentCapacity, setCurrentCapacity] = useState();
   const [monney, setMonney] = useState();
   const [status, setStatus] = useState();
@@ -41,7 +40,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [warehouses, setWarehouse] = useState();
   const route = useRoute();
-  const [images, setImages] = useState();
   const idWarehouse = route.params?.idWarehouse;
 
   useEffect(() => {
@@ -75,7 +73,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   }, []);
 
-  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description, images) => {
+  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description) => {
     axios.put(`https://warehouse-management-api.vercel.app/v1/warehouse/updateWarehouse/${idWarehouse}`,
       {
         wareHouseName: wareHouseName,
@@ -85,7 +83,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
         monney: monney,
         status: status,
         description: description,
-        images: images,
       },
       {
         headers: {
@@ -99,30 +96,6 @@ export default function UpdateWarehouseScreen({ navigation }) {
       setCheckUpdate(false);
     });
   };
-
-  const pickFromGalary = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status) {
-      let data = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.5,
-        base64: true
-      });
-
-      console.log(data.assets)
-
-      if (!data.canceled) {
-        let newFile = {
-          uri: data.assets[0].uri,
-          type: data.assets[0].type,
-          name: data.assets[0].name,
-        };
-        setImages(data.assets.base64);
-      }
-    } else { Alert.alert('Chưa chọn hình ảnh'); }
-  }
 
   return (
     <View>
@@ -164,25 +137,20 @@ export default function UpdateWarehouseScreen({ navigation }) {
               setCategorie(item.acreage);
             }}
           />}
-          
+
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
           {warehouses &&
-          <TextInput
-            placeholder={warehouses.currentCapacity + ""}
-            keyboardType="numeric"
-            value={currentCapacity}
-            onChangeText={(text) => setCurrentCapacity(text)}
-          />}
-          <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
+            <TextInput
+              placeholder={warehouses.currentCapacity + ""}
+              keyboardType="numeric"
+              value={currentCapacity}
+              onChangeText={(text) => setCurrentCapacity(text)}
+            />}
+          <Text style={{ fontSize: 14, marginTop: 4 }}>{"/" + warehouses.currentCapacity}</Text>
+          <Text style={{ fontSize: 15, marginTop: 2 }}> {warehouses.category.acreage}</Text>
         </View>
-        
-        <View style={AppStyle.StyleProfile.items}>
-          <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
-          {warehouses &&
-          <Text style={{  marginTop: 2 }}>{warehouses.currentCapacity}</Text>}
-          <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
-        </View>
+
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome name="money" size={20} color="black" />
           {warehouses &&
@@ -193,6 +161,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
               onChangeText={(text) => setMonney(text)}
               style={{ marginTop: -3 }}
             />}
+          <Text style={{ fontSize: 14, marginTop: 2 }}> VND</Text>
         </View>
         {warehouses &&
           <Dropdown
@@ -222,18 +191,10 @@ export default function UpdateWarehouseScreen({ navigation }) {
         </View>
 
         <TouchableOpacity
-          style={AppStyle.StyleProfile.btn_upload}
-          onPress={
-            () => pickFromGalary()
-          }>
-          <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
-            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, images);
-            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("HomeNavigation"); }
+            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description);
+            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>CẬP NHẬT</Text>

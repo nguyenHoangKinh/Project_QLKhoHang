@@ -529,7 +529,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                 }}
                 placeholder="nhập bình luận mới ... "
                 onChangeText={(text) => setTextCommnetUpdate(text)}
-                // value={text}
+              // value={text}
               />
             </View>
             <View className="flex-row absolute right-0 bottom-0">

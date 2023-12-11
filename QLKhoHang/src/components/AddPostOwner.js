@@ -5,6 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 import { Dropdown } from "react-native-element-dropdown";
+import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import axios from "axios";
@@ -14,7 +15,7 @@ export default function AddPostOwner({ navigation }) {
     const [warehouse, setWarehouse] = useState([]);
     const [idWarehouse, setIdWarehouse] = useState("");
     const [description, setDescription] = useState();
-    const [images, setImages] = useState();
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
@@ -43,15 +44,22 @@ export default function AddPostOwner({ navigation }) {
                 },
             ],
         );
-
+        
     const addPost = (description, images) => {
+        const formData = new FormData();
+        
+        if (images) {
+            formData.append('images', { uri: images.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
+        }
+
         axios.post(`https://warehouse-management-api.vercel.app/v1/blog/create`, {
             description: description,
-            images: images,
+            formData,
         }, {
             headers:
             {
-                Authorization: `Bearer ${userInfo.accessToken}`
+                Authorization: `Bearer ${userInfo.accessToken}`,
+                'Content-Type': 'multipart/form-data'
             },
             params:
             {
@@ -60,32 +68,42 @@ export default function AddPostOwner({ navigation }) {
         }).then((res) => {
             navigation.navigate("ListBlogOwner")
         }).catch((e) => {
-            console.log(`Add error ${e}`);
+            console.log(`Add error ${e.message}`);
         });
     };
 
     const pickFromGalary = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status) {
-            let data = await ImagePicker.launchImageLibraryAsync({
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.5,
-                base64: true
+                quality: 1,
             });
 
-            console.log(data.assets)
+            if (!result.canceled) {
+                setImages(result)
+                // const formData = new FormData();
+                // formData.append('images', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
 
-            if (!data.canceled) {
-                let newFile = {
-                    uri: data.assets[0].uri,
-                    type: data.assets[0].type,
-                    name: data.assets[0].name,
-                };
-                setImages(data.assets.base64);
+                // const cloudinaryResponse = await axios.put(
+                //     `https://warehouse-management-api.vercel.app/v1/blog/update`,
+                //     formData,
+                //     {
+                //         headers: {
+                //             'Content-Type': 'multipart/form-data',
+                //             Authorization: `Bearer ${userInfo.accessToken}`,
+                //         },
+                //         params: {
+                //             id: idPost
+                //         }
+                //     }
+                // );
+
+                // Alert.alert("Cập nhật hình ảnh thành công");
             }
-        } else { Alert.alert('Chưa chọn hình ảnh'); }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
     }
 
     return (
