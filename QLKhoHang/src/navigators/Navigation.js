@@ -34,7 +34,7 @@ import ListBlogOwner from "../components/ListBlogOwner"
 import UpdateBlog from "../components/UpdateBlog"
 import AddPostOwner from "../components/AddPostOwner"
 import UpdatePostOwner from "../components/UpdatePostOwner"
-import ListComments from "../components/ListComments"
+// import ListComments from "../components/ListComments"
 
 const Stack = createNativeStackNavigator();
 
