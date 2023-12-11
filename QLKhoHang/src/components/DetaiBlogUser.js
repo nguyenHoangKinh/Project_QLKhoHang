@@ -214,7 +214,7 @@ export default function DetaiBlogPost({ route, navigation }) {
     );
   };
   return (
-    <ScrollView
+    <View
       className="w-full h-auto bg-white "
       style={{ backgroundColor: themeColors.bg }}
     >
@@ -245,7 +245,8 @@ export default function DetaiBlogPost({ route, navigation }) {
               Thông Tin Kho
             </Text>
             <TouchableOpacity style={{ width: "15%" }} className="top-2 ">
-              <AntDesign name="pluscircleo" size={36} color="#fff" />
+              {/* <AntDesign name="pluscircleo" size={} color="" /> */}
+              <Ionicons name="ios-chatbubble-ellipses-outline" size={35} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
@@ -557,6 +558,6 @@ export default function DetaiBlogPost({ route, navigation }) {
           </View>
         </View>
       </Modal>
-    </ScrollView>
+    </View>
   );
 }

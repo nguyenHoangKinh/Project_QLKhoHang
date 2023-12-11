@@ -36,6 +36,9 @@ export const AuthProvider = ({ children }) => {
   const [numberLike, setNumberLike] = useState(0);
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
+  //chats
+const [acceptedFriends, setAcceptedFriends] = useState([]);
+
   // console.log(userInfo);
   const signUP = (
     usernames,
@@ -686,7 +689,7 @@ export const AuthProvider = ({ children }) => {
   };
   const DisLike = (id) => {
     // console.log(id);
-    if (userInfo.accessToken && id) {
+    if (userInfo.accessToken && userInfo.others._id) {
       axios
         .put(
           ORDER_URL + `/blog/dislikes/${id}`,
@@ -719,6 +722,30 @@ export const AuthProvider = ({ children }) => {
       alert("load binh luan that bai!");
     }
   };
+  const ListChats = () => {
+    // console.log(id);
+    if (userInfo.accessToken && userInfo.others._id) {
+      axios
+        .get(
+          ORDER_URL + `/chat/findUser/65393078e36249890d4cf458`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            console.log(res.data);
+            // setAcceptedFriends(res.data);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -733,6 +760,7 @@ export const AuthProvider = ({ children }) => {
         checkValueSignUp,
         formErrorLogin,
         splashLoading,
+        acceptedFriends,
         checkUpdate,
         DetailOrder,
         checkSignUp,
@@ -762,6 +790,7 @@ export const AuthProvider = ({ children }) => {
         DisLike,
         ListBlog,
         LikeBlog,
+        ListChats,
         setIsVisible,
         setNumberLikes,
         setNumberLike,

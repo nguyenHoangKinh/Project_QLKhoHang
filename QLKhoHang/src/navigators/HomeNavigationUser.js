@@ -4,7 +4,7 @@ import HomeScreen from "../components/HomeScreen";
 import ListBlogUser from "../components/ListBlogUser";
 import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenUser from "./TabOrderUser";
-import StatisticsScreen from "../components/StatisticsScreen";
+import ListChat from "../components/ListChat";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -97,8 +97,8 @@ const HomeNavigationUser = () => {
         }}
       />
       <Tab.Screen
-        name="Statistics"
-        component={StatisticsScreen}
+        name="ListChat"
+        component={ListChat}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {
