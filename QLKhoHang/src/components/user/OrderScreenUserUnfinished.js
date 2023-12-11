@@ -27,15 +27,6 @@ export default function OrderScreenUserUnfinished({ navigation }) {
   } = useContext(AuthContext);
   // const [modalVisible, setModalVisible] = useState(false);
   // const [listOrderFalse, setListOrderFalse] = useState([]);
-  // console.log(ListOrder);
-  // function checkListOrder() {
-  //   for (let i = 0; i < ListOrder.length; i++) {
-  //     if (ListOrder[i].isActive == true) {
-  //       setListOrderFalse([...listOrderFalse,ListOrder[i]])
-  //     }
-  //   }
-  // }
-  console.log(ListOrder);
   useEffect(() => {
     // call api
     orderListUser(userInfo.accessToken);

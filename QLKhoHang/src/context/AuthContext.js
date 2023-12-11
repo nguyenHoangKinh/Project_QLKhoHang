@@ -298,10 +298,6 @@ export const AuthProvider = ({ children }) => {
         // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
         setIsLoading(false);
-        if (e.response.data.success === false) {
-          alert("bạn đã hết hạng đăng nhập");
-          logout();
-        }
       });
   };
 

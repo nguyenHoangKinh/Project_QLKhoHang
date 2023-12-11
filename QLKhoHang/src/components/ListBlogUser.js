@@ -15,7 +15,7 @@ import {
   AntDesign,
   Ionicons,
   FontAwesome5,
-  MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 const ListBlogPost = ({ navigation }) => {
   const {
@@ -40,7 +40,7 @@ const ListBlogPost = ({ navigation }) => {
           className=" rounded "
           style={styles.container}
           onPress={() => {
-            navigation.navigate("DetaiBlogPost"),
+            navigation.navigate("DetaiBlogUser"),
               setDetailBlogListCommnetsId(item._id),
               setModalVisibleComment(false),
               setShowImgBlog([]),
@@ -121,9 +121,9 @@ const ListBlogPost = ({ navigation }) => {
           />
         </View>
         <Pressable style={AppStyle.StyleOderList.listFilter}>
-          <Ionicons
+        <MaterialIcons
             style={AppStyle.StyleOderList.iconFilter}
-            name="options-outline"
+            name="notifications"
             size={30}
             color="#16247d"
             // onPress={() => setModalVisible(true)}
@@ -142,7 +142,7 @@ const ListBlogPost = ({ navigation }) => {
           className="flex text-center text-lg font-bold top-1/2"
           style={{ color: "#16247d" }}
         >
-          Không có Dơn Hàng!
+          Không có Bài đăng!
         </Text>
       )}
     </View>
