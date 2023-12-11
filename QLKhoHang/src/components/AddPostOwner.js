@@ -44,28 +44,38 @@ export default function AddPostOwner({ navigation }) {
                 },
             ],
         );
-        
+
     const addPost = (description, images) => {
         const formData = new FormData();
-        
+
         if (images) {
             formData.append('images', { uri: images.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
         }
 
         axios.post(`https://warehouse-management-api.vercel.app/v1/blog/create`, {
             description: description,
-            formData,
         }, {
             headers:
             {
                 Authorization: `Bearer ${userInfo.accessToken}`,
-                'Content-Type': 'multipart/form-data'
             },
             params:
             {
                 warehouse: idWarehouse
             },
         }).then((res) => {
+            const cloudinaryResponse = axios.put(`https://warehouse-management-api.vercel.app/v1/blog/update`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${userInfo.accessToken}`,
+                    },
+                    params: {
+                        id: res.data.data._id
+                    }
+                }
+            );
             navigation.navigate("ListBlogOwner")
         }).catch((e) => {
             console.log(`Add error ${e.message}`);
@@ -156,7 +166,7 @@ export default function AddPostOwner({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!description && !idWarehouse)
+                        (!description && !idWarehouse && !images)
                             ? showAlert()
                             : addPost(description, images)
                     }}>
