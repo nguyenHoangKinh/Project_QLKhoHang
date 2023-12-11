@@ -70,5 +70,33 @@ const StyleListBlogOwner = StyleSheet.create({
         fontWeight: '500',
         margin: 15,
     },
+    update_comment: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    update_comment_bg: {
+        width: 350,
+        height: 130,
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    input_comment: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 18
+    }
 });
 export default StyleListBlogOwner;

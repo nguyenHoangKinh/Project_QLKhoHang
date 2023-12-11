@@ -31,7 +31,7 @@ const TodoScreen = ({ navigation }) => {
         logout()
       }
     });
-  }, [warehouse]);
+  }, []);
 
   // Handle Delete
   const handleDeleteTodo = (id) => {
@@ -56,10 +56,6 @@ const TodoScreen = ({ navigation }) => {
   const renderTodos = ({ item, index }) => {
     return (
       <View style={AppStyle.StyleWarehouse.warehouse_view}>
-        <Image
-          source={{ uri: `${item.imageWarehouse}` }}
-          style={{ height: 50, width: 50, marginRight: 10 }}
-        ></Image>
         <TouchableOpacity
           style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>

@@ -14,7 +14,10 @@ const ListBlogPost = ({ navigation }) => {
     const [comment, setComment] = useState({});
     const [message, setMessage] = useState("");
     const [idBlog, setIdBlog] = useState("");
+    const [idComment, setIdComment] = useState("");
+    const [commentUpdate, setCommentUpdate] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisibleComments, setIsModalVisibleComments] = useState(false);
 
     useEffect(() => {
         axios.get(`https://warehouse-management-api.vercel.app/v1/blog/list-by-owner`, {
@@ -33,6 +36,8 @@ const ListBlogPost = ({ navigation }) => {
     }, [blog]);
 
     const handleModal = () => setIsModalVisible(() => !isModalVisible);
+
+    const handleModalComents = () => setIsModalVisibleComments(() => !isModalVisibleComments);
 
     const getComment = (idBlog) => {
         setIdBlog(idBlog);
@@ -63,6 +68,23 @@ const ListBlogPost = ({ navigation }) => {
             }).then((res) => {
                 getComment(idBlog)
                 setMessage("")
+            }).catch((e) => {
+                console.log(`add comment error ${e}`);
+            });
+    }
+
+    const updateComment = (message, idComment) => {
+        axios.put(`https://warehouse-management-api.vercel.app/v1/blog/comment/update`, { content: message },
+            {
+                headers: {
+                    Authorization: `Bearer ${userInfo.accessToken}`,
+                },
+                params: {
+                    idComment: idComment,
+                },
+            }).then((res) => {
+                getComment(idBlog);
+                handleModalComents();
             }).catch((e) => {
                 console.log(`add comment error ${e}`);
             });
@@ -106,7 +128,7 @@ const ListBlogPost = ({ navigation }) => {
 
     const FlatListBlog = (item) => {
         return (
-            <View className="ml-2 mr-2">
+            <View className="ml-2 mr-2" style={(isModalVisibleComments ? { opacity: 0.4, marginBottom: 20 } : { opacity: 1, marginBottom: 20 })}>
                 {item.images != "" ? (
                     <View className="pb-0.5">
                         <Image
@@ -177,11 +199,15 @@ const ListBlogPost = ({ navigation }) => {
 
     const FlatListComment = (item) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity style={isModalVisibleComments ? { opacity: 0.4 } : { opacity: 1 }}>
                 <View className="flex flex-col w-50 h-auto bg-slate-200 m-2 rounded-lg text-left p-2">
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text className="text-lg font-bold" style={{ flex: 1 }}>{item.account.username}</Text>
-                        <Entypo name="edit" size={20} color="black" onPress={() => deleteComment(item._id)}/>
+                        {userInfo.others._id.includes(item.account._id) && <Entypo name="edit" size={20} color="black" onPress={() =>{
+                            handleModalComents();
+                            setIdComment(item._id);
+                            setCommentUpdate(item.content);
+                        }} />}
                         <IconButton
                             style={{ marginRight: -10 }}
                             icon="trash-can"
@@ -206,7 +232,7 @@ const ListBlogPost = ({ navigation }) => {
     };
 
     return (
-        <View className="flex-auto h-full">
+        <View className="flex-auto h-full" style={{marginBottom: 10}}>
             <FlatList
                 data={blog}
                 keyExtractor={(item) => item._id}
@@ -250,9 +276,9 @@ const ListBlogPost = ({ navigation }) => {
                             extraData={comment}
                             keyExtractor={(item) => item._id}
                         />
-                        <View style={{ flexDirection: "row",alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center' ,height: 50 }}>
                             <TextInput
-                                style={{ fontSize: 18}}
+                                style={{ fontSize: 18 }}
                                 className=" w-full h-9"
                                 placeholder="Nhập bình luận... "
                                 value={message}
@@ -263,8 +289,45 @@ const ListBlogPost = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => { addComment(message, idBlog) }}
                                 className="absolute right-0 top-1.5"
+                                style={{ marginTop: 10 }}
                             >
                                 <Ionicons className="" name="send" size={23} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={isModalVisibleComments}
+                onRequestClose={() => {
+                    setIsModalVisibleComments(!isModalVisibleComments);
+                }}
+            >
+                <View style={AppStyle.StyleListBlogOwner.update_comment}>
+                    <View style={AppStyle.StyleListBlogOwner.update_comment_bg}>
+                        <TextInput
+                            style={AppStyle.StyleListBlogOwner.input_comment}
+                            placeholder={commentUpdate}
+                            value={message}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onChangeText={(text) => setCommentUpdate(text)}
+                        />
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={AppStyle.StyleProfile.btn_comment}
+                                onPress={() => updateComment(commentUpdate, idComment)}
+                            >
+                                <Text style={{ color: "#fff" }}>Sửa</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={AppStyle.StyleProfile.btn_comment}
+                                onPress={() => handleModalComents()}
+                            >
+                                <Text style={{ color: "#fff" }}>Thoát</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

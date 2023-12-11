@@ -233,7 +233,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
             updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, images);
-            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("HomeNavigation"); }
+            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>CẬP NHẬT</Text>
