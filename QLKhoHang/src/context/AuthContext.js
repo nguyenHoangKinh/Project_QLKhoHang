@@ -37,7 +37,9 @@ export const AuthProvider = ({ children }) => {
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
   //chats
-const [acceptedFriends, setAcceptedFriends] = useState([]);
+  const [acceptedFriends, setAcceptedFriends] = useState([]);
+  const [listChat, setListChat] = useState(null);
+  const [listMessages, setListMessages] = useState(null);
 
   // console.log(userInfo);
   const signUP = (
@@ -722,12 +724,16 @@ const [acceptedFriends, setAcceptedFriends] = useState([]);
       alert("load binh luan that bai!");
     }
   };
-  const ListChats = () => {
-    // console.log(id);
-    if (userInfo.accessToken && userInfo.others._id) {
+  const AddChats = (secondIds) => {
+    console.log(secondIds, userInfo.others._id);
+    if (userInfo.accessToken && userInfo.others._id && secondIds) {
       axios
-        .get(
-          ORDER_URL + `/chat/findUser/65393078e36249890d4cf458`,
+        .post(
+          ORDER_URL + `/chat/createChat/`,
+          {
+            firstId: userInfo.others._id,
+            secondId: secondIds,
+          },
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
           }
@@ -736,6 +742,75 @@ const [acceptedFriends, setAcceptedFriends] = useState([]);
           // console.log(res.data);
           if (res && res.data) {
             console.log(res.data);
+            // setAcceptedFriends(res.data);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const ListChats = () => {
+    // console.log(id);
+    if (userInfo.accessToken && userInfo.others._id) {
+      axios
+        .get(ORDER_URL + `/chat/listChat`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            // console.log(res.data.chat);
+            // setAcceptedFriends(res.data);
+            setListChat(res.data.chat);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const ListMessage = (id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id) {
+      axios
+        .get(ORDER_URL + `/message/findMessage/${id}`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            // console.log(res.data);
+            setListMessages(res.data.message);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const PostMessage = (idMessages,ids,texts) => {
+    // console.log(idMessage,id,text);
+    if (userInfo.accessToken && idMessages && ids && texts) {
+      axios
+        .post(ORDER_URL + `/message/createMessage/`,{
+          chatId:idMessages,
+          senderId:ids,
+          text:texts
+        }, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            ListMessage()
+            // console.log(res.data);
             // setAcceptedFriends(res.data);
           }
         })
@@ -761,6 +836,7 @@ const [acceptedFriends, setAcceptedFriends] = useState([]);
         formErrorLogin,
         splashLoading,
         acceptedFriends,
+        listMessages,
         checkUpdate,
         DetailOrder,
         checkSignUp,
@@ -778,7 +854,7 @@ const [acceptedFriends, setAcceptedFriends] = useState([]);
         index,
         listBlog,
         userInfo,
-        // IdOrder,
+        listChat,
         check,
         list,
         login,
@@ -791,6 +867,9 @@ const [acceptedFriends, setAcceptedFriends] = useState([]);
         ListBlog,
         LikeBlog,
         ListChats,
+        AddChats,
+        ListMessage,
+        PostMessage,
         setIsVisible,
         setNumberLikes,
         setNumberLike,

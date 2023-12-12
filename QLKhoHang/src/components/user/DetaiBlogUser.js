@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from "../theme";
-import AppStyle from "../theme";
-import { AuthContext } from "../context/AuthContext";
+import { themeColors } from "../../theme";
+import AppStyle from "../../theme";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
   AntDesign,
@@ -48,7 +48,7 @@ export default function DetaiBlogPost({ route, navigation }) {
     numberLikes,
     modalVisibleComment,
     UpdataTextCommentUser,
-    detailBlogListCommnetsId,
+    AddChats,
     DeleteTextCommentUser,
     setModalVisibleComment,
     modalVisibleUpdateTextComment,
@@ -61,7 +61,7 @@ export default function DetaiBlogPost({ route, navigation }) {
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   // const { itemId } = route.params;
   // const panelRef = useRef(null);
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", idCommentUpdata);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", detailBlog.owner._id);
 
   useEffect(() => {
     DetailBlog();
@@ -244,9 +244,12 @@ export default function DetaiBlogPost({ route, navigation }) {
             >
               Thông Tin Kho
             </Text>
-            <TouchableOpacity style={{ width: "15%" }} className="top-2 ">
+            <TouchableOpacity
+            onPress={()=>{AddChats(detailBlog.owner._id)}} 
+             style={{ width: "15%" }} className="top-2 ">
               {/* <AntDesign name="pluscircleo" size={} color="" /> */}
-              <Ionicons name="ios-chatbubble-ellipses-outline" size={35} color="#fff" />
+              {/* <Ionicons name="ios-chatbubble-ellipses-outline" size={35} color="" /> */}
+              <Ionicons name="chatbubble-ellipses-outline" size={32} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>

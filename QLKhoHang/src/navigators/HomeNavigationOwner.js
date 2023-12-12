@@ -3,7 +3,7 @@ import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import TabOrderOwner from "./TabOrderOwner";
-import StatisticsScreen from "../components/StatisticsScreen";
+import ListChatOwner from "../components/owners/ListChatsOwnerScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -96,8 +96,8 @@ export default function HomeNavigation() {
         }}
       />
       <Tab.Screen
-        name="Statistics"
-        component={StatisticsScreen}
+        name="ListChatOwner"
+        component={ListChatOwner}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {

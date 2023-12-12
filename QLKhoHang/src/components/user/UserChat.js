@@ -1,31 +1,42 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
+import { ORDER_URL } from "../../config";
+import axios from "axios";
 
 const UserChat = ({ item }) => {
-  const { userId, setUserId } = useContext(UserType);
-  const [messages, setMessages] = useState([]);
+  const {
+    userInfo,
+  } = useContext(AuthContext);
+  const [listChat, setListChat] = useState([]);
   const navigation = useNavigation();
-  // const fetchMessages = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:8000/messages/${userId}/${item._id}`
-  //     );
-  //     const data = await response.json();
+  let id = item._id;
+  let proFile = listChat;
+  // console.log(id);
+  const fetchMessages = async () => {
+    // console.log(item.members[1]);
+      if (userInfo.accessToken) {
+        axios
+          .get(ORDER_URL + `/chat/getProfileOwner/${item.members[1]}`)
+          .then((res) => {
+            // console.log(res.data);
+            if (res && res.data) {
+              // console.log(res.data.Owner);
+              setListChat(res.data.Owner)
+            }
+          })
+          .catch((e) => {
+            console.log(e.response.data);
+          });
+      } else {
+        console.log("load user chat that bai!");
+      }
+  };
 
-  //     if (response.ok) {
-  //       setMessages(data);
-  //     } else {
-  //       console.log("error showing messags", response.status.message);
-  //     }
-  //   } catch (error) {
-  //     console.log("error fetching messages", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchMessages();
-  // }, []);
+  useEffect(() => {
+    fetchMessages();
+  }, []);
   // console.log(messages);
 
   // const getLastMessage = () => {
@@ -37,18 +48,16 @@ const UserChat = ({ item }) => {
 
   //   return userMessages[n - 1];
   // };
-  const lastMessage = getLastMessage();
-  console.log(lastMessage);
+  // const lastMessage = getLastMessage();
+  // console.log(lastMessage);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() =>
-        navigation.navigate("Messages", {
-          recepientId: item._id,
-        })
+        navigation.navigate("ChatMessagesScreen",{idMessage:id,proFiles:proFile})
       }
       style={{
         flexDirection: "row",
@@ -64,24 +73,24 @@ const UserChat = ({ item }) => {
     >
       <Image
         style={{ width: 50, height: 50, borderRadius: 25, resizeMode: "cover" }}
-        source={{ uri: item?.image }}
+        source={{ uri: listChat.avatar }}
       />
 
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 15, fontWeight: "500" }}>{item?.name}</Text>
-        {lastMessage && (
+      <View >
+        <Text style={{ fontSize: 15, fontWeight: "500" }}>{listChat.username}</Text>
+        {/* {lastMessage && (
           <Text style={{ marginTop: 3, color: "gray", fontWeight: "500" }}>
             {lastMessage?.message}
           </Text>
-        )}
+        )} */}
       </View>
 
       <View>
-        <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>
+        {/* <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>
           {lastMessage && formatTime(lastMessage?.timeStamp)}
-        </Text>
+        </Text> */}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
