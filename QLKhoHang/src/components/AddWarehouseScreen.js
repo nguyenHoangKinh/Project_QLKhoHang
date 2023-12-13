@@ -87,7 +87,7 @@ export default function AddWarehouseScreen({ navigation }) {
                 id_owner: userInfo.others._id
             },
         }).then((res) => {
-            navigation.navigate("HomeNavigation")
+            navigation.navigate("HomeNavigationOwner")
         }).catch((e) => {
             console.log(`Add error ${e.request.response}`);
         });
@@ -196,7 +196,7 @@ export default function AddWarehouseScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('HomeNavigation')
+                        () => navigation.navigate('HomeNavigationOwner')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>
