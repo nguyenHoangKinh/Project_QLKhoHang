@@ -39,9 +39,10 @@ export const AuthProvider = ({ children }) => {
   //chats
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const [listChat, setListChat] = useState(null);
-  const [listMessages, setListMessages] = useState(null);
+  const [listMessages, setListMessages] = useState("");
+  const [idChat, setIdChat] = useState("");
 
-  // console.log(userInfo);
+  // console.log(idChat);
   const signUP = (
     usernames,
     passwords,
@@ -691,7 +692,7 @@ export const AuthProvider = ({ children }) => {
   };
   const DisLike = (id) => {
     // console.log(id);
-    if (userInfo.accessToken && userInfo.others._id) {
+    if (userInfo.accessToken && id) {
       axios
         .put(
           ORDER_URL + `/blog/dislikes/${id}`,
@@ -721,28 +722,22 @@ export const AuthProvider = ({ children }) => {
           console.log(e.response.data.message);
         });
     } else {
-      alert("load binh luan that bai!");
+      alert(">>>>>>>>>>>>>load binh luan that bai!");
     }
   };
   const AddChats = (secondIds) => {
-    console.log(secondIds, userInfo.others._id);
-    if (userInfo.accessToken && userInfo.others._id && secondIds) {
+    // console.log(secondIds, userInfo.others._id);
+    let number = false;
+    if (userInfo.accessToken && userInfo.others._id) {
+      // console.log(id);
       axios
-        .post(
-          ORDER_URL + `/chat/createChat/`,
-          {
-            firstId: userInfo.others._id,
-            secondId: secondIds,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-          }
-        )
+        .get(ORDER_URL + `/chat/listChat`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
         .then((res) => {
           // console.log(res.data);
           if (res && res.data) {
-            console.log(res.data);
-            // setAcceptedFriends(res.data);
+            checkProfile(secondIds, res.data.chat);
           }
         })
         .catch((e) => {
@@ -752,18 +747,48 @@ export const AuthProvider = ({ children }) => {
       console.log("load user chat that bai!");
     }
   };
+  const checkProfile = (id, item) => {
+    // let idchatitem = null;
+    item.some((item, index) => {
+      if (item.members[1] === id && item.members[0] === userInfo.others._id) {
+        // console.log(">>>>>>",item._id);
+        setIdChat(item._id);
+        return (number = true);
+      }
+      return (number = false);
+    });
+    if (number == false) {
+      axios
+        .post(
+          ORDER_URL + `/chat/createChat/`,
+          {
+            firstId: userInfo.others._id,
+            secondId: id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            setIdChat(res.data.chat._id);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    }
+  };
   const ListChats = () => {
-    // console.log(id);
     if (userInfo.accessToken && userInfo.others._id) {
       axios
         .get(ORDER_URL + `/chat/listChat`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
-            // console.log(res.data.chat);
-            // setAcceptedFriends(res.data);
             setListChat(res.data.chat);
           }
         })
@@ -775,7 +800,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListMessage = (id) => {
-    // console.log(id);
+    console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .get(ORDER_URL + `/message/findMessage/${id}`, {
@@ -795,21 +820,25 @@ export const AuthProvider = ({ children }) => {
       console.log("load user chat that bai!");
     }
   };
-  const PostMessage = (idMessages,ids,texts) => {
+  const PostMessage = (idMessages, ids, texts) => {
     // console.log(idMessage,id,text);
     if (userInfo.accessToken && idMessages && ids && texts) {
       axios
-        .post(ORDER_URL + `/message/createMessage/`,{
-          chatId:idMessages,
-          senderId:ids,
-          text:texts
-        }, {
-          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-        })
+        .post(
+          ORDER_URL + `/message/createMessage/`,
+          {
+            chatId: idMessages,
+            senderId: ids,
+            text: texts,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
         .then((res) => {
           // console.log(res.data);
           if (res && res.data) {
-            ListMessage()
+            ListMessage();
             // console.log(res.data);
             // setAcceptedFriends(res.data);
           }
@@ -842,6 +871,7 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         listCommnets,
         ListOrder,
+        idChat,
         numberLikes,
         checkDetail,
         showImgBlog,
@@ -867,12 +897,14 @@ export const AuthProvider = ({ children }) => {
         ListBlog,
         LikeBlog,
         ListChats,
+        setIdChat,
         AddChats,
         ListMessage,
         PostMessage,
         setIsVisible,
         setNumberLikes,
         setNumberLike,
+        setListMessages,
         getProfile,
         DetailBlog,
         ListComments,

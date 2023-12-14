@@ -27,7 +27,7 @@ import * as ImagePicker from "expo-image-picker";
 import { AuthContext } from "../context/AuthContext";
 
 const ChatMessagesScreen = () => {
-  const { userInfo, ListMessage, listMessages, PostMessage } =
+  const { userInfo, ListMessage, listMessages, PostMessage,setIdChat,idChat,setListMessages } =
     useContext(AuthContext);
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
@@ -38,14 +38,18 @@ const ChatMessagesScreen = () => {
   const route = useRoute();
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
-  console.log(proFiles);
+  // console.log(idChat);
+  // console.log(">>>>>>>>>idMess>>>>>>>>>",idMessage);
   // const { userId, setUserId } = useContext(UserType);
 
   // const scrollViewRef = useRef(null);
 
   useEffect(() => {
-    ListMessage(idMessage);
-    // scrollToBottom()
+    if (idChat == "") {
+      ListMessage(idMessage);
+    }else{
+      ListMessage(idChat);
+    }
   }, []);
 
   const handleSend = async () => {
@@ -78,7 +82,7 @@ const ChatMessagesScreen = () => {
       headerLeft: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <Ionicons
-            onPress={() => navigation.goBack()}
+            onPress={() => {navigation.goBack(),setIdChat(""),setListMessages("")}}
             name="arrow-back"
             size={28}
             color="blue"
@@ -104,7 +108,7 @@ const ChatMessagesScreen = () => {
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    // console.log(item.text);
+    console.log(item.text);
     // if (item.members[0] === userInfo.others._id) {
     return (
       <View

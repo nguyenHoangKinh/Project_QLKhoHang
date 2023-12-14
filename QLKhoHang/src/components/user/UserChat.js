@@ -13,16 +13,14 @@ const UserChat = ({ item }) => {
   const navigation = useNavigation();
   let id = item._id;
   let proFile = listChat;
-  // console.log(id);
-  const fetchMessages = async () => {
+  console.log(id);
+  const proFiles = async () => {
     // console.log(item.members[1]);
       if (userInfo.accessToken) {
         axios
           .get(ORDER_URL + `/chat/getProfileOwner/${item.members[1]}`)
           .then((res) => {
-            // console.log(res.data);
             if (res && res.data) {
-              // console.log(res.data.Owner);
               setListChat(res.data.Owner)
             }
           })
@@ -35,7 +33,7 @@ const UserChat = ({ item }) => {
   };
 
   useEffect(() => {
-    fetchMessages();
+    proFiles();
   }, []);
   // console.log(messages);
 
