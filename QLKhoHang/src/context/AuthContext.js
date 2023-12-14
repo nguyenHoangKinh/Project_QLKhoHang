@@ -37,6 +37,8 @@ export const AuthProvider = ({ children }) => {
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
   //chats
+  const [modalVisibleChat, setModalVisibleChat] = useState(false);
+  const [modalVisibleMessChat, setModalVisibleMessChat] = useState(false);
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const [listChat, setListChat] = useState(null);
   const [listMessages, setListMessages] = useState("");
@@ -820,6 +822,49 @@ export const AuthProvider = ({ children }) => {
       console.log("load user chat that bai!");
     }
   };
+  const DeleteUserChat = (id) => {
+    console.log(id);
+    if (userInfo.accessToken && id ) {
+      axios
+        .delete(ORDER_URL + `/chat/deleteChat/${id}`,{
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            // ListChats()
+            // setModalVisibleChat(!modalVisibleChat)
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("Xoa userChat luan that bai!");
+    }
+  };
+  const DeleteUserMessChat = (id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id ) {
+      axios
+        .delete(ORDER_URL + `/message/deleteMessage/${id}`,{
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            setModalVisibleMessChat(!modalVisibleMessChat)
+            // ListChats()
+            // setModalVisibleChat(!modalVisibleChat)
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("Xoa userChat luan that bai!");
+    }
+  };
   const PostMessage = (idMessages, ids, texts) => {
     // console.log(idMessage,id,text);
     if (userInfo.accessToken && idMessages && ids && texts) {
@@ -859,8 +904,10 @@ export const AuthProvider = ({ children }) => {
       value={{
         modalVisibleUpdateTextComment,
         detailBlogListCommnetsId,
+        modalVisibleMessChat,
         formErrorChangePass,
         modalVisibleComment,
+        modalVisibleChat,
         checkValueSignUp,
         formErrorLogin,
         splashLoading,
@@ -913,6 +960,8 @@ export const AuthProvider = ({ children }) => {
         OrderDetail,
         orderListUser,
         pustComments,
+        DeleteUserChat,
+        DeleteUserMessChat,
         setListCommnets,
         setShowImgBlog,
         updateProfile,
@@ -922,6 +971,8 @@ export const AuthProvider = ({ children }) => {
         setCheckDetail,
         DeleteOrderUser,
         DeleteOrderOwner,
+        setModalVisibleChat,
+        setModalVisibleMessChat,
         UpdataTextCommentUser,
         DeleteTextCommentUser,
         setModalVisibleComment,

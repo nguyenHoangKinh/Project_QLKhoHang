@@ -8,6 +8,8 @@ import {
   Pressable,
   Image,
   FlatList,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import React, {
   useState,
@@ -16,25 +18,38 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Feather } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 // import EmojiSelector from "react-native-emoji-selector";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { AuthContext } from "../context/AuthContext";
+import AppStyle from "../theme";
+import {
+  Entypo,
+  MaterialIcons,
+  Feather,
+  FontAwesome,
+  Ionicons,
+} from "@expo/vector-icons";
 
 const ChatMessagesScreen = () => {
-  const { userInfo, ListMessage, listMessages, PostMessage,setIdChat,idChat,setListMessages } =
-    useContext(AuthContext);
+  const {
+    userInfo,
+    ListMessage,
+    listMessages,
+    PostMessage,
+    setIdChat,
+    idChat,
+    setListMessages,
+    DeleteUserMessChat,
+    modalVisibleMessChat,
+    setModalVisibleMessChat,
+  } = useContext(AuthContext);
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
   const [messages, setMessages] = useState([]);
   const [recepientData, setRecepientData] = useState();
   const navigation = useNavigation();
-  const [selectedImage, setSelectedImage] = useState("");
+  const [idMess, setIdMess] = useState("");
   const route = useRoute();
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
@@ -47,7 +62,7 @@ const ChatMessagesScreen = () => {
   useEffect(() => {
     if (idChat == "") {
       ListMessage(idMessage);
-    }else{
+    } else {
       ListMessage(idChat);
     }
   }, []);
@@ -82,36 +97,42 @@ const ChatMessagesScreen = () => {
       headerLeft: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <Ionicons
-            onPress={() => {navigation.goBack(),setIdChat(""),setListMessages("")}}
+            onPress={() => {
+              navigation.goBack(), setIdChat(""), setListMessages("");
+            }}
             name="arrow-back"
             size={28}
             color="blue"
           />
 
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  resizeMode: "cover",
-                }}
-                source={{ uri: proFiles?.avatar }}
-              />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Image
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                resizeMode: "cover",
+              }}
+              source={{ uri: proFiles?.avatar }}
+            />
 
-              <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" }}>
-                {proFiles?.username}
-              </Text>
-            </View>
+            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" }}>
+              {proFiles?.username}
+            </Text>
+          </View>
         </View>
-      )
+      ),
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    console.log(item.text);
+    // console.log(item.text);
     // if (item.members[0] === userInfo.others._id) {
     return (
-      <View
+      <TouchableOpacity
+        onLongPress={() => {
+          setModalVisibleMessChat(true);
+          setIdMess(item._id);
+        }}
         className="w-auto mt-6 ml-3.5"
         style={[
           item.senderId === userInfo.others._id
@@ -157,7 +178,7 @@ const ChatMessagesScreen = () => {
             {formatTime(item.createdAt)}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
     // }
   };
@@ -215,6 +236,58 @@ const ChatMessagesScreen = () => {
           <Text style={{ color: "white", fontWeight: "bold" }}>Send</Text>
         </Pressable>
       </View>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisibleMessChat}
+        onRequestClose={() => {
+          setModalVisibleMessChat(!modalVisibleMessChat);
+        }}
+      >
+        <View
+          className="flex-1 w-full h-full"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
+          <View className="absolute top-1/3 left-24">
+            <Pressable
+              className="w-full left-44"
+              onPress={() => {
+                setModalVisibleMessChat(!modalVisibleMessChat);
+              }}
+            >
+              <Ionicons
+                name="close-outline"
+                size={35}
+                color="#fff"
+                style={AppStyle.StyleOderList.textStyle}
+              />
+            </Pressable>
+            <View
+              className="justify-center"
+              style={{
+                width: 213,
+                height: 150,
+                borderRadius: 10,
+                backgroundColor: "#fff",
+                textAlign: "center",
+              }}
+            >
+              <View className="">
+                <TouchableOpacity
+                  onPress={() => {
+                    DeleteUserMessChat(idMess),
+                    setIdMess("")
+                  }}
+                  className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
+                >
+                  <MaterialIcons name="delete" size={24} color="black" />
+                  <Text>Xóa bình luận này</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };
