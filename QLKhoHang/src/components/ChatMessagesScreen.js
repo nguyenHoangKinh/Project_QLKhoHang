@@ -55,7 +55,7 @@ const ChatMessagesScreen = () => {
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
   // console.log(idChat);
-  console.log(">>>>>>>>>idMess>>>>>>>>>",proFiles._id,userInfo.others._id);
+  // console.log(">>>>>>>>>idMess>>>>>>>>>",proFiles._id);
   // const { userId, setUserId } = useContext(UserType);
 
   // const scrollViewRef = useRef(null);
@@ -69,11 +69,12 @@ const ChatMessagesScreen = () => {
   }, []);
 
   const handleSend = async () => {
-    PostMessage(
+    const messages = [
       idMessage != "" ? idMessage : idChat,
       userInfo.others._id,
-      message
-    );
+      message,
+    ];
+    PostMessage({...messages});
     setMessage("");
   };
   const handleEmojiPress = () => {
@@ -130,14 +131,13 @@ const ChatMessagesScreen = () => {
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    // console.log(item.senderId);
+    // console.log(item.text);
     // if (item.members[0] === userInfo.others._id) {
     return (
       <TouchableOpacity
-        onLongPress={() => {
-          item.senderId === userInfo.others._id
-            ? (setModalVisibleMessChat(true), setIdMess(item._id))
-            : "";
+        onLongPress={() => {proFiles._id
+          setModalVisibleMessChat(true);
+          setIdMess(item._id);
         }}
         className="w-auto mt-6 ml-3.5"
         style={[
@@ -289,19 +289,11 @@ const ChatMessagesScreen = () => {
                           text: "Cancel",
                           style: "cancel",
                         },
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            DeleteUserMessChat(
-                              idMessage != "" ? idMessage : idChat,
-                              idMess
-                            ),
-                              setIdMess("");
-                          },
-                        },
+                        { text: "OK", onPress: () => {DeleteUserMessChat(idMessage != "" ? idMessage :idChat,idMess),setIdMess("")} },
                       ],
                       { cancelable: false }
                     );
+                    
                   }}
                   className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
                 >

@@ -865,35 +865,31 @@ export const AuthProvider = ({ children }) => {
       alert("Xoa userChat luan that bai!");
     }
   };
-  const PostMessage = (idMessages, ids, texts) => {
-    // console.log(idMessage,id,text);
-    let idMess = idMessages;
-    if (userInfo.accessToken && idMessages && ids && texts) {
+  const PostMessage = (idMessages) => {
+    let idMess = idMessages[0];
+    if (userInfo.accessToken && idMessages[0] && idMessages[1] && idMessages[2]) {
       axios
         .post(
           ORDER_URL + `/message/createMessage/`,
           {
-            chatId: idMessages,
-            senderId: ids,
-            text: texts,
+            chatId: idMessages[0],
+            senderId: idMessages[1],
+            text: idMessages[2],
           },
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
           }
         )
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
             ListMessage(idMess);
-            // console.log(res.data);
-            // setAcceptedFriends(res.data);
           }
         })
         .catch((e) => {
           console.log(e.response.data);
         });
     } else {
-      console.log("load user chat that bai!");
+      console.log("load pust chat that bai!");
     }
   };
   useEffect(() => {
