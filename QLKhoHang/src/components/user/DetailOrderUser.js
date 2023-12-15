@@ -74,7 +74,7 @@ export default function SeeOrderDetails({ route, navigation }) {
             Tên chủ kho: {checkDetail ? DetailOrder.Order.owner.username : ""}
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
-            Tên kho: {checkDetail ? DetailOrder.Order.name : ""}
+            Diện tích thuê: {checkDetail ? DetailOrder.Order.capacity : ""} %
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
             Thời gian thuê: {checkDetail ? DetailOrder.Order.rentalTime : ""}

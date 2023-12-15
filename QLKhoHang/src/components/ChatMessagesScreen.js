@@ -31,6 +31,7 @@ import {
   FontAwesome,
   Ionicons,
 } from "@expo/vector-icons";
+import  io  from "socket.io-client";
 
 const ChatMessagesScreen = () => {
   const {
@@ -54,6 +55,10 @@ const ChatMessagesScreen = () => {
   const route = useRoute();
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
+  const socket = io('http://localhost:3000');
+  socket.on('connection', () => {
+    console.log('Connected to server');
+  });
   // console.log(idChat);
   // console.log(">>>>>>>>>idMess>>>>>>>>>",proFiles._id);
   // const { userId, setUserId } = useContext(UserType);
