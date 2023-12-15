@@ -11,7 +11,6 @@ import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 
 let stat = [
   {
