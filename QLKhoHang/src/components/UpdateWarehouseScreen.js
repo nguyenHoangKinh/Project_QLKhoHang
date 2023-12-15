@@ -11,7 +11,6 @@ import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 
 let stat = [
   {
@@ -202,7 +201,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
 
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>HỦY</Text>
         </TouchableOpacity>

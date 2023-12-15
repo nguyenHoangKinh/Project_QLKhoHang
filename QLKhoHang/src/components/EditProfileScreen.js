@@ -58,7 +58,7 @@ export default function EditProfileScreen({ navigation }) {
             .then((res) => {
                 console.log(res.data);
                 getProfile();
-                navigation.navigate('HomeNavigation')
+                navigation.navigate('HomeNavigationOwner')
             })
             .catch((e) => {
                 Alert.alert(
@@ -132,7 +132,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('HomeNavigation')
+                        () => navigation.navigate('HomeNavigationOwner')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>

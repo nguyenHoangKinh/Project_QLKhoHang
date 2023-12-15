@@ -1,7 +1,6 @@
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
-import { uuid } from "react-native-uuid";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import AppStyle from "../theme";
@@ -47,6 +46,7 @@ const TodoScreen = ({ navigation }) => {
       }
     ).then((res) => {
       alert("Xóa thành công");
+      navigation.navigate("Home")
     }).catch((e) => {
       console.log(`delete warehouse error ${e.res}`);
     });
@@ -56,6 +56,10 @@ const TodoScreen = ({ navigation }) => {
   const renderTodos = ({ item, index }) => {
     return (
       <View style={AppStyle.StyleWarehouse.warehouse_view}>
+        <Image
+          source={{ uri: `${item.imageWarehouse}` }}
+          style={{ height: 50, width: 50, marginRight: 10 }}
+        ></Image>
         <TouchableOpacity
           style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>
