@@ -136,13 +136,12 @@ const ChatMessagesScreen = () => {
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    // console.log(item.text);
+    // console.log(item);
     // if (item.members[0] === userInfo.others._id) {
     return (
       <TouchableOpacity
-        onLongPress={() => {proFiles._id
-          setModalVisibleMessChat(true);
-          setIdMess(item._id);
+        onLongPress={() => {proFiles._id !== item.senderId ?
+          (setModalVisibleMessChat(true),setIdMess(item._id)): ""
         }}
         className="w-auto mt-6 ml-3.5"
         style={[

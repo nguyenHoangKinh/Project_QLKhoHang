@@ -25,9 +25,10 @@ export default function OrderScreenOwnerComplete({ navigation }) {
     DeleteOrderOwner,
   } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // useEffect(() => {
-  //   orderListOwner(userInfo.accessToken);
-  // }, []);
+  useEffect(() => {
+    //call api
+    orderListOwner(userInfo.accessToken);
+  }, []);
 
   const FlatListData = (item) => {
     if (item.isActive == true) {
@@ -107,15 +108,6 @@ export default function OrderScreenOwnerComplete({ navigation }) {
             <MaterialIcons name="delete" size={34} color="red" />
           </Pressable>
         </Pressable>
-      );
-    }else {
-      return (
-        <Text
-          className="flex text-center text-lg font-bold mt-10"
-          style={{ color: "#16247d" }}
-        >
-          Không có đơn hàng nào!
-        </Text>
       );
     }
   };

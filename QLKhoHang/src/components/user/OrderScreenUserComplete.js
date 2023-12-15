@@ -30,7 +30,7 @@ export default function OrderScreenUserComplete({ navigation }) {
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
-  }, [ListOrder]);
+  }, []);
 
   const FlatListData = (item) => {
     if (item.isActive == true) {

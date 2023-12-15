@@ -28,7 +28,7 @@ export default function OrderScreenUserUnfinished({ navigation }) {
   // const [modalVisible, setModalVisible] = useState(false);
   // const [listOrderFalse, setListOrderFalse] = useState([]);
   useEffect(() => {
-    // call api
+    //call api
     orderListUser(userInfo.accessToken);
   }, []);
 
@@ -90,15 +90,6 @@ export default function OrderScreenUserUnfinished({ navigation }) {
             </View>
           </View>
         </Pressable>
-      );
-    }else {
-      return (
-        <Text
-          className="flex text-center text-lg font-bold mt-10"
-          style={{ color: "#16247d" }}
-        >
-          Không có đơn hàng nào!
-        </Text>
       );
     }
   };
