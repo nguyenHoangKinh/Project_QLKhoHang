@@ -10,6 +10,7 @@ import {
   FlatList,
   Modal,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, {
   useState,
@@ -54,7 +55,7 @@ const ChatMessagesScreen = () => {
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
   // console.log(idChat);
-  // console.log(">>>>>>>>>idMess>>>>>>>>>",idMessage);
+  console.log(">>>>>>>>>idMess>>>>>>>>>",proFiles._id,userInfo.others._id);
   // const { userId, setUserId } = useContext(UserType);
 
   // const scrollViewRef = useRef(null);
@@ -68,7 +69,11 @@ const ChatMessagesScreen = () => {
   }, []);
 
   const handleSend = async () => {
-    PostMessage(idMessage, userInfo.others._id, message);
+    PostMessage(
+      idMessage != "" ? idMessage : idChat,
+      userInfo.others._id,
+      message
+    );
     setMessage("");
   };
   const handleEmojiPress = () => {
@@ -125,13 +130,14 @@ const ChatMessagesScreen = () => {
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    // console.log(item.text);
+    // console.log(item.senderId);
     // if (item.members[0] === userInfo.others._id) {
     return (
       <TouchableOpacity
         onLongPress={() => {
-          setModalVisibleMessChat(true);
-          setIdMess(item._id);
+          item.senderId === userInfo.others._id
+            ? (setModalVisibleMessChat(true), setIdMess(item._id))
+            : "";
         }}
         className="w-auto mt-6 ml-3.5"
         style={[
@@ -275,13 +281,32 @@ const ChatMessagesScreen = () => {
               <View className="">
                 <TouchableOpacity
                   onPress={() => {
-                    DeleteUserMessChat(idMess),
-                    setIdMess("")
+                    Alert.alert(
+                      "",
+                      "Bạn muốn xóa tin nhắn này ?",
+                      [
+                        {
+                          text: "Cancel",
+                          style: "cancel",
+                        },
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            DeleteUserMessChat(
+                              idMessage != "" ? idMessage : idChat,
+                              idMess
+                            ),
+                              setIdMess("");
+                          },
+                        },
+                      ],
+                      { cancelable: false }
+                    );
                   }}
                   className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
                 >
                   <MaterialIcons name="delete" size={24} color="black" />
-                  <Text>Xóa bình luận này</Text>
+                  <Text>Xóa tin nhắn!</Text>
                 </TouchableOpacity>
               </View>
             </View>

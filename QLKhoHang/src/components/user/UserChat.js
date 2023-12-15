@@ -1,4 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, TextInput, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Modal,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,12 +24,13 @@ import {
 } from "@expo/vector-icons";
 
 const UserChat = ({ item }) => {
-  const { userInfo,setModalVisibleChat,modalVisibleChat,DeleteUserChat } = useContext(AuthContext);
+  const { userInfo, setModalVisibleChat, modalVisibleChat, DeleteUserChat } =
+    useContext(AuthContext);
   const [listChat, setListChat] = useState([]);
   const navigation = useNavigation();
   let id = item._id;
   let proFile = listChat;
-  // console.log(item);
+  // console.log(item._id);
   const proFiles = async () => {
     // console.log(item.members[1]);
     if (userInfo.accessToken) {
@@ -41,7 +52,7 @@ const UserChat = ({ item }) => {
   useEffect(() => {
     proFiles();
   }, []);
-  
+
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
@@ -54,7 +65,9 @@ const UserChat = ({ item }) => {
           proFiles: proFile,
         })
       }
-      onLongPress={()=>{setModalVisibleChat(true)}}
+      onLongPress={() => {
+        setModalVisibleChat(true);
+      }}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -96,43 +109,56 @@ const UserChat = ({ item }) => {
           setModalVisibleChat(!modalVisibleChat);
         }}
       >
-        <View className="flex-1 w-full h-full" style={{backgroundColor:"rgba(0,0,0,0.2)"}}>
-        <View className="absolute top-1/3 left-24">
-
-          <Pressable
-            className="w-full left-44"
-            onPress={() => {
-              setModalVisibleChat(!modalVisibleChat);
-            }}
-          >
-            <Ionicons
-              name="close-outline"
-              size={35}
-              color="#fff"
-              style={AppStyle.StyleOderList.textStyle}
-            />
-          </Pressable>
-          <View
-          className="justify-center"
-            style={{
-              width: 213,
-              height: 150,
-              borderRadius: 10,
-              backgroundColor: "#fff",
-              textAlign: "center",
-            }}
-          >
-            <View className="">
-              <TouchableOpacity
-                onPress={() => {
-                  DeleteUserChat(item._id),setModalVisibleChat(!modalVisibleChat)
-                }}
-                className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
-              >
-                <MaterialIcons name="delete" size={24} color="black" />
-                <Text>Xóa đoạn chat này !</Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
+        <View
+          className="flex-1 w-full h-full"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
+          <View className="absolute top-1/3 left-24">
+            <Pressable
+              className="w-full left-44"
+              onPress={() => {
+                setModalVisibleChat(!modalVisibleChat);
+              }}
+            >
+              <Ionicons
+                name="close-outline"
+                size={35}
+                color="#fff"
+                style={AppStyle.StyleOderList.textStyle}
+              />
+            </Pressable>
+            <View
+              className="justify-center"
+              style={{
+                width: 213,
+                height: 150,
+                borderRadius: 10,
+                backgroundColor: "#fff",
+                textAlign: "center",
+              }}
+            >
+              <View className="">
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      "",
+                      "Bạn muốn xóa đoạn chat này ?",
+                      [
+                        {
+                          text: "Cancel",
+                          style: "cancel",
+                        },
+                        { text: "OK", onPress: () => DeleteUserChat(id) },
+                      ],
+                      { cancelable: false }
+                    );
+                  }}
+                  className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
+                >
+                  <MaterialIcons name="delete" size={24} color="black" />
+                  <Text>Xóa đoạn chat này ?</Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity
                 onPress={() => {
                   textCommnetUpdate != "" ? UpdataItemComment() : "";
                 }}
@@ -141,9 +167,9 @@ const UserChat = ({ item }) => {
                 <MaterialCommunityIcons name="pencil" size={24} color="black" />
                 <Text>Cập nhật</Text>
               </TouchableOpacity> */}
+              </View>
             </View>
           </View>
-        </View>
         </View>
       </Modal>
     </TouchableOpacity>

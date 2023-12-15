@@ -39,8 +39,8 @@ export default function OrderScreenOwnerComplete({ navigation }) {
           }}
         >
           <View className="" style={AppStyle.StyleOderList.item}>
-            <View>
-              <View className="flex flex-row">
+            <View className="mt-3">
+              {/* <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
@@ -48,7 +48,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                   Tên Đơn Hàng:
                 </Text>
                 <Text className="flex-initial text-base"> {item.name}</Text>
-              </View>
+              </View> */}
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"

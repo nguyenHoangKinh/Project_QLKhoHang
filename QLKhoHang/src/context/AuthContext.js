@@ -831,19 +831,18 @@ export const AuthProvider = ({ children }) => {
         })
         .then((res) => {
           if (res && res.data) {
-            console.log(res.data);
-            // ListChats()
-            // setModalVisibleChat(!modalVisibleChat)
+            ListChats()
+            setModalVisibleChat(!modalVisibleChat)
           }
         })
         .catch((e) => {
           console.log(e.response.data.message);
         });
     } else {
-      alert("Xoa userChat luan that bai!");
+      alert("Xoa userChat that bai!");
     }
   };
-  const DeleteUserMessChat = (id) => {
+  const DeleteUserMessChat = (idMess,id) => {
     // console.log(id);
     if (userInfo.accessToken && id ) {
       axios
@@ -854,6 +853,7 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data) {
             console.log(res.data);
             setModalVisibleMessChat(!modalVisibleMessChat)
+            ListMessage(idMess)
             // ListChats()
             // setModalVisibleChat(!modalVisibleChat)
           }
@@ -867,6 +867,7 @@ export const AuthProvider = ({ children }) => {
   };
   const PostMessage = (idMessages, ids, texts) => {
     // console.log(idMessage,id,text);
+    let idMess = idMessages;
     if (userInfo.accessToken && idMessages && ids && texts) {
       axios
         .post(
@@ -883,7 +884,7 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           // console.log(res.data);
           if (res && res.data) {
-            ListMessage();
+            ListMessage(idMess);
             // console.log(res.data);
             // setAcceptedFriends(res.data);
           }
