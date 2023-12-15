@@ -90,20 +90,34 @@ export default function OrderScreenUserComplete({ navigation }) {
           </View>
         </Pressable>
       );
+    } else {
+      return (
+        <Text
+          className="flex text-center text-lg font-bold mt-10"
+          style={{ color: "#16247d" }}
+        >
+          Không có đơn hàng nào!
+        </Text>
+      );
     }
   };
 
   return (
     <>
-    {ListOrder != "" ? 
-      <FlatList
-        data={ListOrder}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListData(item)}
-      />
-      : 
-      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
-    }
+      {ListOrder != "" ? (
+        <FlatList
+          data={ListOrder}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListData(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1 mt-10"
+          style={{ color: "#16247d" }}
+        >
+          Không có Dơn Hàng!
+        </Text>
+      )}
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {

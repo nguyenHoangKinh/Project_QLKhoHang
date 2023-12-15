@@ -108,6 +108,15 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
           </Pressable>
         </Pressable>
       );
+    }else {
+      return (
+        <Text
+          className="flex text-center text-lg font-bold mt-10"
+          style={{ color: "#16247d" }}
+        >
+          Không có đơn hàng nào!
+        </Text>
+      );
     }
   };
 
