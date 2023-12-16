@@ -11,10 +11,10 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from "../theme";
-import AppStyle from "../theme";
-import { AuthContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
+import { themeColors } from "../../theme";
+import AppStyle from "../../theme";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
   AntDesign,
@@ -25,7 +25,7 @@ import {
 } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
 // import BottomSheet from "react-native-simple-bottom-sheet";
-export default function DetaiBlogPost({ route, navigation }) {
+export default function DetaiBlogPost() {
   const {
     DetailBlog,
     detailBlog,
@@ -37,23 +37,26 @@ export default function DetaiBlogPost({ route, navigation }) {
     DisLike,
     setIndex,
     index,
+    idChat,
     setIsVisible,
     ListComments,
     listCommnets,
     setListCommnets,
     pustComments,
+    setIdChat,
     numberLike,
     setNumberLike,
     setNumberLikes,
     numberLikes,
     modalVisibleComment,
     UpdataTextCommentUser,
-    detailBlogListCommnetsId,
+    AddChats,
     DeleteTextCommentUser,
     setModalVisibleComment,
     modalVisibleUpdateTextComment,
     setModalVisibleUpdateTextComment,
   } = useContext(AuthContext);
+  const navigation = useNavigation();
   const [imageView, setImageView] = useState("");
   const [idCommentUpdata, setIdCommentUpdata] = useState("");
   const [message, setMessage] = useState("");
@@ -61,11 +64,12 @@ export default function DetaiBlogPost({ route, navigation }) {
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   // const { itemId } = route.params;
   // const panelRef = useRef(null);
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", idCommentUpdata);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", detailBlog.owner);
 
   useEffect(() => {
     DetailBlog();
   }, []);
+
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
@@ -213,6 +217,13 @@ export default function DetaiBlogPost({ route, navigation }) {
       </View>
     );
   };
+  const AddChat = () =>{
+    AddChats(detailBlog.owner._id)
+    setTimeout(() => {
+      navigation.navigate("ChatMessagesScreen",{idMessage:idChat,proFiles:detailBlog.owner})
+    }, 460)
+    
+  }
   return (
     <ScrollView
       className="w-full h-auto bg-white "
@@ -244,8 +255,14 @@ export default function DetaiBlogPost({ route, navigation }) {
             >
               Thông Tin Kho
             </Text>
-            <TouchableOpacity style={{ width: "15%" }} className="top-2 ">
-              <AntDesign name="pluscircleo" size={36} color="#fff" />
+            <TouchableOpacity
+             
+            onPress={()=>{AddChat()}} 
+             
+             style={{ width: "15%" }} className="top-2 ">
+              {/* <AntDesign name="pluscircleo" size={} color="" /> */}
+              {/* <Ionicons name="ios-chatbubble-ellipses-outline" size={35} color="" /> */}
+              <Ionicons name="chatbubble-ellipses-outline" size={32} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>

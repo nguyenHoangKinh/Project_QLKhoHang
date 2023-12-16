@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import AppStyle from "../theme";
+import { AuthContext } from "../../context/AuthContext";
+import AppStyle from "../../theme";
 import {
   FlatList,
   Pressable,

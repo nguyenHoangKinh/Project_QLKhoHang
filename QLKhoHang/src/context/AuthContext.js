@@ -36,7 +36,15 @@ export const AuthProvider = ({ children }) => {
   const [numberLike, setNumberLike] = useState(0);
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
-  // console.log(userInfo);
+  //chats
+  const [modalVisibleChat, setModalVisibleChat] = useState(false);
+  const [modalVisibleMessChat, setModalVisibleMessChat] = useState(false);
+  const [acceptedFriends, setAcceptedFriends] = useState([]);
+  const [listChat, setListChat] = useState(null);
+  const [listMessages, setListMessages] = useState("");
+  const [idChat, setIdChat] = useState("");
+
+  // console.log(idChat);
   const signUP = (
     usernames,
     passwords,
@@ -716,7 +724,172 @@ export const AuthProvider = ({ children }) => {
           console.log(e.response.data.message);
         });
     } else {
-      alert("load binh luan that bai!");
+      alert(">>>>>>>>>>>>>load binh luan that bai!");
+    }
+  };
+  const AddChats = (secondIds) => {
+    // console.log(secondIds, userInfo.others._id);
+    let number = false;
+    if (userInfo.accessToken && userInfo.others._id) {
+      // console.log(id);
+      axios
+        .get(ORDER_URL + `/chat/listChat`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            checkProfile(secondIds, res.data.chat);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const checkProfile = (id, item) => {
+    // let idchatitem = null;
+    item.some((item, index) => {
+      if (item.members[1] === id && item.members[0] === userInfo.others._id) {
+        // console.log(">>>>>>",item._id);
+        setIdChat(item._id);
+        return (number = true);
+      }
+      return (number = false);
+    });
+    if (number == false) {
+      axios
+        .post(
+          ORDER_URL + `/chat/createChat/`,
+          {
+            firstId: userInfo.others._id,
+            secondId: id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            setIdChat(res.data.chat._id);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    }
+  };
+  const ListChats = () => {
+    if (userInfo.accessToken && userInfo.others._id) {
+      axios
+        .get(ORDER_URL + `/chat/listChat`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            setListChat(res.data.chat);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const ListMessage = (id) => {
+    console.log(id);
+    if (userInfo.accessToken && id) {
+      axios
+        .get(ORDER_URL + `/message/findMessage/${id}`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res && res.data) {
+            // console.log(res.data);
+            setListMessages(res.data.message);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load user chat that bai!");
+    }
+  };
+  const DeleteUserChat = (id) => {
+    console.log(id);
+    if (userInfo.accessToken && id ) {
+      axios
+        .delete(ORDER_URL + `/chat/deleteChat/${id}`,{
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            ListChats()
+            setModalVisibleChat(!modalVisibleChat)
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("Xoa userChat that bai!");
+    }
+  };
+  const DeleteUserMessChat = (idMess,id) => {
+    // console.log(id);
+    if (userInfo.accessToken && id ) {
+      axios
+        .delete(ORDER_URL + `/message/deleteMessage/${id}`,{
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            setModalVisibleMessChat(!modalVisibleMessChat)
+            ListMessage(idMess)
+            // ListChats()
+            // setModalVisibleChat(!modalVisibleChat)
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+        });
+    } else {
+      alert("Xoa userChat luan that bai!");
+    }
+  };
+  const PostMessage = (idMessages) => {
+    let idMess = idMessages[0];
+    if (userInfo.accessToken && idMessages[0] && idMessages[1] && idMessages[2]) {
+      axios
+        .post(
+          ORDER_URL + `/message/createMessage/`,
+          {
+            chatId: idMessages[0],
+            senderId: idMessages[1],
+            text: idMessages[2],
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            ListMessage(idMess);
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+        });
+    } else {
+      console.log("load pust chat that bai!");
     }
   };
   useEffect(() => {
@@ -728,16 +901,21 @@ export const AuthProvider = ({ children }) => {
       value={{
         modalVisibleUpdateTextComment,
         detailBlogListCommnetsId,
+        modalVisibleMessChat,
         formErrorChangePass,
         modalVisibleComment,
+        modalVisibleChat,
         checkValueSignUp,
         formErrorLogin,
         splashLoading,
+        acceptedFriends,
+        listMessages,
         checkUpdate,
         DetailOrder,
         checkSignUp,
         listCommnets,
         ListOrder,
+        idChat,
         numberLikes,
         checkDetail,
         showImgBlog,
@@ -750,7 +928,7 @@ export const AuthProvider = ({ children }) => {
         index,
         listBlog,
         userInfo,
-        // IdOrder,
+        listChat,
         check,
         list,
         login,
@@ -762,9 +940,15 @@ export const AuthProvider = ({ children }) => {
         DisLike,
         ListBlog,
         LikeBlog,
+        ListChats,
+        setIdChat,
+        AddChats,
+        ListMessage,
+        PostMessage,
         setIsVisible,
         setNumberLikes,
         setNumberLike,
+        setListMessages,
         getProfile,
         DetailBlog,
         ListComments,
@@ -773,6 +957,8 @@ export const AuthProvider = ({ children }) => {
         OrderDetail,
         orderListUser,
         pustComments,
+        DeleteUserChat,
+        DeleteUserMessChat,
         setListCommnets,
         setShowImgBlog,
         updateProfile,
@@ -782,6 +968,8 @@ export const AuthProvider = ({ children }) => {
         setCheckDetail,
         DeleteOrderUser,
         DeleteOrderOwner,
+        setModalVisibleChat,
+        setModalVisibleMessChat,
         UpdataTextCommentUser,
         DeleteTextCommentUser,
         setModalVisibleComment,

@@ -25,9 +25,10 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
     DeleteOrderOwner,
   } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // useEffect(() => {
-  //   orderListOwner(userInfo.accessToken);
-  // }, []);
+  useEffect(() => {
+    //call api
+    orderListOwner(userInfo.accessToken);
+  }, []);
 
   const FlatListData = (item) => {
     if (item.isActive == false) {
@@ -39,8 +40,8 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
           }}
         >
           <View className="" style={AppStyle.StyleOderList.item}>
-            <View>
-              <View className="flex flex-row">
+            <View className="mt-3">
+              {/* <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
@@ -48,7 +49,7 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
                   Tên Đơn Hàng:
                 </Text>
                 <Text className="flex-initial text-base"> {item.name}</Text>
-              </View>
+              </View> */}
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"

@@ -30,7 +30,7 @@ export default function OrderScreenUserComplete({ navigation }) {
   useEffect(() => {
     //call api
     orderListUser(userInfo.accessToken);
-  }, [ListOrder]);
+  }, []);
 
   const FlatListData = (item) => {
     if (item.isActive == true) {
@@ -42,8 +42,8 @@ export default function OrderScreenUserComplete({ navigation }) {
           }}
         >
           <View className="" style={AppStyle.StyleOderList.item}>
-            <View>
-              <View className="flex flex-row">
+            <View className="mt-3">
+              {/* <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
@@ -51,7 +51,7 @@ export default function OrderScreenUserComplete({ navigation }) {
                   Tên Đơn Hàng:
                 </Text>
                 <Text className="flex-initial text-base"> {item.name}</Text>
-              </View>
+              </View> */}
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"
@@ -90,20 +90,25 @@ export default function OrderScreenUserComplete({ navigation }) {
           </View>
         </Pressable>
       );
-    }
+    } 
   };
 
   return (
     <>
-    {ListOrder != "" ? 
-      <FlatList
-        data={ListOrder}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListData(item)}
-      />
-      : 
-      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
-    }
+      {ListOrder != "" ? (
+        <FlatList
+          data={ListOrder}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListData(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1 mt-10"
+          style={{ color: "#16247d" }}
+        >
+          Không có Dơn Hàng!
+        </Text>
+      )}
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {
