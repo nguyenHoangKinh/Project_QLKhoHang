@@ -2,36 +2,32 @@ import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import {
-  FlatList,
-  SafeAreaView,
-  Text,
-  TextInput,
-  View,
-  Image,
-  Alert,
-  Pressable,
-  Modal,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, SafeAreaView, Text, TextInput, View, Image, Alert, Pressable, Modal, TouchableOpacity } from "react-native";
+import axios from "axios";
 
 export default function OrderScreenOwnerUnfinished({ navigation }) {
-  const {
-    orderListOwner,
-    ListOrder,
-    setIdOrder,
-    userInfo,
-    SearchOrder,
-    DeleteOrderOwner,
-  } = useContext(AuthContext);
+  const { orderListOwner, ListOrder, setIdOrder, userInfo, SearchOrder, DeleteOrderOwner } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [listOrder, setListOrder] = useState();
+
   useEffect(() => {
-    //call api
-    orderListOwner(userInfo.accessToken);
+    axios.get(`https://warehouse-management-api.vercel.app/v1/order/listOrderByOwner`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+      params: {
+        id_owner: userInfo.others._id,
+      },
+    }).then((res) => {
+      let listOrder = res.data;
+      setListOrder(listOrder);
+    }).catch((e) => {
+      console.log(`get order error ${e.res}`);
+    });
   }, []);
 
   const FlatListData = (item) => {
-    if (item.isActive == false) {
+    if (item.status === 0) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -48,8 +44,8 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
                 >
                   Tên Đơn Hàng:
                 </Text>
-                <Text className="flex-initial text-base"> {item.name}</Text>
-              </View> */}
+                <Text className="flex-initial text-base"> {item._id}</Text>
+              </View>
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"
@@ -80,33 +76,10 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
                 >
                   Thời Gian Thuê:{" "}
                 </Text>
-                <Text className="flex-initial  text-base">{item.rentalTime}</Text>
+                <Text className="flex-initial  text-base">{item.rentalTime} Tháng</Text>
               </View>
             </View>
           </View>
-          <Pressable
-            onPress={() => {
-              Alert.alert(
-                "",
-                "Are you sure you want to delete?",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: () =>
-                      DeleteOrderOwner(userInfo.others._id, item._id),
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}
-            className="absolute right-5 top-10"
-          >
-            <MaterialIcons name="delete" size={34} color="red" />
-          </Pressable>
         </Pressable>
       );
     }
@@ -114,15 +87,15 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
 
   return (
     <>
-    {ListOrder != "" ? 
-    <FlatList
-        data={ListOrder}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListData(item)}
-      />
-      : 
-      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
-    }
+      {listOrder ?
+        <FlatList
+          data={listOrder}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListData(item)}
+        />
+        :
+        <Text className="flex text-center text-lg font-bold top-1/2" style={{ color: "#16247d" }}>Không có Dơn Hàng!</Text>
+      }
       {/* <TouchableOpacity
         className="absolute bottom-10 right-8 rounded-full"
         onPress={() => {
