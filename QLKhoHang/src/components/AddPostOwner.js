@@ -5,6 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 import { Dropdown } from "react-native-element-dropdown";
+import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import axios from "axios";
@@ -14,7 +15,7 @@ export default function AddPostOwner({ navigation }) {
     const [warehouse, setWarehouse] = useState([]);
     const [idWarehouse, setIdWarehouse] = useState("");
     const [description, setDescription] = useState();
-    const [images, setImages] = useState();
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
@@ -45,47 +46,63 @@ export default function AddPostOwner({ navigation }) {
         );
 
     const addPost = (description, images) => {
+        const formData = new FormData();
+
+        if (images) {
+            for (let i = 0; i < images.assets.length; i++) {
+                formData.append('images', { uri: images.assets[i].uri, name: 'file.jpg', type: 'image/jpeg' });
+            }
+        }
+
+        console.log(formData)
+
         axios.post(`https://warehouse-management-api.vercel.app/v1/blog/create`, {
             description: description,
-            images: images,
         }, {
             headers:
             {
-                Authorization: `Bearer ${userInfo.accessToken}`
+                Authorization: `Bearer ${userInfo.accessToken}`,
             },
             params:
             {
                 warehouse: idWarehouse
             },
         }).then((res) => {
+            if (images) {
+                const cloudinaryResponse = axios.put(`https://warehouse-management-api.vercel.app/v1/blog/update`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${userInfo.accessToken}`,
+                        },
+                        params: {
+                            id: res.data.data._id
+                        }
+                    }
+                );
+            }
             navigation.navigate("ListBlogOwner")
         }).catch((e) => {
-            console.log(`Add error ${e}`);
+            console.log(`Add error ${e.message}`);
         });
     };
 
     const pickFromGalary = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status) {
-            let data = await ImagePicker.launchImageLibraryAsync({
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.5,
-                base64: true
+                allowsEditing: false,
+                quality: 1,
+                allowsMultipleSelection: true
             });
 
-            console.log(data.assets)
-
-            if (!data.canceled) {
-                let newFile = {
-                    uri: data.assets[0].uri,
-                    type: data.assets[0].type,
-                    name: data.assets[0].name,
-                };
-                setImages(data.assets.base64);
+            if (!result.canceled) {
+                setImages(result)
             }
-        } else { Alert.alert('Chưa chọn hình ảnh'); }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
     }
 
     return (
@@ -138,7 +155,7 @@ export default function AddPostOwner({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!description && !idWarehouse)
+                        (!description && !idWarehouse && !images)
                             ? showAlert()
                             : addPost(description, images)
                     }}>

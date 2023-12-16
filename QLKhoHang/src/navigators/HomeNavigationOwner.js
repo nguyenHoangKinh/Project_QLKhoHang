@@ -41,7 +41,7 @@ export default function HomeNavigation() {
                 <FontAwesome5
                   name="warehouse"
                   size={24}
-                  color={focused ? "#16247d" : "#16247d"}
+                  color={focused ? "#16247d" : "#111"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Warehouse

@@ -79,7 +79,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
         </TouchableOpacity>
