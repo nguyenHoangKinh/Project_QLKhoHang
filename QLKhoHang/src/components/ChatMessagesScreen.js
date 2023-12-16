@@ -235,7 +235,7 @@ const ChatMessagesScreen = () => {
         />
 
         <Pressable
-          onPress={() => handleSend()}
+          onPress={() => {message != "" ? handleSend() :""}}
           style={{
             backgroundColor: "#007bff",
             paddingVertical: 8,

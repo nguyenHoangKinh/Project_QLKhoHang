@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const [listMessages, setListMessages] = useState("");
   const [idChat, setIdChat] = useState("");
 
-  // console.log(idChat);
+  console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -811,7 +811,7 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           // console.log(res.data);
           if (res && res.data) {
-            // console.log(res.data);
+            console.log(res.data);
             setListMessages(res.data.message);
           }
         })
@@ -866,6 +866,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const PostMessage = (idMessages) => {
+    // console.log(idMessages);
     let idMess = idMessages[0];
     if (userInfo.accessToken && idMessages[0] && idMessages[1] && idMessages[2]) {
       axios

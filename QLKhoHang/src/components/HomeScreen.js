@@ -4,7 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 import AppStyle from "../theme";
 import axios from "axios";
-import ListBlogUser from "./ListBlogUser"
+import ListBlogUser from "./user/ListBlogUser"
 
 export default function HomeScreen({ navigation }) {
   const { userInfo } = useContext(AuthContext);
