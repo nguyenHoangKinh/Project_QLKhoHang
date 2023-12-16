@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { ScrollView, Text, Image, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, Alert, TextInput, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -38,6 +38,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [description, setDescription] = useState();
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [warehouses, setWarehouse] = useState();
+  const [image, setImage] = useState();
   const route = useRoute();
   const idWarehouse = route.params?.idWarehouse;
 
@@ -72,7 +73,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   }, []);
 
-  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description) => {
+  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description, image) => {
     axios.put(`https://warehouse-management-api.vercel.app/v1/warehouse/updateWarehouse/${idWarehouse}`,
       {
         wareHouseName: wareHouseName,
@@ -82,6 +83,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
         monney: monney,
         status: status,
         description: description,
+        imageWarehouse: image,
       },
       {
         headers: {
@@ -94,6 +96,37 @@ export default function UpdateWarehouseScreen({ navigation }) {
       console.log(`Update error ${e}`);
       setCheckUpdate(false);
     });
+  };
+
+  const uploadToCloudinary = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const formData = new FormData();
+        formData.append('file', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
+        formData.append('upload_preset', 'ImageProject');
+
+        const cloudinaryResponse = await axios.post(
+          `https://api.cloudinary.com/v1_1/dborrd4h5/image/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              // 'Authorization': `Basic ${btoa('your-api-key:your-api-secret')}`,
+            },
+          }
+        );
+        setImage(cloudinaryResponse.data.url)
+        console.log('Uploaded image:', cloudinaryResponse.data.url);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   };
 
   return (
@@ -146,8 +179,10 @@ export default function UpdateWarehouseScreen({ navigation }) {
               value={currentCapacity}
               onChangeText={(text) => setCurrentCapacity(text)}
             />}
-          <Text style={{ fontSize: 14, marginTop: 4 }}>{"/" + warehouses.currentCapacity}</Text>
-          <Text style={{ fontSize: 15, marginTop: 2 }}> {warehouses.category.acreage}</Text>
+          {warehouses &&
+            <Text style={{ fontSize: 14, marginTop: 4 }}>{"/" + warehouses.capacity}</Text>}
+          {warehouses &&
+            <Text style={{ fontSize: 15, marginTop: 2 }}> {warehouses.category.acreage}</Text>}
         </View>
 
         <View style={AppStyle.StyleProfile.items}>
@@ -188,11 +223,30 @@ export default function UpdateWarehouseScreen({ navigation }) {
               onChangeText={(text) => setDescription(text)}
             />}
         </View>
-
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_upload}
+          onPress={() =>
+            Alert.alert(
+              "",
+              "Bạn có muốn cập nhật hình ảnh không?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK", onPress: () => uploadToCloudinary()
+                },
+              ],
+              { cancelable: false }
+            )
+          }>
+          <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
-            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description);
+            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, image);
             { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />

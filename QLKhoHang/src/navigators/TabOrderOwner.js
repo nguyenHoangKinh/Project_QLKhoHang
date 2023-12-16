@@ -61,12 +61,12 @@ export default TabOrderOwner = () => {
         <Tab.Screen
           name="OrderScreenUser1"
           component={OrderScreenUser1}
-          options={{ tabBarLabel: "Đơn Hoàng Thành" }}
+          options={{ tabBarLabel: "Đơn Chưa Xác Nhận" }}
         />
         <Tab.Screen
           name="OrderScreenUser2"
           component={OrderScreenUser2}
-          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+          options={{ tabBarLabel: "Đơn Đã Xác Nhận" }}
         />
       </Tab.Navigator>
     </>
