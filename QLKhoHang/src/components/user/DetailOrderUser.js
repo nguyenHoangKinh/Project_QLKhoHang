@@ -91,7 +91,7 @@ export default function SeeOrderDetails({ route, navigation }) {
             </Text>
           </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="py-3 bg-blue-300 rounded-xl top-5"
           // onPress={() => {
           //   OrderDetail()
@@ -100,7 +100,7 @@ export default function SeeOrderDetails({ route, navigation }) {
           <Text className="text-xl font-bold text-center text-gray-700">
             Hủy Đơn
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

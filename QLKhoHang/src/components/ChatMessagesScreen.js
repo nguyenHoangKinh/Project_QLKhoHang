@@ -34,6 +34,10 @@ import {
 import  io  from "socket.io-client";
 
 const ChatMessagesScreen = () => {
+  const socket = io('https://warehouse-management-api.vercel.app');
+  socket.on('connection', () => {
+    console.log('Connected to server');
+  });
   const {
     userInfo,
     ListMessage,
@@ -55,12 +59,9 @@ const ChatMessagesScreen = () => {
   const route = useRoute();
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
-  const socket = io('http://localhost:3000');
-  socket.on('connection', () => {
-    console.log('Connected to server');
-  });
+
   // console.log(idChat);
-  // console.log(">>>>>>>>>idMess>>>>>>>>>",proFiles._id);
+  console.log(">>>>>>>>>idMess>>>>>>>>>",listMessages);
   // const { userId, setUserId } = useContext(UserType);
 
   // const scrollViewRef = useRef(null);
@@ -194,7 +195,7 @@ const ChatMessagesScreen = () => {
   };
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
-      <View className="flex" style={{ height: "90%" }}>
+      <View className="flex" style={{ height: "88%" }}>
         <FlatList
           data={listMessages}
           keyExtractor={(item) => item._id}
@@ -202,6 +203,7 @@ const ChatMessagesScreen = () => {
         />
       </View>
       <View
+      className="mb-10"
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -209,7 +211,6 @@ const ChatMessagesScreen = () => {
           paddingVertical: 10,
           borderTopWidth: 1,
           borderTopColor: "#dddddd",
-          marginBottom: showEmojiSelector ? 0 : 25,
         }}
       >
         {/* <Entypo
