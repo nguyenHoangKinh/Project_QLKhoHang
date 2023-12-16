@@ -1,7 +1,6 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
-import { uuid } from "react-native-uuid";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import AppStyle from "../theme";
@@ -10,42 +9,47 @@ const TodoScreen = ({ navigation }) => {
   // Init local states
   const [warehouse, setWarehouse] = useState({});
   const [searchWarehouse, setSearchWarehouse] = useState({});
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, logout } = useContext(AuthContext);
 
   useEffect(() => {
     axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/list`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+      params: {
+        id_owner: userInfo.others._id,
+      },
+    }).then((res) => {
+      let warehouses = res.data;
+      setWarehouse(warehouses);
+      setSearchWarehouse(warehouses);
+    }).catch((e) => {
+      console.log(`get warehouse error ${e.res}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
+    });
+  }, []);
+
+  // Handle Delete
+  const handleDeleteTodo = (id) => {
+    axios.delete(
+      `https://warehouse-management-api.vercel.app/v1/warehouse/deleteWarehouse/${id}`,
+      {
         headers: {
           Authorization: `Bearer ${userInfo.accessToken}`,
         },
         params: {
           id_owner: userInfo.others._id,
         },
-      }).then((res) => {
-        let warehouses = res.data;
-        setWarehouse(warehouses);
-        setSearchWarehouse(warehouses);
-      }).catch((e) => {
-        console.log(`get warehouse error ${e.res}`);
-      });
-  }, []);
-
-  // Handle Delete
-  const handleDeleteTodo = (id) => {
-    axios.delete(
-        `https://warehouse-management-api.vercel.app/v1/warehouse/deleteWarehouse/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.accessToken}`,
-          },
-          params: {
-            id_owner: userInfo.others._id,
-          },
-        }
-      ).then((res) => {
-        navigation.navigate("Home");
-      }).catch((e) => {
-        console.log(`delete warehouse error ${e.res}`);
-      });
+      }
+    ).then((res) => {
+      alert("Xóa thành công");
+      navigation.navigate("Home")
+    }).catch((e) => {
+      console.log(`delete warehouse error ${e.res}`);
+    });
   };
 
   // Render items
@@ -85,8 +89,9 @@ const TodoScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <IconButton
+          style={{ marginLeft: -10 }}
           icon="pencil"
-          iconColor="#fff"
+          iconColor="#000"
           onPress={() => {
             navigation.navigate("UpdateWarehouseScreen", {
               idWarehouse: item._id,
@@ -94,9 +99,25 @@ const TodoScreen = ({ navigation }) => {
           }}
         />
         <IconButton
+          style={{ marginLeft: -15, marginRight: -10 }}
           icon="trash-can"
-          iconColor="#fff"
-          onPress={() => handleDeleteTodo(item._id)}
+          iconColor="#000"
+          onPress={() => {
+            Alert.alert(
+              "",
+              "Bạn có muốn xóa kho hàng này không?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK", onPress: () => handleDeleteTodo(item._id)
+                },
+              ],
+              { cancelable: false }
+            )
+          }}
         />
       </View>
     );
@@ -119,7 +140,6 @@ const TodoScreen = ({ navigation }) => {
       <TextInput
         style={AppStyle.StyleWarehouse.search}
         placeholder="Tìm kiếm"
-        // value={userInput}
         onChangeText={(text) => {
           handleSearch(text);
         }}

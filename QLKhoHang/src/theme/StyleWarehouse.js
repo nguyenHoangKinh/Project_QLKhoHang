@@ -1,8 +1,11 @@
 import { StyleSheet } from "react-native";
 const StyleWarehouse = StyleSheet.create({
   warehouse_view: {
-    backgroundColor: "#2a53c5",
-    borderRadius: 6,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    borderColor: "#000",
+    borderStyle: "solid",
+    borderWidth: 2,
     paddingHorizontal: 6,
     paddingVertical: 8,
     marginBottom: 12,
@@ -28,7 +31,7 @@ const StyleWarehouse = StyleSheet.create({
     marginTop: 30,
   },
   name_warehouse: {
-    color: "#fff",
+    color: "#000",
     fontSize: 18,
     fontWeight: "600",
     flex: 1,

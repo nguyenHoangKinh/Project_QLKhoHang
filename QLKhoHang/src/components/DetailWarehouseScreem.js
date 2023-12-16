@@ -12,15 +12,13 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 
 const DetailWarehouseScreen = ({ navigation }) => {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo } = useContext(AuthContext);
   const [warehouses, setWarehouse] = useState();
   const route = useRoute();
   const idWarehouse = route.params?.idWarehouse;
 
   useEffect(() => {
-    axios
-      .get(
-        `https://warehouse-management-api.vercel.app/v1/warehouse/getAWarehouse`,
+    axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/getAWarehouse`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.accessToken}`,
@@ -29,12 +27,10 @@ const DetailWarehouseScreen = ({ navigation }) => {
             id: idWarehouse,
           },
         }
-      )
-      .then((res) => {
+      ).then((res) => {
         let warehouse = res.data.warehouse;
         setWarehouse(warehouse);
-      })
-      .catch((e) => {
+      }).catch((e) => {
         console.log(`Get warehouse error ${e}`);
       });
   }, []);
@@ -83,7 +79,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
         </TouchableOpacity>

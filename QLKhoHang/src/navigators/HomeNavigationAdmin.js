@@ -5,14 +5,9 @@ import ProfileScreen from "../components/ProfileScreen";
 import ListAccountNotActive from "../components/Admin/ListAccountNotActive";
 import StatisticsScreen from "../components/StatisticsScreen";
 import ListAccountActive from "../components/Admin/ListAccountActive";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 const HomeNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -62,7 +57,7 @@ const HomeNavigation = () => {
                 <MaterialCommunityIcons
                   name="account-cancel"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Acc Not Active
@@ -93,7 +88,7 @@ const HomeNavigation = () => {
                 <Entypo
                   name="home"
                   size={24}
-                  color={focused ? "#111" : "#fff"}
+                  color="#fff"
                 />
               </View>
             );
@@ -128,7 +123,7 @@ const HomeNavigation = () => {
                 <Entypo
                   name="user"
                   size={24}
-                  color={focused ? "#16247d" : "#111"}
+                  color={focused ? "#16247d" : "#16247d"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>Profile</Text>
               </View>

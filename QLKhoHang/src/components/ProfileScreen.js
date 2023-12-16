@@ -8,10 +8,28 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 export default function ProfileScreen({ navigation }) {
-  const { userInfo, splashLoading, logout, setFormErrorChangePass, setCheck } =
-    useContext(AuthContext);
+  const { userInfo, logout, setFormErrorChangePass, setCheck } = useContext(AuthContext);
+  const [profile, setProfile] = useState();
+
+  useEffect(() => {
+    axios.get(`https://warehouse-management-api.vercel.app/v1/auth/profile`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+      params: {
+        id: userInfo.others._id,
+      },
+    }).then((res) => {
+      let profile = res.data.others;
+      setProfile(profile);
+    }).catch((e) => {
+      console.log(`Get post error ${e.res}`);
+    });
+  }, [profile]);
+
   return (
     <View>
       <ScrollView>
@@ -32,40 +50,43 @@ export default function ProfileScreen({ navigation }) {
             <View></View>
           </TouchableOpacity>
         </View>
-        <View style={{ alignItems: "center" }}>
-          <Image
-            source={{ uri: `${userInfo.others.avatar}` }}
-            style={AppStyle.StyleProfile.avatar}
-          ></Image>
-          <Text style={AppStyle.StyleProfile.name}>
-            {userInfo.others.username}
-          </Text>
-          <Text style={AppStyle.StyleProfile.email}>
-            {userInfo.others.email}
-          </Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
-          <Entypo
-            name="phone"
-            size={20}
-            color="black"
-            style={{ marginRight: 10 }}
-          />
-          <Text>{userInfo.others.phone}</Text>
-        </View>
-        <View style={AppStyle.StyleProfile.items}>
-          <Entypo
-            name="address"
-            size={20}
-            color="black"
-            style={{ marginRight: 10 }}
-          />
-          <Text>{userInfo.others.address}</Text>
-        </View>
+        {profile ?
+          (<View style={{ alignItems: "center" }}>
+            <Image
+              source={{ uri: `${profile.avatar}` }}
+              style={AppStyle.StyleProfile.avatar}
+            ></Image>
+            <Text style={AppStyle.StyleProfile.name}>
+              {profile.username}
+            </Text>
+            <Text style={AppStyle.StyleProfile.email}>
+              {profile.email}
+            </Text>
+          </View>) : ""}
+
+        {profile &&
+          <View style={AppStyle.StyleProfile.items}>
+            <Entypo
+              name="phone"
+              size={20}
+              color="black"
+              style={{ marginRight: 10 }}
+            />
+            <Text>{profile.phone}</Text>
+          </View>}
+        {profile &&
+          <View style={AppStyle.StyleProfile.items}>
+            <Entypo
+              name="address"
+              size={20}
+              color="black"
+              style={{ marginRight: 10 }}
+            />
+            <Text>{profile.address}</Text>
+          </View>}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ChangePasswordScreen"),
-              setCheck(false),
               setFormErrorChangePass("");
           }}
           className="flex items-end top-5 right-7"
@@ -74,8 +95,7 @@ export default function ProfileScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
-          onPress={() => navigation.navigate("EditProfileScreen")}
-        >
+          onPress={() => navigation.navigate("EditProfileScreen")}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>Cập nhật thông tin cá nhân</Text>
         </TouchableOpacity>

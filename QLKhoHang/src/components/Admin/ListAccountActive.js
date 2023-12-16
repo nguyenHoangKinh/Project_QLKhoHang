@@ -16,7 +16,7 @@ import AppStyle from "../../theme";
 const TodoScreen = ({ navigation }) => {
   // Init local states
   const [account, setAccount] = useState({});
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo,logout } = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -34,6 +34,10 @@ const TodoScreen = ({ navigation }) => {
       })
       .catch((e) => {
         console.log(`get account error ${e.res}`);
+        if (e.response.data.success === false) {
+          alert(e.response.data.message);
+          logout()
+        }
       });
   }, []);
 

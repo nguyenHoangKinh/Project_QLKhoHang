@@ -83,7 +83,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("RentAWareHouse")}
+          onPress={() => navigation.navigate("AddOrderScreen")}
         >
           <Text style={{ color: "#fff" }}>Thue Kho</Text>
         </TouchableOpacity>
