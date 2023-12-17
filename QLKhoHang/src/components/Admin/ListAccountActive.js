@@ -127,7 +127,7 @@ const TodoScreen = ({ navigation }) => {
             onPress={() => handleCheckboxPress(item._id)}
           />
           <IconButton
-            icon="pencil"
+            icon="lock"
             iconColor="black"
             onPress={() => {
               acountDeActive(item._id);
@@ -141,7 +141,7 @@ const TodoScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <IconButton
-        icon="pencil"
+        icon="lock"
         iconColor="black"
         onPress={() => submitNAcount()}
       />
