@@ -45,10 +45,9 @@ export const AuthProvider = ({ children }) => {
   const [modalVisibleMessChat, setModalVisibleMessChat] = useState(false);
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const [listChat, setListChat] = useState(null);
-  const [listMessages, setListMessages] = useState("");
+  const [listMessages, setListMessages] = useState([]);
   const [idChat, setIdChat] = useState("");
 
-  // console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -56,7 +55,6 @@ export const AuthProvider = ({ children }) => {
     addresses,
     phones,
     emails
-    // checkValue,
   ) => {
     const isEmptyValue = (value) => {
       return !value || value.trim().length < 1;
@@ -104,13 +102,6 @@ export const AuthProvider = ({ children }) => {
       };
       setIsLoading(true);
       setCheckValueSignUp(true);
-      // let check ='';
-      // if (checkValue) {
-      //   check= '1';
-      // }else
-      // {
-      //   check='0'
-      // }
       axios
         .post(`${BASE_URL}/register?status=1`, acc)
         .then((res) => {
@@ -163,14 +154,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsLoading(true);
-    // if (userInfo.accessToken) {
     await axios
       .get(`${BASE_URL}/logout`, {
         headers: { Authorization: `Bearer ${userInfo.accessToken}` },
       })
       .then(async (res) => {
-        // console.log(res.data);
-        // alert(res.data.message);
         await AsyncStorage.removeItem("userInfo");
         setUserInfo({});
         setNumberLikes(0);
@@ -201,9 +189,6 @@ export const AuthProvider = ({ children }) => {
         userInfo.accessToken = null;
         setIsLoading(false);
       });
-    // } else {
-    //   alert("lopout error access token undefined");
-    // }
   };
 
   const isLoggedIn = async () => {
@@ -266,13 +251,11 @@ export const AuthProvider = ({ children }) => {
         }
       )
       .then((res) => {
-        // console.log(res.data);
         getProfile();
         setCheckUpdate(true);
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
@@ -282,7 +265,6 @@ export const AuthProvider = ({ children }) => {
       });
   };
   const changePassword = (currentPasswords, passwords, confirmPasswords) => {
-    // console.log(currentPasswords,passwords, confirmPasswords);
     setFormErrorChangePass("");
     setIsLoading(true);
     axios
@@ -301,13 +283,11 @@ export const AuthProvider = ({ children }) => {
       )
       .then((res) => {
         let password = res.data;
-        // console.log(password);
         alert(password.message);
         setFormErrorChangePass("");
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
         setIsLoading(false);
       });
@@ -477,14 +457,13 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data) {
             let Detail = res.data;
-            // console.log(Detail);
+            console.log(Detail);
             setDetailOrder(Detail);
             setCheckDetail(true);
           }
           setIsLoading(false);
         })
         .catch((e) => {
-          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
           if (e.response.data.success === false) {
@@ -498,7 +477,6 @@ export const AuthProvider = ({ children }) => {
   };
   const SearchOrder = (Name) => {
     console.log(Name);
-    // setListOrder({});
     setIsLoading(true);
     axios
       .get(ORDER_URL + `/order/searchOrder?name=${Name}`, {
@@ -516,7 +494,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
         if (e.response.data.success === false) {
@@ -535,8 +512,6 @@ export const AuthProvider = ({ children }) => {
           },
         })
         .then((res) => {
-          // alert(res.data.message);
-          // console.log(res.data.blog);
           setListBlog(res.data.blog);
         })
         .catch((e) => {
@@ -635,7 +610,6 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data.data) {
-            // console.log(res.data);
             ListComments();
             DetailBlog();
           }
@@ -648,7 +622,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DeleteTextCommentUser = (id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .delete(ORDER_URL + `/blog/comment/delete?idComment=${id}`, {
@@ -669,7 +642,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const UpdataTextCommentUser = (contens, id) => {
-    // console.log(contens,id);
     if (userInfo.accessToken && id) {
       axios
         .put(
@@ -685,7 +657,6 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data) {
             alert(res.data.message);
             setModalVisibleUpdateTextComment(false);
-            // setModalVisibleComment(false);
             ListComments();
             DetailBlog();
           }
@@ -710,7 +681,6 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            // console.log(res.data.blog);
             if (res.data.blog.likes != "") {
               for (let i = 0; i < res.data.blog.likes.length; i++) {
                 setNumberLikes(i + 1);
@@ -735,7 +705,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DisLike = (id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .put(
@@ -747,18 +716,7 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            // alert(res.data);
             setNumberLike(0);
-            // console.log(res.data.blog.likes);
-            // if (res.data.blog.likes == "") {
-            //   setNumberLikes(0)
-            // }else if (res.data.blog.likes) {
-            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
-            //     console.log("helloasdasd", i);
-            //     setNumberLikes(i + 1);
-
-            //   }
-            // }
             DetailBlog();
           }
         })
@@ -770,16 +728,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const AddChats = (secondIds) => {
-    // console.log(secondIds, userInfo.others._id);
     let number = false;
     if (userInfo.accessToken && userInfo.others._id) {
-      // console.log(id);
       axios
         .get(ORDER_URL + `/chat/listChat`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
             checkProfile(secondIds, res.data.chat);
           }
@@ -844,16 +799,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListMessage = (id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .get(ORDER_URL + `/message/findMessage/${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
-            // console.log(res.data);
             setListMessages(res.data.message);
           }
         })
@@ -885,7 +837,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DeleteUserMessChat = (idMess, id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .delete(ORDER_URL + `/message/deleteMessage/${id}`, {
@@ -896,8 +847,6 @@ export const AuthProvider = ({ children }) => {
             console.log(res.data);
             setModalVisibleMessChat(!modalVisibleMessChat);
             ListMessage(idMess);
-            // ListChats()
-            // setModalVisibleChat(!modalVisibleChat)
           }
         })
         .catch((e) => {
@@ -908,21 +857,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const PostMessage = (idMessages) => {
-    // console.log(idMessages);
-    let idMess = idMessages[0];
+    let idMess = idMessages.chatId;
     if (
       userInfo.accessToken &&
-      idMessages[0] &&
-      idMessages[1] &&
-      idMessages[2]
+      idMessages.chatId &&
+      idMessages.senderId &&
+      idMessages.text
     ) {
       axios
         .post(
           ORDER_URL + `/message/createMessage/`,
           {
-            chatId: idMessages[0],
-            senderId: idMessages[1],
-            text: idMessages[2],
+            chatId: idMessages.chatId,
+            senderId: idMessages.senderId,
+            text: idMessages.text,
           },
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
