@@ -10,6 +10,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../../theme";
@@ -62,6 +63,7 @@ export default function DetaiBlogPost() {
   const [message, setMessage] = useState("");
   const [textCommnetUpdate, setTextCommnetUpdate] = useState("");
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
+  
   // const { itemId } = route.params;
   // const panelRef = useRef(null);
   // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", detailBlog.owner);
@@ -425,11 +427,14 @@ export default function DetaiBlogPost() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity className="py-3 bg-blue-300 rounded-xl top-5 w-2/3 left-16">
-            <Text className="text-xl font-bold text-center text-white">
-              Thuê Kho
-            </Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_logout}
+          onPress={() =>
+            navigation.navigate("RentAWareHouse", { id_warehouse: detailBlog.warehouse._id })
+          }
+        >
+          <Text style={{ color: "#fff" }}>Thue Kho</Text>
+        </TouchableOpacity>
         </View>
       </View>
       <Modal
