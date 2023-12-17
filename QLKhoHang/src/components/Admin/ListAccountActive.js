@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
@@ -16,19 +17,24 @@ import CheckboxItem from "../Item/CheckboxItem";
 import { CheckBox } from "react-native-elements";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+
 const TodoScreen = ({ navigation }) => {
   // Init local states
   const { userInfo, logout, ListAccOwners, account, setAccount } =
     useContext(AuthContext);
   //console.log(account)
-  // const [allIds, setAllIds] = useState([]);
-  // const [isCheck, setIsCheck] = useState(false)
+  const [allIds, setAllIds] = useState([]);
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
     ListAccOwners();
   }, []);
+
+  useEffect(() => {
+    setAllIds(account.map(item => ({ ...item, selected: false })));
+  }, [account]);
   // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>",account);
-  const acountActive = (id) => {
+  const acountDeActive = (id) => {
     axios
       .put(
         `https://warehouse-management-api.vercel.app/v1/admin/deactivate-account?id=${id}`,
@@ -49,13 +55,6 @@ const TodoScreen = ({ navigation }) => {
         console.log(`error ${e.response.data.message}`);
       });
   };
-
-  // const handleChange = (id) =>{
-  //   if(id){
-  //       setAllIds([...allIds,id])
-  //   }
-  // }
-  // console.log(allIds);
 
   const submitNAcount = () => {
     const selectedIds = account
@@ -85,57 +84,53 @@ const TodoScreen = ({ navigation }) => {
   };
 
   const handleCheckboxPress = (id) => {
-    setAccount((prevData) => {
-      return prevData.map((item) =>
+    setAccount((prevAccount) => {
+      return prevAccount.map((item) =>
         item._id === id ? { ...item, selected: !item.selected } : item
       );
     });
   };
-  //console.log(account);
 
-  // Render items
-  const renderTodos = ({ item }) => {
+  const renderTodos = ({ item, index }) => {
     return (
-      <View style={styles.itemContainer}>
-        {/* ... (Your other UI elements) */}
+      <View style={styles.item}>
         <TouchableOpacity
-          //style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>
             navigation.navigate("DetailAcount", { idWarehouse: item._id })
           }
         >
-          <View style={{ flex: 5 }}>
-            <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-              <FontAwesome5 name="user" size={20} color="black" />: 
-              <Text style={styles.title}>
-                {item.username}
+          <View style={styles.rowContainer}>
+            <Image source={{ uri: item.avatar }} style={styles.image} />
+            <View style={{ flex: 1 }}>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <FontAwesome5 name="user" size={20} color="black" />:
+                <Text style={styles.title}>{item.username}</Text>
               </Text>
-            </Text>
-            <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            <MaterialIcons name="email" size={20} color="black" />:
-              <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-                {item.email}
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <MaterialIcons name="email" size={20} color="black" />:
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.email}
+                </Text>
               </Text>
-            </Text>
-            <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            <FontAwesome5 name="phone" size={20} color="black" />:
-              <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-                {item.phone}
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <FontAwesome5 name="phone" size={20} color="black" />:
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.phone}
+                </Text>
               </Text>
-            </Text>
+            </View>
           </View>
         </TouchableOpacity>
-        <View>
+        <View style={styles.checkboxContainer}>
           <CheckBox
-            checked={item.selected || false}
+            checked={!!item.selected} // Đảm bảo giá trị luôn là boolean
             onPress={() => handleCheckboxPress(item._id)}
           />
-
           <IconButton
             icon="pencil"
-            iconColor="#fff"
+            iconColor="black"
             onPress={() => {
-              acountActive(item._id);
+              acountDeActive(item._id);
             }}
           />
         </View>
@@ -145,21 +140,6 @@ const TodoScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={AppStyle.StyleWarehouse.search}
-        placeholder="Tìm kiếm"
-        // value={userInput}
-        // onChangeText={(text) => {
-        //   handleSearch(text);
-        // }}
-      />
-      {/* <IconButton
-        icon="pencil"
-        iconColor="black"
-        onPress={() => {
-          submitNAcount(item);
-        }}
-      /> */}
       <IconButton
         icon="pencil"
         iconColor="black"
@@ -170,22 +150,6 @@ const TodoScreen = ({ navigation }) => {
         keyExtractor={(item) => item._id.toString()}
         renderItem={renderTodos}
       />
-
-      {/* Render todo list */}
-      {/* {account.length === 0 ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={account}
-          //keyExtractor={(item) => item.item.id.toString()}
-          renderItem={renderTodos}
-        />
-      )} */}
-      {/* <FlatList
-        data={account}
-        renderItem={(item, index) => renderTodos(item)}
-        style={{ marginTop: 20 }}
-      /> */}
     </View>
   );
 };
@@ -195,23 +159,32 @@ export default TodoScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-    paddingHorizontal: 16,
+    backgroundColor: "#F5FCFF",
+    padding: 16,
   },
-  itemContainer: {
-    backgroundColor: '#ffffff',
-    padding: 20,
-    marginBottom: 16,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  item: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    padding: 16,
+    marginBottom: 8,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginRight: 16,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
+    color: "#333",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
   },
 });

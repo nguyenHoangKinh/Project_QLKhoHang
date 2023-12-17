@@ -6,6 +6,7 @@ import { BASE_URL, ORDER_URL } from "../config";
 
 export const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
   const [checkValueSignUp, setCheckValueSignUp] = useState(false);
   const [modalVisibleUpdateTextComment, setModalVisibleUpdateTextComment] =
@@ -43,6 +44,12 @@ export const AuthProvider = ({ children }) => {
   const [listChat, setListChat] = useState(null);
   const [listMessages, setListMessages] = useState("");
   const [idChat, setIdChat] = useState("");
+
+
+  const [account, setAccount] = useState([]);
+  const [accountde, setAccountDe] = useState([]);
+  
+
 
   console.log(userInfo);
   const signUP = (
@@ -893,6 +900,55 @@ export const AuthProvider = ({ children }) => {
       console.log("load pust chat that bai!");
     }
   };
+  const ListAccOwners = () => {
+    axios
+    .get(
+      `https://warehouse-management-api.vercel.app/v1/admin/list-owner-active`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      let account = res.data.owners;
+      setAccount(account);
+      //console.log(res.data.accounts);
+    })
+    .catch((e) => {
+      console.log(`get account error ${e.res}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
+    });
+  };
+
+  const ListAccOwnersDe = () => {
+    axios
+    .get(
+      `https://warehouse-management-api.vercel.app/v1/admin/list-owner-not-active`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      let accountde = res.data.owners;
+      setAccountDe(accountde);
+      console.log(res.data.owners);
+    })
+    .catch((e) => {
+      console.log(`get account error ${e.res}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
+    });
+  };
+
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -932,7 +988,13 @@ export const AuthProvider = ({ children }) => {
         listChat,
         check,
         list,
+        account,
+        accountde,
         login,
+        setAccount,
+        setAccountDe,
+        ListAccOwners,
+        ListAccOwnersDe,
         signUP,
         logout,
         setCheck,
