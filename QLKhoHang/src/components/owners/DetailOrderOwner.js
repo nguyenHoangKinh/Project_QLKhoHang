@@ -1,25 +1,45 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from "../theme";
-import { AuthContext } from "../context/AuthContext";
+import { themeColors } from "../../theme";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import axios from "axios";
 
-export default function SeeOrderDetails({ navigation }) {
+export default function SeeOrderDetails({ route, navigation }) {
+  const { idDetai } = route.params;
+  // console.log(idDetai);
   const {
     OrderDetail,
     DetailOrder,
     setDetailOrder,
-    setIdOrder,
+    userInfo,
     checkDetail,
     setCheckDetail,
+    orderListOwner,
   } = useContext(AuthContext);
   // console.log(DetailOrder.Order);
   useEffect(() => {
-    OrderDetail();
+    OrderDetail(idDetai);
   }, []);
+
+  const statusOrder = () => {
+    console.log(DetailOrder.Order._id)
+    axios.put(`https://warehouse-management-api.vercel.app/v1/order/activate`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+      params: {
+        id_order: DetailOrder.Order._id,
+      },
+    }).then((res) => {
+      console.log(res)
+    }).catch((e) => {
+      console.log(`get order error ${e.res}`);
+    });
+  };
+
   return (
     <View
       className="flex-1 bg-white"
@@ -30,8 +50,9 @@ export default function SeeOrderDetails({ navigation }) {
           <TouchableOpacity
             onPress={() => {
               navigation.goBack(),
+                orderListOwner(userInfo.accessToken),
                 setDetailOrder({}),
-                setIdOrder({}),
+                // setIdOrder({}),
                 setCheckDetail(false);
             }}
             className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
@@ -82,10 +103,22 @@ export default function SeeOrderDetails({ navigation }) {
           </Text>
           <View className="flex flex-row justify-between pt-5 pb-5">
             <Text className="text-gray-700 ml-2 w-55 ">
-              Tên khách hàng: {checkDetail ? DetailOrder.Order.user.username : ""}
+              Tên khách hàng:{" "}
+              {checkDetail ? DetailOrder.Order.user.username : ""}
             </Text>
           </View>
         </View>
+        <TouchableOpacity
+          className="py-3 bg-blue-300 rounded-xl top-5" style={{marginBottom: 10}}
+          onPress={() => {
+            statusOrder()
+          }}
+        >
+          <Text className="text-xl font-bold text-center text-gray-700">
+            Xác nhận đơn hàng
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           className="py-3 bg-blue-300 rounded-xl top-5"
           // onPress={() => {

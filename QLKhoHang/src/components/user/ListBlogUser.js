@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import AppStyle from "../theme";
+import { AuthContext } from "../../context/AuthContext";
+import AppStyle from "../../theme";
 import {
   FlatList,
   Pressable,
@@ -15,23 +15,37 @@ import {
   AntDesign,
   Ionicons,
   FontAwesome5,
-  MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 const ListBlogPost = ({ navigation }) => {
-  const { ListBlog, listBlog,setShowImgBlog,setIsVisible } = useContext(AuthContext);
+  const {
+    ListBlog,
+    listBlog,
+    setShowImgBlog,
+    setIsVisible,
+    setDetailBlogListCommnetsId,
+    setModalVisibleComment,
+    setModalVisibleUpdateTextComment,
+  } = useContext(AuthContext);
   useEffect(() => {
     //call api
     ListBlog();
-  }, []);
+  }, [listBlog]);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",listBlog);
   const FlatListBlog = (item) => {
-    // console.log(item._id);
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",item);
     return (
-      <View className="ml-2 mr-2">
+      <View className="pl-3 pr-3 mb-3 shadow-2xl ">
         <Pressable
-          className=" border-2 border-indigo-500 rounded"
+          className=" rounded "
           style={styles.container}
           onPress={() => {
-            navigation.navigate("DetaiBlogPost",{itemId:item._id}),setShowImgBlog([]),setIsVisible(false)
+            navigation.navigate("DetaiBlogUser"),
+              setDetailBlogListCommnetsId(item._id),
+              setModalVisibleComment(false),
+              setShowImgBlog([]),
+              setIsVisible(false),
+              setModalVisibleUpdateTextComment(false);
           }}
         >
           {item.images != "" ? (
@@ -46,26 +60,35 @@ const ListBlogPost = ({ navigation }) => {
           ) : (
             ""
           )}
-          <View className="border-2 border-indigo-500  border-t-indigo-500">
+          <View className=" pl-2 pr-2">
             <View className="p-2">
-              <Text style={styles.title}>Giá:~{item.description}</Text>
+              <Text style={styles.title}>Mô tả: {item.description}</Text>
               <View className="flex-row">
-                <AntDesign name="star" size={16} color="yellow" />
-                <AntDesign name="star" size={16} color="yellow" />
-                <AntDesign name="star" size={16} color="yellow" />
-                <AntDesign name="staro" size={16} color="yellow" />
-                <AntDesign name="staro" size={16} color="yellow" />
+                <AntDesign name="star" size={20} color="yellow" />
+                <AntDesign name="star" size={20} color="yellow" />
+                <AntDesign name="star" size={20} color="yellow" />
+                <AntDesign name="staro" size={20} color="yellow" />
+                <AntDesign name="staro" size={20} color="yellow" />
               </View>
             </View>
             <View className="flex p-2">
-              <Text style={styles.title}>Giá:~{item.warehouse.monney}</Text>
-              <Text className="pt-1">Diện tích: {item.warehouse.capacity}</Text>
-              <View className="flex-row pt-1">
-                <TouchableOpacity>
-                  <FontAwesome5 name="map-marker-alt" size={24} color="red" />
-                </TouchableOpacity>
-                <Text className="pl-2">{item.warehouse.address}</Text>
+            <Text className="pt-1 text-base">
+                  Diện tích: {item.warehouse.capacity}
+                </Text>
+              <View className="flex-row">
+                <Text className="pt-1 text-base">
+                {item.warehouse.capacity}
+                </Text>
+                <View className="flex-row pt-1 absolute right-0">
+                  <TouchableOpacity>
+                    <FontAwesome5 name="map-marker-alt" size={24} color="red" />
+                  </TouchableOpacity>
+                  <Text className="pl-2">{item.warehouse.address}</Text>
+                </View>
               </View>
+              <Text className="text-red-600 text-lg" style={styles.title}>
+                Giá:~{item.warehouse.monney}
+              </Text>
             </View>
           </View>
         </Pressable>
@@ -73,9 +96,9 @@ const ListBlogPost = ({ navigation }) => {
     );
   };
   return (
-    <View className="flex-auto h-full">
+    <View className="flex h-full">
       <View className="w-full mb-3" style={AppStyle.StyleOderList.header}>
-        <View className="h-8 " style={AppStyle.StyleOderList.searchBar}>
+        <View className="h-8" style={AppStyle.StyleOderList.searchBar}>
           <Ionicons
             style={AppStyle.StyleOderList.iconSearch}
             name="search"
@@ -98,21 +121,30 @@ const ListBlogPost = ({ navigation }) => {
           />
         </View>
         <Pressable style={AppStyle.StyleOderList.listFilter}>
-          <AntDesign
+        <MaterialIcons
             style={AppStyle.StyleOderList.iconFilter}
-            name="shoppingcart"
+            name="notifications"
             size={30}
-            color="#000"
+            color="#16247d"
             // onPress={() => setModalVisible(true)}
           />
         </Pressable>
       </View>
-      <FlatList
-        className="mb-6"
-        data={listBlog}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListBlog(item)}
-      />
+      {listBlog != "" ? (
+        <FlatList
+          className="mb-6"
+          data={listBlog}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListBlog(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1/2"
+          style={{ color: "#16247d" }}
+        >
+          Không có Bài đăng!
+        </Text>
+      )}
     </View>
   );
 };
@@ -136,7 +168,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
-    fontSize: 16,
+    fontSize: 19,
     fontWeight: "500",
     marginTop: 10,
   },

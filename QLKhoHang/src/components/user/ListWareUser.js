@@ -16,7 +16,7 @@ import AppStyle from "../../theme";
 export default function ListWareUser({ navigation }) {
   const [warehouse, setWarehouse] = useState({});
   const [check, setCheck] = useState(false);
-  const [warehousecateName, setWarehouseCatename] = useState({});
+  // const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
   const { userInfo, setListWare, logout } = useContext(AuthContext);
 
@@ -34,7 +34,7 @@ export default function ListWareUser({ navigation }) {
         let warehouseUser = res.data.warehouse;
         setList(warehouseUser);
         setWarehouse(warehouseUser);
-        console.log(res.data.warehouse.name);
+        // console.log(res.data.warehouse.name);
         // console.log(warehouseUser.address);
       })
       .catch((e) => {
@@ -54,19 +54,37 @@ export default function ListWareUser({ navigation }) {
             navigation.navigate("DetailWareHouseUser", setListWare(item._id))
           }
         >
-          <View style={styles.rowContainer}>
-            <Image style={styles.image} source={{ uri: item.owner.avatar }} />
-            <View style={styles.textContainer}>
-              <Text style={styles.title}>Tên Kho: {item.wareHouseName}</Text>
-              <Text style={styles.title}>Dia Chi: {item.address}</Text>
-              <Text style={styles.title}>
-                Loại kho: {item.category.name}
-                {setWarehouseCatename(item.category.name)}
-              </Text>
-              <Text style={styles.title}>Giá: {item.monney}</Text>
-              <Text style={styles.title}>Chủ Kho: {item.owner.username}</Text>
-            </View>
-          </View>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Tên Kho Hàng: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.wareHouseName}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Dia Chi: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.address}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Loại kho: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.category.name}
+              {/* {setWarehouseCatename(item.category.name)} */}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Giá: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.monney}
+            </Text>
+          </Text>
+          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+            Chủ Kho: <></>
+            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+              {item.owner.username}
+            </Text>
+          </Text>
         </TouchableOpacity>
       </View>
     );

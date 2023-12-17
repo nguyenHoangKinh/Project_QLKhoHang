@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { ScrollView, Text, Image, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -12,15 +11,13 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 
 const DetailWarehouseScreen = ({ navigation }) => {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo } = useContext(AuthContext);
   const [warehouses, setWarehouse] = useState();
   const route = useRoute();
   const idWarehouse = route.params?.idWarehouse;
 
   useEffect(() => {
-    axios
-      .get(
-        `https://warehouse-management-api.vercel.app/v1/warehouse/getAWarehouse`,
+    axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/getAWarehouse`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.accessToken}`,
@@ -29,12 +26,10 @@ const DetailWarehouseScreen = ({ navigation }) => {
             id: idWarehouse,
           },
         }
-      )
-      .then((res) => {
+      ).then((res) => {
         let warehouse = res.data.warehouse;
         setWarehouse(warehouse);
-      })
-      .catch((e) => {
+      }).catch((e) => {
         console.log(`Get warehouse error ${e}`);
       });
   }, []);
@@ -77,13 +72,13 @@ const DetailWarehouseScreen = ({ navigation }) => {
             </View>
             <View style={AppStyle.StyleProfile.items}>
               <MaterialIcons name="aspect-ratio" size={20} color="black" />
-              {warehouses.status ? <Text>Đang hoạt động</Text> : <Text>Ngưng hoạt động</Text>}
+              {(!warehouses.status || warehouses.currentCapacity == 0) ? <Text>Ngưng hoạt động</Text> : <Text>Đang hoạt động</Text>}
             </View>
           </>
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
         </TouchableOpacity>

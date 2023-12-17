@@ -39,8 +39,9 @@ const StyleImageUpload = StyleSheet.create({
         paddingRight: 8,
     },
     image: {
-        width: 320,
-        height: 440,
+        marginTop: 50,
+        width: 340,
+        height: 340,
         borderRadius: 18,
     },
 });

@@ -20,46 +20,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
   const route = useRoute();
   // const idWarehouse = route.params?.idWarehouse;
   console.log(list);
-  // // console.log(userInfo.accessToken);
-
-  const [capacity, setCapacity] = useState("");
-  const [rentTime, setRentTime] = useState("");
-
-  const handleAddWarehouse = () => {
-    axios.post;
-    // Thực hiện xử lý thêm kho ở đây
-    // Ví dụ: kiểm tra và gửi dữ liệu đến API hoặc lưu vào local state
-    onAddWarehouse({ capacity, rentTime });
-    // Đặt các trường về trạng thái ban đầu sau khi thêm kho
-    setCapacity("");
-    setRentTime("");
-    // Đóng dialog
-    onClose();
-  };
-  const AddWareHouse = (id) => {
-    axios
-      .put(
-        `https://warehouse-management-api.vercel.app/v1/admin/deactivate-account?id=${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.accessToken}`,
-          },
-        }
-      )
-      .then((res) => {
-        let password = res.data;
-        //alert('Active tai khoan chu kho thanh cong');
-        ListAccOwners();
-        console.log(password.message);
-      })
-      .catch((e) => {
-        console.log(`error ${e.response.data.message}`);
-      });
-  };
-
-  const handleNavigateToRent = (id) => {
-    navigation.navigate("RentAWareHouse", { id_warehouse: id });
-  };
+  // console.log(userInfo.accessToken);
 
   useEffect(() => {
     axios
@@ -119,20 +80,18 @@ const DetailWarehouseScreen = ({ navigation }) => {
             </View>
           </>
         )}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[AppStyle.StyleProfile.btn_logout, styles.button]}
-            onPress={() => handleNavigateToRent(warehouses._id)} // giả sử _id là tên thuộc tính đúng cho ID của kho
-          >
-            <Text style={{ color: "#fff" }}>Thuê Kho</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[AppStyle.StyleProfile.btn_logout, styles.button]}
-            onPress={() => navigation.navigate("HomeNavigationUser")}
-          >
-            <Text style={{ color: "#fff" }}>Quay lại</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_logout}
+          onPress={() => navigation.navigate("AddOrderScreen")}
+        >
+          <Text style={{ color: "#fff" }}>Thue Kho</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={AppStyle.StyleProfile.btn_logout}
+          onPress={() => navigation.navigate("HomeNavigationUser")}
+        >
+          <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
