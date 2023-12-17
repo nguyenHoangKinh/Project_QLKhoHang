@@ -17,23 +17,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenUserUnfinished({ navigation }) {
+export default function OrderScreenUserUnpaid({ navigation }) {
   const {
     orderListUser,
-    ListOrderFalse,
-    ListOrder,
-    setIsLoading,
+    ListOrderTrue,
     logout,
+    setIsLoading,
+    ListOrder,
     userInfo,
     SearchOrder,
   } = useContext(AuthContext);
-  const [ListOrderUser0, setListOrderUser0] = useState({});
+  const [ListOrderUser1, setListOrderUser1] = useState({});
   const ListOrderUser = () => {
     setIsLoading(true);
     if (userInfo.accessToken) {
       axios
         .get(
-          `${ORDER_URL}/order/listOrderByUser?status=0`,
+          `${ORDER_URL}/order/listOrderByUser?status=1`,
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
           }
@@ -41,7 +41,7 @@ export default function OrderScreenUserUnfinished({ navigation }) {
         .then((res) => {
           if (res && res.data) {
             let order = res.data.data;
-            setListOrderUser0(order);
+            setListOrderUser1(order);
           }
           setIsLoading(false);
         })
@@ -86,8 +86,7 @@ const DeleteOrderUser = (idOrder) => {
   }
 };
   const FlatListData = (item) => {
-    
-    if (item.status == 0) {
+    if (item.status == 1) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -95,9 +94,9 @@ const DeleteOrderUser = (idOrder) => {
             navigation.navigate("DetailOrderUser", { idDetai: item._id });
           }}
         >
-          <View  style={AppStyle.StyleOderList.item}>
+          <View className="" style={AppStyle.StyleOderList.item}>
             <View className="mt-3">
-            <View className="flex flex-row">
+              <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
@@ -170,20 +169,25 @@ const DeleteOrderUser = (idOrder) => {
           </Pressable>
         </Pressable>
       );
-    }
+    } 
   };
 
   return (
     <>
-    {ListOrderUser0 != "" ? 
-      <FlatList
-        data={ListOrderUser0}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListData(item)}
-      />
-      : 
-      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
-    }
+      {ListOrderUser1 != "" ? (
+        <FlatList
+          data={ListOrderUser1}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListData(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1/2"
+          style={{ color: "#16247d" }}
+        >
+          Không có Dơn Hàng!
+        </Text>
+      )}
     </>
   );
 }

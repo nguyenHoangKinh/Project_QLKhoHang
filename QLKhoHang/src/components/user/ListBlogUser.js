@@ -76,9 +76,6 @@ const ListBlogPost = ({ navigation }) => {
                   Diện tích: {item.warehouse.capacity}
                 </Text>
               <View className="flex-row">
-                <Text className="pt-1 text-base">
-                {item.warehouse.capacity}
-                </Text>
                 <View className="flex-row pt-1 absolute right-0">
                   <TouchableOpacity>
                     <FontAwesome5 name="map-marker-alt" size={24} color="red" />

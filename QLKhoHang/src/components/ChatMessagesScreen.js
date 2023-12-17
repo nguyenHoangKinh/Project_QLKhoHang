@@ -31,13 +31,15 @@ import {
   FontAwesome,
   Ionicons,
 } from "@expo/vector-icons";
-import  io  from "socket.io-client";
-
+// import  {io}  from "socket.io-client";
+import io from "socket.io-client/dist/socket.io.js";
+const socket = io("http://192.168.1.3:3000");
 const ChatMessagesScreen = () => {
-  const socket = io('https://warehouse-management-api.vercel.app');
-  socket.on('connection', () => {
-    console.log('Connected to server');
-  });
+  // const socket = io('');
+  // socket.emit('message', 'Hello Server');
+  // socket.on('groupList', () => {
+  //   console.log('Connected to server');
+  // });
   const {
     userInfo,
     ListMessage,
@@ -51,20 +53,26 @@ const ChatMessagesScreen = () => {
     setModalVisibleMessChat,
   } = useContext(AuthContext);
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
-  const [selectedMessages, setSelectedMessages] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [recepientData, setRecepientData] = useState();
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receivedMessage, setReceivedMessage] = useState(null);
   const navigation = useNavigation();
   const [idMess, setIdMess] = useState("");
   const route = useRoute();
   const { idMessage, proFiles } = route.params;
   const [message, setMessage] = useState("");
+  let receiverId = proFiles._id;
+  let idchatUser = userInfo.others._id;
+  let idchat = idMessage != "" ? idMessage : idChat;
+  const yourRef = useRef(null);
 
-  // console.log(idChat);
-  console.log(">>>>>>>>>idMess>>>>>>>>>",listMessages);
-  // const { userId, setUserId } = useContext(UserType);
-
-  // const scrollViewRef = useRef(null);
+  // Connect to Socket.io
+  useEffect(() => {
+    socket.emit("new-user-add", idchatUser);
+    socket.on("get-users", (idchatUser) => {
+      setOnlineUsers(idchatUser);
+    });
+  }, [idchatUser]);
 
   useEffect(() => {
     if (idChat == "") {
@@ -72,37 +80,42 @@ const ChatMessagesScreen = () => {
     } else {
       ListMessage(idChat);
     }
-  }, []);
+  }, [idchatUser]);
 
   const handleSend = async () => {
-    const messages = [
-      idMessage != "" ? idMessage : idChat,
-      userInfo.others._id,
-      message,
-    ];
-    PostMessage({...messages});
+    const messages = {
+      chatId: idMessage != "" ? idMessage : idChat,
+      senderId: userInfo.others._id,
+      text: message,
+    };
+    setSendMessage({ ...messages, receiverId });
+    PostMessage({ ...messages });
     setMessage("");
   };
-  const handleEmojiPress = () => {
-    setShowEmojiSelector(!showEmojiSelector);
-  };
+  // Send Message to socket server
+  useEffect(() => {
+    if (sendMessage !== null) {
+      socket.emit("send-message", sendMessage);
+    }
+  }, [sendMessage]);
+  // Get the message from socket server
+  useEffect(() => {
+    socket.on("recieve-message", (data) => {
+      setReceivedMessage(data);
+    });
+  }, []);
+  // Receive Message from parent component
+  useEffect(() => {
+    if (receivedMessage !== null && receivedMessage.chatId === idchat) {
+      ListMessage(receivedMessage.chatId);
+    }
+  }, [receivedMessage]);
+
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    console.log(result);
-    if (!result.canceled) {
-      handleSend("image", result.uri);
-    }
-  };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -137,73 +150,92 @@ const ChatMessagesScreen = () => {
     });
   }, []);
   const FlatListDataChat = (item, index) => {
-    // console.log(item);
-    // if (item.members[0] === userInfo.others._id) {
+
     return (
-      <TouchableOpacity
-        onLongPress={() => {proFiles._id !== item.senderId ?
-          (setModalVisibleMessChat(true),setIdMess(item._id)): ""
-        }}
-        className="w-auto mt-6 ml-3.5"
-        style={[
-          item.senderId === userInfo.others._id
-            ? {
-                alignSelf: "flex-end",
-                maxWidth: "60%",
-                borderRadius: 7,
-                margin: 10,
-              }
-            : {
-                alignSelf: "flex-start",
-                backgroundColor: "white",
-                margin: 10,
-                borderRadius: 7,
-                maxWidth: "60%",
-              },
-        ]}
-      >
-        <View className=" bg-slate-200  rounded-lg text-right p-2">
-          {item.senderId === userInfo.others._id ? (
-            ""
-          ) : (
-            <View
-              className="flex-row absolute w-8 h-8"
-              style={{ top: -20, left: -12 }}
+      <View>
+        <TouchableOpacity
+          onLongPress={() => {
+            proFiles._id !== item.senderId
+              ? (setModalVisibleMessChat(true), setIdMess(item._id))
+              : "";
+          }}
+          className="w-auto mt-6 ml-10"
+          style={[
+            item.senderId === userInfo.others._id
+              ? {
+                  alignSelf: "flex-end",
+                  backgroundColor: "#0084ff",
+                  maxWidth: "60%",
+                  borderRadius: 15,
+                  margin: 10,
+                }
+              : {
+                  alignSelf: "flex-start",
+                  backgroundColor: "#f0f0f0",
+                  margin: 10,
+                  borderRadius: 15,
+                  maxWidth: "60%",
+                },
+          ]}
+        >
+          <View className=" rounded-lg text-right p-2">
+            {item.senderId === userInfo.others._id ? (
+              ""
+            ) : (
+              <View
+                className="flex-row absolute w-8 h-8"
+                style={{ top: 7, left: -36 }}
+              >
+                <Image
+                  className="w-full h-full rounded-full"
+                  source={{
+                    uri: `${proFiles.avatar}`,
+                  }}
+                />
+              </View>
+            )}
+            <Text
+              style={[
+                item.senderId === userInfo.others._id
+                  ? {
+                      color: "white",
+                    }
+                  : {
+                      color: "black",
+                    },
+              ]}
             >
-              <Image
-                className="w-full h-full rounded-full"
-                source={{
-                  uri: `${proFiles.avatar}`,
-                }}
-              />
-            </View>
-          )}
-          <Text className="">{item.text}</Text>
-          <Text
-            style={{
-              fontSize: 9,
-              color: "gray",
-              marginTop: 5,
-            }}
-          >
-            {formatTime(item.createdAt)}
-          </Text>
-        </View>
-      </TouchableOpacity>
+              {item.text}
+            </Text>
+            <Text
+              style={{
+                fontSize: 9,
+                color: "#000",
+                marginTop: 5,
+              }}
+            >
+              {formatTime(item.createdAt)}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
     // }
   };
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View className="flex" style={{ height: "88%" }}>
         <FlatList
           data={listMessages}
           keyExtractor={(item) => item._id}
+          ref={yourRef}
+          onContentSizeChange={() => yourRef.current.scrollToEnd()}
+          onLayout={() => yourRef.current.scrollToEnd()}
           renderItem={({ item, index }) => FlatListDataChat(item, index)}
         />
       </View>
       <View
-      className="mb-10"
+        className="mb-10"
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -213,13 +245,6 @@ const ChatMessagesScreen = () => {
           borderTopColor: "#dddddd",
         }}
       >
-        {/* <Entypo
-          onPress={handleEmojiPress}
-          style={{ marginRight: 5 }}
-          name="emoji-happy"
-          size={24}
-          color="gray"
-        /> */}
         <TextInput
           value={message}
           onChangeText={(text) => setMessage(text)}
@@ -235,7 +260,9 @@ const ChatMessagesScreen = () => {
         />
 
         <Pressable
-          onPress={() => {message != "" ? handleSend() :""}}
+          onPress={() => {
+            message != "" ? handleSend() : "";
+          }}
           style={{
             backgroundColor: "#007bff",
             paddingVertical: 8,
@@ -294,11 +321,19 @@ const ChatMessagesScreen = () => {
                           text: "Cancel",
                           style: "cancel",
                         },
-                        { text: "OK", onPress: () => {DeleteUserMessChat(idMessage != "" ? idMessage :idChat,idMess),setIdMess("")} },
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            DeleteUserMessChat(
+                              idMessage != "" ? idMessage : idChat,
+                              idMess
+                            ),
+                              setIdMess("");
+                          },
+                        },
                       ],
                       { cancelable: false }
                     );
-                    
                   }}
                   className="w-auto h-10 bg-red-500 flex flex-row items-center m-1 rounded-md"
                 >

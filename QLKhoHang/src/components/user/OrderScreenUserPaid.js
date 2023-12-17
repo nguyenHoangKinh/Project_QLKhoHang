@@ -2,7 +2,8 @@ import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
-
+import axios from "axios";
+import {ORDER_URL } from "../../config";
 import {
   FlatList,
   SafeAreaView,
@@ -16,24 +17,50 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenUserComplete({ navigation }) {
+export default function OrderScreenUserPaid({ navigation }) {
   const {
     orderListUser,
     ListOrderTrue,
+    setIsLoading,
+    logout,
     ListOrder,
     userInfo,
     SearchOrder,
     DeleteOrderUser,
   } = useContext(AuthContext);
-  // console.log(ListOrderTrue);
-  // console.log(ListOrder);
+  const [ListOrderUser2, setListOrderUser2] = useState({});
   useEffect(() => {
-    //call api
-    orderListUser(userInfo.accessToken);
+      setIsLoading(true);
+      if (userInfo.accessToken) {
+        axios
+          .get(
+            `${ORDER_URL}/order/listOrderByUser?status=2`,
+            {
+              headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+            }
+          )
+          .then((res) => {
+            if (res && res.data) {
+              let order = res.data.data;
+              setListOrderUser2(order);
+            }
+            setIsLoading(false);
+          })
+          .catch((e) => {
+            console.log(`update error ${e.response.data.message}`);
+            setIsLoading(false);
+            if (e.responsxe.data.success === false) {
+              alert(e.response.data.message);
+              logout();
+            }
+          });
+      } else {
+        alert("error access token undefined");
+      }
   }, []);
 
   const FlatListData = (item) => {
-    if (item.isActive == true) {
+    if (item.status == 2) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -43,15 +70,18 @@ export default function OrderScreenUserComplete({ navigation }) {
         >
           <View className="" style={AppStyle.StyleOderList.item}>
             <View className="mt-3">
-              {/* <View className="flex flex-row">
+            <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
                 >
-                  Tên Đơn Hàng:
+                  Mã hóa đơn:
                 </Text>
-                <Text className="flex-initial text-base"> {item.name}</Text>
-              </View> */}
+                <Text className="flex-initial  text-base">
+                  {" "}
+                  {item._id}
+                </Text>
+              </View>
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"
@@ -95,28 +125,20 @@ export default function OrderScreenUserComplete({ navigation }) {
 
   return (
     <>
-      {ListOrder != "" ? (
+      {ListOrderUser2 != "" ? (
         <FlatList
-          data={ListOrder}
+          data={ListOrderUser2}
           keyExtractor={(item) => item._id}
           renderItem={({ item, index }) => FlatListData(item)}
         />
       ) : (
         <Text
-          className="flex text-center text-lg font-bold top-1 mt-10"
+          className="flex text-center text-lg font-bold top-1/2"
           style={{ color: "#16247d" }}
         >
           Không có Dơn Hàng!
         </Text>
       )}
-      {/* <TouchableOpacity
-        className="absolute bottom-10 right-8 rounded-full"
-        onPress={() => {
-          navigation.navigate("AddOrderScreen");
-        }}
-      >
-        <AntDesign name="pluscircleo" size={48} color="black" />
-      </TouchableOpacity> */}
     </>
   );
 }

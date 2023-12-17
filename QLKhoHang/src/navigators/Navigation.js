@@ -17,7 +17,7 @@ import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import DetaiBlogUser from "../components/user/DetaiBlogUser";
 import OrderScreenUser1 from "../components/user/OrderScreenUserUnfinished";
-import OrderScreenUser2 from "../components/user/OrderScreenUserComplete";
+import OrderScreenUser2 from "../components/user/OrderScreenUserPaid";
 import SeeWarehouseDetails from "../components/user/DetailOrderUser";
 import HomeNavigationUser from "../navigators/HomeNavigationUser";
 import AddWarehouseScreen from "../components/AddWarehouseScreen";

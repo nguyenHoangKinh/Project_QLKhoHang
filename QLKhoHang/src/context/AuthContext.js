@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
+import axios from "axios";
 import { BASE_URL, ORDER_URL } from "../config";
 
 export const AuthContext = createContext();
@@ -21,8 +21,12 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
   const [formError, setFormError] = useState({});
+  //order
+  const [ListOrderOwner0, setListOrderOwner0] = useState({});
+  const [ListOrderOwner1, setListOrderOwner1] = useState({});
+  const [ListOrderOwner2, setListOrderOwner2] = useState({});
+  const [ListOrderOwner3, setListOrderOwner3] = useState({});
   const [ListOrder, setListOrder] = useState({});
-  // const [idDetai, setIdOrder] = useState({});
   const [OrderItem, setOrderItem] = useState({});
   const [DetailOrder, setDetailOrder] = useState({});
   const [list, setListWare] = useState({});
@@ -42,16 +46,9 @@ export const AuthProvider = ({ children }) => {
   const [modalVisibleMessChat, setModalVisibleMessChat] = useState(false);
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const [listChat, setListChat] = useState(null);
-  const [listMessages, setListMessages] = useState("");
+  const [listMessages, setListMessages] = useState([]);
   const [idChat, setIdChat] = useState("");
 
-
-  const [account, setAccount] = useState([]);
-  const [accountde, setAccountDe] = useState([]);
-  
-
-
-  console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -59,7 +56,6 @@ export const AuthProvider = ({ children }) => {
     addresses,
     phones,
     emails
-    // checkValue,
   ) => {
     const isEmptyValue = (value) => {
       return !value || value.trim().length < 1;
@@ -107,13 +103,6 @@ export const AuthProvider = ({ children }) => {
       };
       setIsLoading(true);
       setCheckValueSignUp(true);
-      // let check ='';
-      // if (checkValue) {
-      //   check= '1';
-      // }else
-      // {
-      //   check='0'
-      // }
       axios
         .post(`${BASE_URL}/register?status=1`, acc)
         .then((res) => {
@@ -166,14 +155,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsLoading(true);
-    // if (userInfo.accessToken) {
     await axios
       .get(`${BASE_URL}/logout`, {
         headers: { Authorization: `Bearer ${userInfo.accessToken}` },
       })
       .then(async (res) => {
-        // console.log(res.data);
-        // alert(res.data.message);
         await AsyncStorage.removeItem("userInfo");
         setUserInfo({});
         setNumberLikes(0);
@@ -204,9 +190,6 @@ export const AuthProvider = ({ children }) => {
         userInfo.accessToken = null;
         setIsLoading(false);
       });
-    // } else {
-    //   alert("lopout error access token undefined");
-    // }
   };
 
   const isLoggedIn = async () => {
@@ -269,13 +252,11 @@ export const AuthProvider = ({ children }) => {
         }
       )
       .then((res) => {
-        // console.log(res.data);
         getProfile();
         setCheckUpdate(true);
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`update error ${e.res}`);
         setCheckUpdate(false);
         setIsLoading(false);
         if (e.response.data.success === false) {
@@ -285,7 +266,6 @@ export const AuthProvider = ({ children }) => {
       });
   };
   const changePassword = (currentPasswords, passwords, confirmPasswords) => {
-    // console.log(currentPasswords,passwords, confirmPasswords);
     setFormErrorChangePass("");
     setIsLoading(true);
     axios
@@ -304,37 +284,32 @@ export const AuthProvider = ({ children }) => {
       )
       .then((res) => {
         let password = res.data;
-        // console.log(password);
         alert(password.message);
         setFormErrorChangePass("");
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`error ${e.response.data.message}`);
         setFormErrorChangePass(e.response.data.message);
         setIsLoading(false);
       });
   };
-
-  const orderListUser = (Token) => {
+  //Order
+  const ListOrderOwnerStatus0 = () => {
     setIsLoading(true);
     if (userInfo.accessToken) {
       axios
-        .get(
-          `${ORDER_URL}/order/listOrderByUser?id_user=${userInfo.others._id}`,
-          {
-            headers: { Authorization: `Bearer ${Token}` },
-          }
-        )
+        .get(`${ORDER_URL}/order/listOrderByOwner?status=0`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
         .then((res) => {
           if (res && res.data) {
-            let order = res.data;
-            setListOrder(order);
+            let order = res.data.data;
+            setListOrderOwner0(order);
           }
           setIsLoading(false);
         })
         .catch((e) => {
-          // console.log(`update error ${e.response.data.message}`);
+          console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           if (e.responsxe.data.success === false) {
             alert(e.response.data.message);
@@ -345,34 +320,129 @@ export const AuthProvider = ({ children }) => {
       alert("error access token undefined");
     }
   };
-  const orderListOwner = (Token) => {
+  const ListOrderOwnerStatus1 = () => {
     setIsLoading(true);
-    if (Token) {
+    if (userInfo.accessToken) {
       axios
-        .get(
-          `${ORDER_URL}/order/listOrderByOwner?id_owner=${userInfo.others._id}`,
-          {
-            headers: { Authorization: `Bearer ${Token}` },
-          }
-        )
+        .get(`${ORDER_URL}/order/listOrderByOwner?status=1`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
         .then((res) => {
           if (res && res.data) {
-            let order = res.data;
-            // console.log(order);
-            setListOrder(order);
+            let order = res.data.data;
+            setListOrderOwner1(order);
           }
           setIsLoading(false);
         })
         .catch((e) => {
-          // console.log(`update error ${e.response.data.message}`);
+          console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
-          if (e.response.data.success === false) {
-            alert("bạn đã hết hạng đăng nhập");
+          if (e.responsxe.data.success === false) {
+            alert(e.response.data.message);
             logout();
           }
         });
     } else {
       alert("error access token undefined");
+    }
+  };
+  const ListOrderOwnerStatus2 = () => {
+    setIsLoading(true);
+    if (userInfo.accessToken) {
+      axios
+        .get(`${ORDER_URL}/order/listOrderByOwner?status=2`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            let order = res.data.data;
+            setListOrderOwner2(order);
+          }
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+          setIsLoading(false);
+          if (e.responsxe.data.success === false) {
+            alert(e.response.data.message);
+            logout();
+          }
+        });
+    } else {
+      alert("error access token undefined");
+    }
+  };
+  const ListOrderOwnerStatus3 = () => {
+    setIsLoading(true);
+    if (userInfo.accessToken) {
+      axios
+        .get(`${ORDER_URL}/order/listOrderByOwner?status=3`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+        })
+        .then((res) => {
+          if (res && res.data) {
+            let order = res.data.data;
+            setListOrderOwner3(order);
+          }
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+          setIsLoading(false);
+          if (e.responsxe.data.success === false) {
+            alert(e.response.data.message);
+            logout();
+          }
+        });
+    } else {
+      alert("error access token undefined");
+    }
+  };
+  const ActivateOrderOwner = (idOrder) => {
+    if (idOrder) {
+      axios
+        .put(
+          ORDER_URL + `/order/activate?id_order=${idOrder}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          ListOrderOwnerStatus0();
+          ListOrderOwnerStatus1();
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+        });
+    } else {
+      alert("xoa that bai!");
+    }
+  };
+  const ConfirmOrderOwner = (idOrder) => {
+    if (idOrder) {
+      axios
+        .put(
+          ORDER_URL + `/order/payment?id_order=${idOrder}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+          }
+        )
+        .then((res) => {
+          ListOrderOwnerStatus1();
+          ListOrderOwnerStatus2();
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+        });
+    } else {
+      alert("xoa that bai!");
     }
   };
   const OrderDetail = (id) => {
@@ -388,14 +458,13 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           if (res && res.data) {
             let Detail = res.data;
-            // console.log(Detail);
+            console.log(Detail);
             setDetailOrder(Detail);
             setCheckDetail(true);
           }
           setIsLoading(false);
         })
         .catch((e) => {
-          // console.log(`update error ${e.response.data.message}`);
           setIsLoading(false);
           setCheckDetail(false);
           if (e.response.data.success === false) {
@@ -409,7 +478,6 @@ export const AuthProvider = ({ children }) => {
   };
   const SearchOrder = (Name) => {
     console.log(Name);
-    // setListOrder({});
     setIsLoading(true);
     axios
       .get(ORDER_URL + `/order/searchOrder?name=${Name}`, {
@@ -427,7 +495,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
       })
       .catch((e) => {
-        // console.log(`update error ${e.response.data.message}`);
         setIsLoading(false);
         setCheck(false);
         if (e.response.data.success === false) {
@@ -436,60 +503,7 @@ export const AuthProvider = ({ children }) => {
         }
       });
   };
-  const DeleteOrderUser = (idUser, idOrder) => {
-    // console.log(idUser, idOrder);
-    if (idUser && idOrder) {
-      axios
-        .delete(
-          ORDER_URL +
-            `/order/deleteOrderByUser?id_user=${idUser}&id_order=${idOrder}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.accessToken}`,
-            },
-          }
-        )
-        .then((res) => {
-          // alert(res.data);
-          // console.log(res.data);
-          orderListUser(userInfo.accessToken);
-        })
-        .catch((e) => {
-          if (e.response.data.success === false) {
-            alert("bạn đã hết hạng đăng nhập");
-            logout();
-          }
-        });
-    } else {
-      alert("xoa that bai!");
-    }
-  };
-  const DeleteOrderOwner = (idOwner, idOrder) => {
-    if (idOwner && idOrder) {
-      axios
-        .delete(
-          ORDER_URL +
-            `/order/deleteOrderByOwner?id_owner=${idOwner}&id_order=${idOrder}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.accessToken}`,
-            },
-          }
-        )
-        .then((res) => {
-          // alert(res.data.message);
-          orderListOwner(userInfo.accessToken);
-        })
-        .catch((e) => {
-          if (e.response.data.success === false) {
-            alert("bạn đã hết hạng đăng nhập");
-            logout();
-          }
-        });
-    } else {
-      alert("xoa that bai!");
-    }
-  };
+  //Blog
   const ListBlog = () => {
     if (userInfo.accessToken) {
       axios
@@ -499,8 +513,6 @@ export const AuthProvider = ({ children }) => {
           },
         })
         .then((res) => {
-          // alert(res.data.message);
-          // console.log(res.data.blog);
           setListBlog(res.data.blog);
         })
         .catch((e) => {
@@ -562,7 +574,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListComments = () => {
-    console.log(detailBlogListCommnetsId);
     if (userInfo.accessToken && detailBlogListCommnetsId) {
       axios
         .get(
@@ -600,7 +611,6 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data.data) {
-            // console.log(res.data);
             ListComments();
             DetailBlog();
           }
@@ -613,7 +623,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DeleteTextCommentUser = (id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .delete(ORDER_URL + `/blog/comment/delete?idComment=${id}`, {
@@ -634,7 +643,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const UpdataTextCommentUser = (contens, id) => {
-    // console.log(contens,id);
     if (userInfo.accessToken && id) {
       axios
         .put(
@@ -650,7 +658,6 @@ export const AuthProvider = ({ children }) => {
           if (res && res.data) {
             alert(res.data.message);
             setModalVisibleUpdateTextComment(false);
-            // setModalVisibleComment(false);
             ListComments();
             DetailBlog();
           }
@@ -675,7 +682,6 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            // console.log(res.data.blog);
             if (res.data.blog.likes != "") {
               for (let i = 0; i < res.data.blog.likes.length; i++) {
                 setNumberLikes(i + 1);
@@ -700,7 +706,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const DisLike = (id) => {
-    // console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .put(
@@ -712,18 +717,7 @@ export const AuthProvider = ({ children }) => {
         )
         .then((res) => {
           if (res && res.data) {
-            // alert(res.data);
             setNumberLike(0);
-            // console.log(res.data.blog.likes);
-            // if (res.data.blog.likes == "") {
-            //   setNumberLikes(0)
-            // }else if (res.data.blog.likes) {
-            //   for (let i = 0; i < res.data.blog.likes.length; i++) {
-            //     console.log("helloasdasd", i);
-            //     setNumberLikes(i + 1);
-
-            //   }
-            // }
             DetailBlog();
           }
         })
@@ -735,16 +729,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const AddChats = (secondIds) => {
-    // console.log(secondIds, userInfo.others._id);
     let number = false;
     if (userInfo.accessToken && userInfo.others._id) {
-      // console.log(id);
       axios
         .get(ORDER_URL + `/chat/listChat`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
             checkProfile(secondIds, res.data.chat);
           }
@@ -809,16 +800,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const ListMessage = (id) => {
-    console.log(id);
     if (userInfo.accessToken && id) {
       axios
         .get(ORDER_URL + `/message/findMessage/${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
-          // console.log(res.data);
           if (res && res.data) {
-            console.log(res.data);
             setListMessages(res.data.message);
           }
         })
@@ -831,15 +819,15 @@ export const AuthProvider = ({ children }) => {
   };
   const DeleteUserChat = (id) => {
     console.log(id);
-    if (userInfo.accessToken && id ) {
+    if (userInfo.accessToken && id) {
       axios
-        .delete(ORDER_URL + `/chat/deleteChat/${id}`,{
+        .delete(ORDER_URL + `/chat/deleteChat/${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
           if (res && res.data) {
-            ListChats()
-            setModalVisibleChat(!modalVisibleChat)
+            ListChats();
+            setModalVisibleChat(!modalVisibleChat);
           }
         })
         .catch((e) => {
@@ -849,20 +837,17 @@ export const AuthProvider = ({ children }) => {
       alert("Xoa userChat that bai!");
     }
   };
-  const DeleteUserMessChat = (idMess,id) => {
-    // console.log(id);
-    if (userInfo.accessToken && id ) {
+  const DeleteUserMessChat = (idMess, id) => {
+    if (userInfo.accessToken && id) {
       axios
-        .delete(ORDER_URL + `/message/deleteMessage/${id}`,{
+        .delete(ORDER_URL + `/message/deleteMessage/${id}`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
         })
         .then((res) => {
           if (res && res.data) {
             console.log(res.data);
-            setModalVisibleMessChat(!modalVisibleMessChat)
-            ListMessage(idMess)
-            // ListChats()
-            // setModalVisibleChat(!modalVisibleChat)
+            setModalVisibleMessChat(!modalVisibleMessChat);
+            ListMessage(idMess);
           }
         })
         .catch((e) => {
@@ -873,16 +858,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const PostMessage = (idMessages) => {
-    // console.log(idMessages);
-    let idMess = idMessages[0];
-    if (userInfo.accessToken && idMessages[0] && idMessages[1] && idMessages[2]) {
+    let idMess = idMessages.chatId;
+    if (
+      userInfo.accessToken &&
+      idMessages.chatId &&
+      idMessages.senderId &&
+      idMessages.text
+    ) {
       axios
         .post(
           ORDER_URL + `/message/createMessage/`,
           {
-            chatId: idMessages[0],
-            senderId: idMessages[1],
-            text: idMessages[2],
+            chatId: idMessages.chatId,
+            senderId: idMessages.senderId,
+            text: idMessages.text,
           },
           {
             headers: { Authorization: `Bearer ${userInfo.accessToken}` },
@@ -972,6 +961,10 @@ export const AuthProvider = ({ children }) => {
         checkSignUp,
         listCommnets,
         ListOrder,
+        ListOrderOwner0,
+        ListOrderOwner1,
+        ListOrderOwner2,
+        ListOrderOwner3,
         idChat,
         numberLikes,
         checkDetail,
@@ -1012,13 +1005,13 @@ export const AuthProvider = ({ children }) => {
         setNumberLikes,
         setNumberLike,
         setListMessages,
+        setIsLoading,
         getProfile,
         DetailBlog,
         ListComments,
         setListWare,
         SearchOrder,
         OrderDetail,
-        orderListUser,
         pustComments,
         DeleteUserChat,
         DeleteUserMessChat,
@@ -1026,11 +1019,14 @@ export const AuthProvider = ({ children }) => {
         setShowImgBlog,
         updateProfile,
         setDetailOrder,
-        orderListOwner,
         changePassword,
         setCheckDetail,
-        DeleteOrderUser,
-        DeleteOrderOwner,
+        ListOrderOwnerStatus0,
+        ListOrderOwnerStatus1,
+        ListOrderOwnerStatus2,
+        ListOrderOwnerStatus3,
+        ActivateOrderOwner,
+        ConfirmOrderOwner,
         setModalVisibleChat,
         setModalVisibleMessChat,
         UpdataTextCommentUser,

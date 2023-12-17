@@ -2,6 +2,8 @@ import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
+import {ORDER_URL } from "../../config";
 import {
   FlatList,
   SafeAreaView,
@@ -15,23 +17,45 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenOwnerComplete({ navigation }) {
+export default function OrderScreenOwnerPaid({ navigation }) {
   const {
-    orderListOwner,
-    ListOrder,
-    setIdOrder,
+    ListOrderOwner2,
+    ListOrderOwnerStatus2,
+    ListOrderOwnerStatus3,
+    logout,
     userInfo,
-    SearchOrder,
-    DeleteOrderOwner,
   } = useContext(AuthContext);
-  const [modalVisible, setModalVisible] = useState(false);
-  useEffect(() => {
-    //call api
-    orderListOwner(userInfo.accessToken);
-  }, []);
-
+useEffect(() => {
+  ListOrderOwnerStatus2()
+}, []);
+const DeleteOrderOwner = (idOrder) => {
+  if (idOrder) {
+    axios
+      .delete(
+        ORDER_URL +
+          `/order/deleteOrderByOwner?id_order=${idOrder}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        ListOrderOwnerStatus2();
+        ListOrderOwnerStatus3();
+      })
+      .catch((e) => {
+        if (e.response.data.success === false) {
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
+        }
+      });
+  } else {
+    alert("xoa that bai!");
+  }
+};
   const FlatListData = (item) => {
-    if (item.status != 0) {
+    if (item.status == 2) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -41,14 +65,17 @@ export default function OrderScreenOwnerComplete({ navigation }) {
         >
           <View className="" style={AppStyle.StyleOderList.item}>
             <View className="mt-3">
-              <View className="flex flex-row">
+            <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
                 >
-                  Tên Đơn Hàng:
+                  Mã hóa đơn:
                 </Text>
-                <Text className="flex-initial text-base"> {item._id}</Text>
+                <Text className="flex-initial  text-base">
+                  {" "}
+                  {item._id}
+                </Text>
               </View>
               <View className="flex flex-row">
                 <Text
@@ -88,7 +115,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
             onPress={() => {
               Alert.alert(
                 "",
-                "Are you sure you want to delete?",
+                "bạn muốn hủy đơn hàng này?",
                 [
                   {
                     text: "Cancel",
@@ -97,13 +124,13 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                   {
                     text: "OK",
                     onPress: () =>
-                      DeleteOrderOwner(userInfo.others._id, item._id),
+                      DeleteOrderOwner( item._id),
                   },
                 ],
                 { cancelable: false }
               );
             }}
-            className="absolute right-5 top-10"
+            className="absolute right-16 top-10 "
           >
             <MaterialIcons name="delete" size={34} color="red" />
           </Pressable> */}
@@ -114,24 +141,15 @@ export default function OrderScreenOwnerComplete({ navigation }) {
 
   return (
     <>
-    {ListOrder != "" ? 
+    {ListOrderOwner2 != "" ? 
     <FlatList
-        data={ListOrder}
+        data={ListOrderOwner2}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />
       : 
       <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
     }
-
-      {/* <TouchableOpacity
-        className="absolute bottom-10 right-8 rounded-full"
-        onPress={() => {
-          navigation.navigate("AddOrderScreen");
-        }}
-      >
-        <AntDesign name="pluscircleo" size={48} color="black" />
-      </TouchableOpacity> */}
     </>
   );
 }

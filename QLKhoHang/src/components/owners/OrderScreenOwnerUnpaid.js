@@ -1,7 +1,7 @@
 import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import {ORDER_URL } from "../../config";
 import {
@@ -17,50 +17,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenUserUnfinished({ navigation }) {
+export default function OrderScreenOwnerUnpaid({ navigation }) {
   const {
-    orderListUser,
-    ListOrderFalse,
-    ListOrder,
-    setIsLoading,
+    ListOrderOwnerStatus1,
+    ListOrderOwner1,
+    ConfirmOrderOwner,
     logout,
     userInfo,
-    SearchOrder,
   } = useContext(AuthContext);
-  const [ListOrderUser0, setListOrderUser0] = useState({});
-  const ListOrderUser = () => {
-    setIsLoading(true);
-    if (userInfo.accessToken) {
-      axios
-        .get(
-          `${ORDER_URL}/order/listOrderByUser?status=0`,
-          {
-            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-          }
-        )
-        .then((res) => {
-          if (res && res.data) {
-            let order = res.data.data;
-            setListOrderUser0(order);
-          }
-          setIsLoading(false);
-        })
-        .catch((e) => {
-          console.log(`update error ${e.response.data.message}`);
-          setIsLoading(false);
-          if (e.responsxe.data.success === false) {
-            alert(e.response.data.message);
-            logout();
-          }
-        });
-    } else {
-      alert("error access token undefined");
-    }
-  };
+
 useEffect(() => {
-  ListOrderUser()
+  ListOrderOwnerStatus1()
 }, []);
-const DeleteOrderUser = (idOrder) => {
+const DeleteOrderOwner = (idOrder) => {
   if (idOrder) {
     axios
       .delete(
@@ -73,7 +42,7 @@ const DeleteOrderUser = (idOrder) => {
         }
       )
       .then((res) => {
-        ListOrderUser();
+        ListOrderOwnerStatus1();
       })
       .catch((e) => {
         if (e.response.data.success === false) {
@@ -86,16 +55,15 @@ const DeleteOrderUser = (idOrder) => {
   }
 };
   const FlatListData = (item) => {
-    
-    if (item.status == 0) {
+    if (item.status == 1) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
           onPress={() => {
-            navigation.navigate("DetailOrderUser", { idDetai: item._id });
+            navigation.navigate("DetailOrderOwner", { idDetai: item._id });
           }}
         >
-          <View  style={AppStyle.StyleOderList.item}>
+          <View className="" style={AppStyle.StyleOderList.item}>
             <View className="mt-3">
             <View className="flex flex-row">
                 <Text
@@ -139,9 +107,7 @@ const DeleteOrderUser = (idOrder) => {
                 >
                   Thời Gian Thuê:{" "}
                 </Text>
-                <Text className="flex-initial  text-base">
-                  {item.rentalTime}
-                </Text>
+                <Text className="flex-initial  text-base">{item.rentalTime}</Text>
               </View>
             </View>
           </View>
@@ -158,15 +124,38 @@ const DeleteOrderUser = (idOrder) => {
                   {
                     text: "OK",
                     onPress: () =>
-                    DeleteOrderUser(item._id),
+                      DeleteOrderOwner( item._id),
                   },
                 ],
                 { cancelable: false }
               );
             }}
-            className="absolute right-5 top-10"
+            className="absolute right-16 top-10 "
           >
             <MaterialIcons name="delete" size={34} color="red" />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              Alert.alert(
+                "",
+                "xác nhận đã thanh toán đơn hàng!",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>
+                    ConfirmOrderOwner(item._id),
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+            className="absolute right-5 top-11"
+          >
+            <FontAwesome5 name="money-check" size={24} color="blue" />
           </Pressable>
         </Pressable>
       );
@@ -175,9 +164,9 @@ const DeleteOrderUser = (idOrder) => {
 
   return (
     <>
-    {ListOrderUser0 != "" ? 
-      <FlatList
-        data={ListOrderUser0}
+    {ListOrderOwner1 != "" ? 
+    <FlatList
+        data={ListOrderOwner1}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />
