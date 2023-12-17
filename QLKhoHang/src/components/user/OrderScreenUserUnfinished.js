@@ -27,17 +27,8 @@ export default function OrderScreenUserUnfinished({ navigation }) {
   } = useContext(AuthContext);
   // const [modalVisible, setModalVisible] = useState(false);
   // const [listOrderFalse, setListOrderFalse] = useState([]);
-  // console.log(ListOrder);
-  // function checkListOrder() {
-  //   for (let i = 0; i < ListOrder.length; i++) {
-  //     if (ListOrder[i].isActive == true) {
-  //       setListOrderFalse([...listOrderFalse,ListOrder[i]])
-  //     }
-  //   }
-  // }
-  console.log(ListOrder);
   useEffect(() => {
-    // call api
+    //call api
     orderListUser(userInfo.accessToken);
   }, []);
 
@@ -51,9 +42,9 @@ export default function OrderScreenUserUnfinished({ navigation }) {
             navigation.navigate("DetailOrderUser", { idDetai: item._id });
           }}
         >
-          <View className="" style={AppStyle.StyleOderList.item}>
-            <View>
-              <View className="flex flex-row">
+          <View  style={AppStyle.StyleOderList.item}>
+            <View className="mt-3">
+              {/* <View className="flex flex-row">
                 <Text
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
@@ -61,7 +52,7 @@ export default function OrderScreenUserUnfinished({ navigation }) {
                   Tên Đơn Hàng:
                 </Text>
                 <Text className="flex-initial text-base"> {item.name}</Text>
-              </View>
+              </View> */}
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"

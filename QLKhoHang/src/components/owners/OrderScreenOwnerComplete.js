@@ -25,12 +25,13 @@ export default function OrderScreenOwnerComplete({ navigation }) {
     DeleteOrderOwner,
   } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
-  // useEffect(() => {
-  //   orderListOwner(userInfo.accessToken);
-  // }, []);
+  useEffect(() => {
+    //call api
+    orderListOwner(userInfo.accessToken);
+  }, []);
 
   const FlatListData = (item) => {
-    if (item.isActive == true) {
+    if (item.status != 0) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -39,7 +40,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
           }}
         >
           <View className="" style={AppStyle.StyleOderList.item}>
-            <View>
+            <View className="mt-3">
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"
@@ -47,7 +48,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                 >
                   Tên Đơn Hàng:
                 </Text>
-                <Text className="flex-initial text-base"> {item.name}</Text>
+                <Text className="flex-initial text-base"> {item._id}</Text>
               </View>
               <View className="flex flex-row">
                 <Text
@@ -79,11 +80,11 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                 >
                   Thời Gian Thuê:{" "}
                 </Text>
-                <Text className="flex-initial  text-base">{item.rentalTime}</Text>
+                <Text className="flex-initial  text-base">{item.rentalTime} tháng</Text>
               </View>
             </View>
           </View>
-          <Pressable
+          {/* <Pressable
             onPress={() => {
               Alert.alert(
                 "",
@@ -105,7 +106,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
             className="absolute right-5 top-10"
           >
             <MaterialIcons name="delete" size={34} color="red" />
-          </Pressable>
+          </Pressable> */}
         </Pressable>
       );
     }

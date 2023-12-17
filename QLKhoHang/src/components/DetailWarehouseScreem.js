@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { ScrollView, Text, Image, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -73,13 +72,13 @@ const DetailWarehouseScreen = ({ navigation }) => {
             </View>
             <View style={AppStyle.StyleProfile.items}>
               <MaterialIcons name="aspect-ratio" size={20} color="black" />
-              {warehouses.status ? <Text>Đang hoạt động</Text> : <Text>Ngưng hoạt động</Text>}
+              {(!warehouses.status || warehouses.currentCapacity == 0) ? <Text>Ngưng hoạt động</Text> : <Text>Đang hoạt động</Text>}
             </View>
           </>
         )}
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
         </TouchableOpacity>

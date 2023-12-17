@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, Image, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
@@ -10,12 +9,29 @@ import { BASE_URL } from "../config";
 import { useRoute } from '@react-navigation/native';
 
 export default function EditProfileScreen({ navigation }) {
-    const { userInfo, splashLoading, getProfile } = useContext(AuthContext);
+    const { userInfo, getProfile } = useContext(AuthContext);
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
     const route = useRoute();
-    const avatar = route.params?.nameImage;
+    const avatar = route.params?.avatar;
+    const [profile, setProfile] = useState();
+
+    useEffect(() => {
+        axios.get(`https://warehouse-management-api.vercel.app/v1/auth/profile`, {
+            headers: {
+                Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+            params: {
+                id: userInfo.others._id,
+            },
+        }).then((res) => {
+            let profile = res.data.others;
+            setProfile(profile);
+        }).catch((e) => {
+            console.log(`Get post error ${e.res}`);
+        });
+    }, [profile]);
 
     const showAlert = () =>
         Alert.alert(
@@ -29,20 +45,19 @@ export default function EditProfileScreen({ navigation }) {
             ],
         );
 
-    const updateProfile = (address, phone, email, avatar) => {
+    const updateProfile = (address, phone, email) => {
         axios
             .put(`${BASE_URL}/update-account`, {
                 address: address,
                 email: email,
                 phone: phone,
-                avatar: avatar.base64,
             }, {
                 headers: { Authorization: `Bearer ${userInfo.accessToken}` }
             })
             .then((res) => {
                 console.log(res.data);
                 getProfile();
-                navigation.navigate('Home')
+                navigation.navigate('HomeNavigationOwner')
             })
             .catch((e) => {
                 Alert.alert(
@@ -68,44 +83,47 @@ export default function EditProfileScreen({ navigation }) {
                             style={{ width: 30, height: 30 }}></Image>
                     </TouchableOpacity>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity onPress={
-                        () => navigation.navigate('UploadImageProfile', { selectedImage: userInfo.others.avatar })
-                    }>
-                        <Image source={{ uri: `${!avatar ? userInfo.others.avatar : avatar.assets[0].uri}` }}
-                            style={AppStyle.StyleProfile.avatar}></Image>
-                    </TouchableOpacity>
-                    <Text style={AppStyle.StyleProfile.name}>{userInfo.others.username}</Text>
-                    <TextInput
-                        style={AppStyle.StyleProfile.email}
-                        placeholder={userInfo.others.email}
-                        keyboardType="default"
-                        value={email}
-                        onChangeText={text => setEmail(text)}
-                    />
-                </View>
-                <View style={AppStyle.StyleProfile.items}>
-                    <Entypo name="phone" size={20} color="black" />
-                    <TextInput
-                        placeholder={userInfo.others.phone + ""}
-                        keyboardType="numeric"
-                        value={phone}
-                        onChangeText={text => setPhone(text)}
-                    />
-                </View>
-                <View style={AppStyle.StyleProfile.items}>
-                    <Entypo name="address" size={20} color="black" />
-                    <TextInput
-                        placeholder={userInfo.others.address}
-                        keyboardType="default"
-                        value={address}
-                        onChangeText={text => setAddress(text)}
-                    />
-                </View>
+                {profile &&
+                    <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity onPress={
+                            () => navigation.navigate('UploadImageProfile', { selectedImage: profile.avatar })
+                        }>
+                            <Image source={{ uri: `${avatar ? avatar : profile.avatar}` }}
+                                style={AppStyle.StyleProfile.avatar}></Image>
+                        </TouchableOpacity>
+                        <Text style={AppStyle.StyleProfile.name}>{profile.username}</Text>
+                        <TextInput
+                            style={AppStyle.StyleProfile.email}
+                            placeholder={profile.email}
+                            keyboardType="default"
+                            value={email}
+                            onChangeText={text => setEmail(text)}
+                        />
+                    </View>}
+                {profile &&
+                    <View style={AppStyle.StyleProfile.items}>
+                        <Entypo name="phone" size={20} color="black" />
+                        <TextInput
+                            placeholder={profile.phone + ""}
+                            keyboardType="numeric"
+                            value={phone}
+                            onChangeText={text => setPhone(text)}
+                        />
+                    </View>}
+                {profile &&
+                    <View style={AppStyle.StyleProfile.items}>
+                        <Entypo name="address" size={20} color="black" />
+                        <TextInput
+                            placeholder={profile.address}
+                            keyboardType="default"
+                            value={address}
+                            onChangeText={text => setAddress(text)}
+                        />
+                    </View>}
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email, avatar)
+                        (!address & !phone & !email & !avatar) ? showAlert() : updateProfile(address, phone, email)
                     }}>
                     <AntDesign name="edit" size={20} color="#fff" />
                     <Text style={{ color: '#fff' }}>CẬP NHẬT</Text>
@@ -113,7 +131,7 @@ export default function EditProfileScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('Home')
+                        () => navigation.navigate('HomeNavigationOwner')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>

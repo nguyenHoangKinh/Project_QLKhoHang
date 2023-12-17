@@ -2,8 +2,8 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import AppStyle from "../theme";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import OrderScreenUser1 from "../components/owners/OrderScreenOwnerUnfinished";
-import OrderScreenUser2 from "../components/owners/OrderScreenOwnerComplete";
+import OrderScreenUser1 from "../components/owners/OrderScreenOwnerComplete";
+import OrderScreenUser2 from "../components/owners/OrderScreenOwnerUnfinished";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 import React, { useEffect, useState, useContext } from "react";
@@ -61,12 +61,12 @@ export default TabOrderOwner = () => {
         <Tab.Screen
           name="OrderScreenUser1"
           component={OrderScreenUser1}
-          options={{ tabBarLabel: "Đơn Hoàng Thành" }}
+          options={{ tabBarLabel: "Đơn Đã Xác Nhận" }}
         />
         <Tab.Screen
           name="OrderScreenUser2"
           component={OrderScreenUser2}
-          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+          options={{ tabBarLabel: "Đơn Chưa Xác Nhận" }}
         />
       </Tab.Navigator>
     </>

@@ -58,7 +58,7 @@ const StyleProfile = StyleSheet.create({
     shadowOpacity: 80,
     elevation: 15,
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
     backgroundColor: "#000",
   },
   btn_upload: {
@@ -98,6 +98,17 @@ const StyleProfile = StyleSheet.create({
     backgroundColor: "#5FBDFF",
     marginBottom: 10,
     marginRight: 10
+  },
+  btn_comment: {
+    backgroundColor: "#fff",
+    width: "30%",
+    padding: 10,
+    paddingBottom: 12,
+    borderRadius: 5,
+    shadowOpacity: 40,
+    elevation: 15,
+    backgroundColor: "#000",
+    margin: 5
   },
 });
 export default StyleProfile;

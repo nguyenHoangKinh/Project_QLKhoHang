@@ -3,7 +3,7 @@ import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
 import ProfileScreen from "../components/ProfileScreen";
 import TabOrderOwner from "./TabOrderOwner";
-import StatisticsScreen from "../components/StatisticsScreen";
+import ListChatOwner from "../components/owners/ListChatsOwnerScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -41,7 +41,7 @@ export default function HomeNavigation() {
                 <FontAwesome5
                   name="warehouse"
                   size={24}
-                  color={focused ? "#16247d" : "#16247d"}
+                  color={focused ? "#16247d" : "#111"}
                 />
                 <Text style={{ fontSize: 12, color: "#16247d" }}>
                   Warehouse
@@ -96,8 +96,8 @@ export default function HomeNavigation() {
         }}
       />
       <Tab.Screen
-        name="Statistics"
-        component={StatisticsScreen}
+        name="ListChatOwner"
+        component={ListChatOwner}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {

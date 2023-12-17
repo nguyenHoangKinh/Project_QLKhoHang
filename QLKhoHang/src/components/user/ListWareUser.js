@@ -32,7 +32,7 @@ export default function ListWareUser({ navigation }) {
         let warehouseUser = res.data.warehouse;
         setList(warehouseUser);
         setWarehouse(warehouseUser);
-        console.log(res.data.warehouse.name);
+        // console.log(res.data.warehouse.name);
         // console.log(warehouseUser.address);
       })
       .catch((e) => {

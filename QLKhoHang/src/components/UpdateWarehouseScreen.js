@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { ScrollView, Text, Image, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, Alert, TextInput, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -11,7 +11,6 @@ import { Dropdown } from "react-native-element-dropdown";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 
 let stat = [
   {
@@ -33,15 +32,14 @@ export default function UpdateWarehouseScreen({ navigation }) {
   const [wareHouseName, setWareHouseName] = useState();
   const [address, setAddress] = useState();
   const [idCategorie, setIdCategorie] = useState();
-  const [capacity, setCapacity] = useState();
   const [currentCapacity, setCurrentCapacity] = useState();
   const [monney, setMonney] = useState();
   const [status, setStatus] = useState();
   const [description, setDescription] = useState();
   const [checkUpdate, setCheckUpdate] = useState(false);
   const [warehouses, setWarehouse] = useState();
+  const [image, setImage] = useState();
   const route = useRoute();
-  const [images, setImages] = useState();
   const idWarehouse = route.params?.idWarehouse;
 
   useEffect(() => {
@@ -75,7 +73,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   }, []);
 
-  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description, images) => {
+  const updateWarehouse = (wareHouseName, address, category, currentCapacity, monney, status, description, image) => {
     axios.put(`https://warehouse-management-api.vercel.app/v1/warehouse/updateWarehouse/${idWarehouse}`,
       {
         wareHouseName: wareHouseName,
@@ -85,7 +83,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
         monney: monney,
         status: status,
         description: description,
-        images: images,
+        imageWarehouse: image,
       },
       {
         headers: {
@@ -100,29 +98,36 @@ export default function UpdateWarehouseScreen({ navigation }) {
     });
   };
 
-  const pickFromGalary = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status) {
-      let data = await ImagePicker.launchImageLibraryAsync({
+  const uploadToCloudinary = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.5,
-        base64: true
+        quality: 1,
       });
 
-      console.log(data.assets)
+      if (!result.canceled) {
+        const formData = new FormData();
+        formData.append('file', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
+        formData.append('upload_preset', 'ImageProject');
 
-      if (!data.canceled) {
-        let newFile = {
-          uri: data.assets[0].uri,
-          type: data.assets[0].type,
-          name: data.assets[0].name,
-        };
-        setImages(data.assets.base64);
+        const cloudinaryResponse = await axios.post(
+          `https://api.cloudinary.com/v1_1/dborrd4h5/image/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              // 'Authorization': `Basic ${btoa('your-api-key:your-api-secret')}`,
+            },
+          }
+        );
+        setImage(cloudinaryResponse.data.url)
+        console.log('Uploaded image:', cloudinaryResponse.data.url);
       }
-    } else { Alert.alert('Chưa chọn hình ảnh'); }
-  }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
 
   return (
     <View>
@@ -164,25 +169,22 @@ export default function UpdateWarehouseScreen({ navigation }) {
               setCategorie(item.acreage);
             }}
           />}
-          
+
         <View style={AppStyle.StyleProfile.items}>
           <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
           {warehouses &&
-          <TextInput
-            placeholder={warehouses.currentCapacity + ""}
-            keyboardType="numeric"
-            value={currentCapacity}
-            onChangeText={(text) => setCurrentCapacity(text)}
-          />}
-          <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
-        </View>
-        
-        <View style={AppStyle.StyleProfile.items}>
-          <MaterialIcons name="storage" size={20} color="black" style={{ marginTop: 2 }} />
+            <TextInput
+              placeholder={warehouses.currentCapacity + ""}
+              keyboardType="numeric"
+              value={currentCapacity}
+              onChangeText={(text) => setCurrentCapacity(text)}
+            />}
           {warehouses &&
-          <Text style={{  marginTop: 2 }}>{warehouses.currentCapacity}</Text>}
-          <Text style={{ fontSize: 16, marginTop: 2 }}> {categorie}</Text>
+            <Text style={{ fontSize: 14, marginTop: 4 }}>{"/" + warehouses.capacity}</Text>}
+          {warehouses &&
+            <Text style={{ fontSize: 15, marginTop: 2 }}> {warehouses.category.acreage}</Text>}
         </View>
+
         <View style={AppStyle.StyleProfile.items}>
           <FontAwesome name="money" size={20} color="black" />
           {warehouses &&
@@ -193,6 +195,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
               onChangeText={(text) => setMonney(text)}
               style={{ marginTop: -3 }}
             />}
+          <Text style={{ fontSize: 14, marginTop: 2 }}> VND</Text>
         </View>
         {warehouses &&
           <Dropdown
@@ -220,20 +223,31 @@ export default function UpdateWarehouseScreen({ navigation }) {
               onChangeText={(text) => setDescription(text)}
             />}
         </View>
-
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_upload}
-          onPress={
-            () => pickFromGalary()
+          onPress={() =>
+            Alert.alert(
+              "",
+              "Bạn có muốn cập nhật hình ảnh không?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK", onPress: () => uploadToCloudinary()
+                },
+              ],
+              { cancelable: false }
+            )
           }>
           <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_edit}
           onPress={() => {
-            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, images);
-            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("HomeNavigation"); }
+            updateWarehouse(wareHouseName, address, idCategorie, currentCapacity, monney, status, description, image);
+            { checkUpdate ? navigation.navigate("UpdateWarehouseScreen") : navigation.navigate("Home"); }
           }}>
           <AntDesign name="edit" size={20} color="#fff" />
           <Text style={{ color: "#fff" }}>CẬP NHẬT</Text>
@@ -241,7 +255,7 @@ export default function UpdateWarehouseScreen({ navigation }) {
 
         <TouchableOpacity
           style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigation")}
+          onPress={() => navigation.navigate("HomeNavigationOwner")}
         >
           <Text style={{ color: "#fff" }}>HỦY</Text>
         </TouchableOpacity>

@@ -13,7 +13,7 @@ export default function ChangePasswordScreen({ navigation }) {
   const [isShowCurrentPasswords, setIsShowCurrentPasswords] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(false);
-  const { isLoading, changePassword, formErrorChangePass, } =
+  const { isLoading, changePassword, formErrorChangePass } =
     useContext(AuthContext);
   return (
     <View
@@ -27,14 +27,14 @@ export default function ChangePasswordScreen({ navigation }) {
             onPress={() => {
               navigation.goBack();
             }}
-            className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+            className="mt-3 ml-5"
           >
-            <AntDesign name="arrowleft" size={24} color="black" />
+            <AntDesign name="arrowleft" size={36} color="#fff" />
           </TouchableOpacity>
         </View>
         <View className="flex-row justify-center">
           <Image
-            source={require("../assets/images/login.png")}
+            source={require("../assets/icons/pass4.png")}
             style={{ width: 200, height: 200 }}
           />
         </View>
@@ -62,10 +62,12 @@ export default function ChangePasswordScreen({ navigation }) {
                 name={isShowCurrentPasswords === true ? "eye" : "eye-off"}
                 size={24}
                 color="black"
-                onPress={() => setIsShowCurrentPasswords(!isShowCurrentPasswords)}
+                onPress={() =>
+                  setIsShowCurrentPasswords(!isShowCurrentPasswords)
+                }
               />
             </View>
-            </View>
+          </View>
           <Text className="text-gray-700 ml-2 w-55 ">Nhập mật khẩu mới</Text>
           <View className="flex flex-row relative">
             <TextInput
@@ -84,7 +86,9 @@ export default function ChangePasswordScreen({ navigation }) {
               />
             </View>
           </View>
-          <Text className="text-gray-700 ml-2 w-55 ">Nhập lại mật khẩu mới</Text>
+          <Text className="text-gray-700 ml-2 w-55 ">
+            Nhập lại mật khẩu mới
+          </Text>
           <View className="flex flex-row relative">
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-2 w-full"
@@ -107,14 +111,16 @@ export default function ChangePasswordScreen({ navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              changePassword(currentPasswords,password, confirmPassword),
-              setCurrentPasswords("")
-                setPassword(""),
-                setConfirmPassword("");
+              currentPasswords != "" && password != "" && confirmPassword != ""
+                ? (changePassword(currentPasswords, password, confirmPassword),
+                  setCurrentPasswords(""),
+                  setPassword(""),
+                  setConfirmPassword(""))
+                : ""
             }}
             className="py-3 bg-blue-300 rounded-xl"
           >
-            <Text className="text-xl font-bold text-center text-gray-700">
+            <Text className="text-xl font-bold text-center text-white">
               ChangePassword
             </Text>
           </TouchableOpacity>

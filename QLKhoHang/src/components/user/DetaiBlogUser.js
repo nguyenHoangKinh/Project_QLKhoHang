@@ -11,10 +11,10 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { themeColors } from "../theme";
-import AppStyle from "../theme";
-import { AuthContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
+import { themeColors } from "../../theme";
+import AppStyle from "../../theme";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import {
   AntDesign,
@@ -25,7 +25,7 @@ import {
 } from "@expo/vector-icons";
 import ImageView from "react-native-image-viewing";
 // import BottomSheet from "react-native-simple-bottom-sheet";
-export default function DetaiBlogPost({ route, navigation }) {
+export default function DetaiBlogPost() {
   const {
     DetailBlog,
     detailBlog,
@@ -37,23 +37,26 @@ export default function DetaiBlogPost({ route, navigation }) {
     DisLike,
     setIndex,
     index,
+    idChat,
     setIsVisible,
     ListComments,
     listCommnets,
     setListCommnets,
     pustComments,
+    setIdChat,
     numberLike,
     setNumberLike,
     setNumberLikes,
     numberLikes,
     modalVisibleComment,
     UpdataTextCommentUser,
-    detailBlogListCommnetsId,
+    AddChats,
     DeleteTextCommentUser,
     setModalVisibleComment,
     modalVisibleUpdateTextComment,
     setModalVisibleUpdateTextComment,
   } = useContext(AuthContext);
+  const navigation = useNavigation();
   const [imageView, setImageView] = useState("");
   const [idCommentUpdata, setIdCommentUpdata] = useState("");
   const [message, setMessage] = useState("");
@@ -61,11 +64,12 @@ export default function DetaiBlogPost({ route, navigation }) {
   const [checkImageViewValue, setcheckImageViewValue] = useState([]);
   // const { itemId } = route.params;
   // const panelRef = useRef(null);
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", idCommentUpdata);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", detailBlog.owner);
 
   useEffect(() => {
     DetailBlog();
   }, []);
+
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
@@ -147,27 +151,31 @@ export default function DetaiBlogPost({ route, navigation }) {
   };
   const FlatListComment = (item, index) => {
     // setIndex(index + 1);
+    // console.log(item);
     return (
       <View className="flex flex-row bg-slate-200 m-2 rounded-lg text-left p-2">
         <View style={{ width: "10%" }}>
-        <View className="flex-row absolute w-8 h-8" style={{top:-20, left:-12}}>
-          <Image
-            className="w-full h-full rounded-full"
-            source={{
-              uri: `${item.account.avatar}`
-            }}
-          />
-        <Text
-            style={{
-              fontSize: 9,
-              color: "black",
-              width:100
-            }}
-            className=" top-3 left-1"
+          <View
+            className="flex-row absolute w-8 h-8"
+            style={{ top: -20, left: -12 }}
           >
-            {item.account.username}
-          </Text>
-        </View>
+            <Image
+              className="w-full h-full rounded-full"
+              source={{
+                uri: `${item.account.avatar}`,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 9,
+                color: "black",
+                width: 100,
+              }}
+              className=" top-3 left-1"
+            >
+              {item.account.username}
+            </Text>
+          </View>
         </View>
         <View className="top-1" style={{ width: "70%" }}>
           <Text className="">{item.content}</Text>
@@ -181,27 +189,41 @@ export default function DetaiBlogPost({ route, navigation }) {
             {formatTime(item.createdAt)}
           </Text>
         </View>
-        <View className="flex-row justify-self-center" style={{ width: "10%" }}>
-          <TouchableOpacity
-            onPress={() => {
-              DeleteItemComment(item._id, item.account._id);
-            }}
+        {item.account._id == userInfo.others._id ? (
+          <View
+            className="flex-row justify-self-center"
+            style={{ width: "10%" }}
           >
-            <MaterialIcons name="delete" size={24} color="red" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="relative left-2"
-            onPress={() => {
-              setIdCommentUpdata(item);
-              setModalVisibleUpdateTextComment(true);
-            }}
-          >
-            <MaterialCommunityIcons name="pencil" size={24} color="blue" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={() => {
+                DeleteItemComment(item._id, item.account._id);
+              }}
+            >
+              <MaterialIcons name="delete" size={24} color="red" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="relative left-2"
+              onPress={() => {
+                setIdCommentUpdata(item);
+                setModalVisibleUpdateTextComment(true);
+              }}
+            >
+              <MaterialCommunityIcons name="pencil" size={24} color="blue" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          ""
+        )}
       </View>
     );
   };
+  const AddChat = () =>{
+    AddChats(detailBlog.owner._id)
+    setTimeout(() => {
+      navigation.navigate("ChatMessagesScreen",{idMessage:idChat,proFiles:detailBlog.owner})
+    }, 460)
+    
+  }
   return (
     <ScrollView
       className="w-full h-auto bg-white "
@@ -233,8 +255,14 @@ export default function DetaiBlogPost({ route, navigation }) {
             >
               Thông Tin Kho
             </Text>
-            <TouchableOpacity style={{ width: "15%" }} className="top-2 ">
-              <AntDesign name="pluscircleo" size={36} color="#fff" />
+            <TouchableOpacity
+             
+            onPress={()=>{AddChat()}} 
+             
+             style={{ width: "15%" }} className="top-2 ">
+              {/* <AntDesign name="pluscircleo" size={} color="" /> */}
+              {/* <Ionicons name="ios-chatbubble-ellipses-outline" size={35} color="" /> */}
+              <Ionicons name="chatbubble-ellipses-outline" size={32} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
@@ -433,11 +461,20 @@ export default function DetaiBlogPost({ route, navigation }) {
                   Bình luận
                 </Text>
               </View>
-              <FlatList
-                data={listCommnets}
-                // keyExtractor={(item) => String(item)}
-                renderItem={({ item, index }) => FlatListComment(item, index)}
-              />
+              {listCommnets != "" ? (
+                <FlatList
+                  data={listCommnets}
+                  // keyExtractor={(item) => String(item)}
+                  renderItem={({ item, index }) => FlatListComment(item, index)}
+                />
+              ) : (
+                <Text
+                  className="flex text-center text-lg font-bold top-1/2"
+                  style={{ color: "#16247d" }}
+                >
+                  Không có bình luận!
+                </Text>
+              )}
             </View>
             <View className="w-full  mb-3 flex-row border-t-2 border-indigo-500">
               <View className="" style={{ width: "92%" }}>
@@ -509,7 +546,7 @@ export default function DetaiBlogPost({ route, navigation }) {
                 }}
                 placeholder="nhập bình luận mới ... "
                 onChangeText={(text) => setTextCommnetUpdate(text)}
-                // value={text}
+              // value={text}
               />
             </View>
             <View className="flex-row absolute right-0 bottom-0">

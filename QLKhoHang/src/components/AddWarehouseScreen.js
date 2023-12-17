@@ -9,7 +9,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 import { Dropdown } from "react-native-element-dropdown";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 import axios from "axios";
 
 let stat = [
@@ -36,7 +35,7 @@ export default function AddWarehouseScreen({ navigation }) {
     const [status, setStatus] = useState();
     const [description, setDescription] = useState();
     const [categorie, setCategorie] = useState();
-    const [images, setImages] = useState();
+    const [image, setImage] = useState();
 
     useEffect(() => {
         axios.get(`https://warehouse-management-api.vercel.app/v1/warehouse/category/list`,
@@ -65,7 +64,7 @@ export default function AddWarehouseScreen({ navigation }) {
             ],
         );
 
-    const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, images, owner) => {
+    const updateWarehouse = (wareHouseName, address, category, capacity, monney, status, description, owner, image) => {
         axios.post(`https://warehouse-management-api.vercel.app/v1/warehouse/create`, {
             wareHouseName: wareHouseName,
             address: address,
@@ -75,8 +74,9 @@ export default function AddWarehouseScreen({ navigation }) {
             monney: monney,
             status: status,
             description: description,
-            imageWarehouse: images,
             owner: owner,
+            imageWarehouse: image,
+
         }, {
             headers:
             {
@@ -87,35 +87,43 @@ export default function AddWarehouseScreen({ navigation }) {
                 id_owner: userInfo.others._id
             },
         }).then((res) => {
-            navigation.navigate("HomeNavigation")
+            Alert.alert("Thêm kho hàng thành công")
+            navigation.navigate("Home")
         }).catch((e) => {
             console.log(`Add error ${e.request.response}`);
         });
     };
 
-    const pickFromGalary = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status) {
-            let data = await ImagePicker.launchImageLibraryAsync({
+    const uploadToCloudinary = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect: [1, 1],
-                quality: 0.5,
-                base64: true
+                quality: 1,
             });
 
-            console.log(data.assets)
+            if (!result.canceled) {
+                const formData = new FormData();
+                formData.append('file', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
+                formData.append('upload_preset', 'ImageProject');
 
-            if (!data.canceled) {
-                let newFile = {
-                    uri: data.assets[0].uri,
-                    type: data.assets[0].type,
-                    name: data.assets[0].name,
-                };
-                setImages(data.assets.base64);
+                const cloudinaryResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/dborrd4h5/image/upload`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            // 'Authorization': `Basic ${btoa('your-api-key:your-api-secret')}`,
+                        },
+                    }
+                );
+                setImage(cloudinaryResponse.data.url)
+                console.log('Uploaded image:', cloudinaryResponse.data.url);
             }
-        } else { Alert.alert('Chưa chọn hình ảnh'); }
-    }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
 
     return (
         <View>
@@ -206,17 +214,30 @@ export default function AddWarehouseScreen({ navigation }) {
                 </View>
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_upload}
-                    onPress={
-                        () => pickFromGalary()
+                    onPress={() =>
+                        Alert.alert(
+                            "",
+                            "Bạn có muốn cập nhật hình ảnh không?",
+                            [
+                                {
+                                    text: "Cancel",
+                                    style: "cancel",
+                                },
+                                {
+                                    text: "OK", onPress: () => uploadToCloudinary()
+                                },
+                            ],
+                            { cancelable: false }
+                        )
                     }>
                     <Text style={{ color: '#fff', fontSize: 18 }}>Thêm hình ảnh</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_edit}
                     onPress={() => {
-                        (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description)
+                        (!wareHouseName || !address || !idCategorie || !capacity || !monney || !status || !description || !image)
                             ? showAlert()
-                            : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, images, userInfo.others._id)
+                            : updateWarehouse(wareHouseName, address, idCategorie, capacity, monney, status, description, userInfo.others._id, image)
                     }}>
 
                     <AntDesign name="edit" size={20} color="#fff" />
@@ -226,7 +247,7 @@ export default function AddWarehouseScreen({ navigation }) {
                 <TouchableOpacity
                     style={AppStyle.StyleProfile.btn_logout}
                     onPress={
-                        () => navigation.navigate('HomeNavigation')
+                        () => navigation.navigate('HomeNavigationOwner')
                     }>
                     <Text style={{ color: '#fff' }}>HỦY</Text>
                 </TouchableOpacity>

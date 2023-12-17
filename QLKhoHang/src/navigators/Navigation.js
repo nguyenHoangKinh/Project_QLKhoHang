@@ -15,7 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigationOwner from "./HomeNavigationOwner";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import DetaiBlogPost from "../components/DetaiBlogPost";
+import DetaiBlogUser from "../components/user/DetaiBlogUser";
 import OrderScreenUser1 from "../components/user/OrderScreenUserUnfinished";
 import OrderScreenUser2 from "../components/user/OrderScreenUserComplete";
 import SeeWarehouseDetails from "../components/user/DetailOrderUser";
@@ -34,6 +34,9 @@ import ListBlogOwner from "../components/ListBlogOwner";
 import UpdateBlog from "../components/UpdateBlog";
 import AddPostOwner from "../components/AddPostOwner";
 import UpdatePostOwner from "../components/UpdatePostOwner";
+import UserChat from "../components/user/UserChat";
+import OwnerChat from "../components/owners/OwnerChat";
+import ChatMessagesScreen from "../components/ChatMessagesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -199,8 +202,8 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="DetaiBlogPost"
-          component={DetaiBlogPost}
+          name="DetaiBlogUser"
+          component={DetaiBlogUser}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -221,6 +224,21 @@ const Navigation = () => {
         <Stack.Screen
           name="OrderScreenUser2"
           component={OrderScreenUser2}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="UserChat"
+          component={UserChat}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="OwnerChat"
+          component={OwnerChat}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="ChatMessagesScreen"
+          component={ChatMessagesScreen}
           options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
         />
       </Stack.Navigator>
