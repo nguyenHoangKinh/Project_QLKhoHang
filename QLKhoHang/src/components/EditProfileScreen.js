@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, Image, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import AppStyle from '../theme';
 import { Entypo } from '@expo/vector-icons';
@@ -10,7 +9,7 @@ import { BASE_URL } from "../config";
 import { useRoute } from '@react-navigation/native';
 
 export default function EditProfileScreen({ navigation }) {
-    const { userInfo, splashLoading, getProfile } = useContext(AuthContext);
+    const { userInfo, getProfile } = useContext(AuthContext);
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();

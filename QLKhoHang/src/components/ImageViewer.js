@@ -1,4 +1,4 @@
-import { StyleSheet, Image } from 'react-native';
+import { Image } from 'react-native';
 import AppStyle from '../theme';
 
 export default function ImageViewer({ placeholderImageSource, selectedImage }) {

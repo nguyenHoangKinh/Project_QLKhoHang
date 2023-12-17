@@ -5,9 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../context/AuthContext";
 import { Dropdown } from "react-native-element-dropdown";
-import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 import axios from "axios";
 
 export default function AddPostOwner({ navigation }) {

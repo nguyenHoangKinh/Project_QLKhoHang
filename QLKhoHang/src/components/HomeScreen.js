@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { TextInput, StyleSheet, Text, View, TouchableOpacity, Pressable, FlatList, Image } from "react-native";
+import React, { useContext, useEffect } from "react";
+import {StyleSheet, Text, View, TouchableOpacity, Pressable, FlatList, Image } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import AppStyle from "../theme";
-import axios from "axios";
-import { AntDesign, Ionicons, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
+import { AntDesign, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
 
 export default function HomeScreen({ navigation }) {
   const {
