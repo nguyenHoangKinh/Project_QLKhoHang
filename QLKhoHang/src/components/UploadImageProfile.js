@@ -63,7 +63,7 @@ export default function UploadImageProfile({ navigation }) {
         }>
           <View style={AppStyle.StyleImageUpload.buttonContainer}>
             <View style={AppStyle.StyleImageUpload.button}>
-              <Text style={AppStyle.StyleImageUpload.buttonLabel}>Hủy</Text>
+              <Text style={AppStyle.StyleImageUpload.buttonLabel}>Quay Lại</Text>
             </View>
           </View>
         </TouchableOpacity>
