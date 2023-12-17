@@ -10,6 +10,8 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
 import { FlatList } from "react-native-gesture-handler";
+import Modal from "react-native-modal";
+import { StyleSheet } from "react-native";
 
 const DetailWarehouseScreen = ({ navigation }) => {
   const { userInfo, splashLoading, list } = useContext(AuthContext);
@@ -18,7 +20,46 @@ const DetailWarehouseScreen = ({ navigation }) => {
   const route = useRoute();
   // const idWarehouse = route.params?.idWarehouse;
   console.log(list);
-  // console.log(userInfo.accessToken);
+  // // console.log(userInfo.accessToken);
+
+  const [capacity, setCapacity] = useState("");
+  const [rentTime, setRentTime] = useState("");
+
+  const handleAddWarehouse = () => {
+    axios.post;
+    // Thực hiện xử lý thêm kho ở đây
+    // Ví dụ: kiểm tra và gửi dữ liệu đến API hoặc lưu vào local state
+    onAddWarehouse({ capacity, rentTime });
+    // Đặt các trường về trạng thái ban đầu sau khi thêm kho
+    setCapacity("");
+    setRentTime("");
+    // Đóng dialog
+    onClose();
+  };
+  const AddWareHouse = (id) => {
+    axios
+      .put(
+        `https://warehouse-management-api.vercel.app/v1/admin/deactivate-account?id=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        let password = res.data;
+        //alert('Active tai khoan chu kho thanh cong');
+        ListAccOwners();
+        console.log(password.message);
+      })
+      .catch((e) => {
+        console.log(`error ${e.response.data.message}`);
+      });
+  };
+
+  const handleNavigateToRent = (id) => {
+    navigation.navigate("RentAWareHouse", { id_warehouse: id });
+  };
 
   useEffect(() => {
     axios
@@ -48,54 +89,82 @@ const DetailWarehouseScreen = ({ navigation }) => {
       <ScrollView style={{ marginTop: 50 }}>
         {warehouses && (
           <>
-            <Text
-              style={{
-                flex: 1,
-                fontSize: 15,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              Chi tiết của kho {warehouses.wareHouseName}
-            </Text>
-            <View style={AppStyle.StyleProfile.items}>
-              <FontAwesome5 name="warehouse" size={20} color="black" />
-              <Text> {warehouses.wareHouseName}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <Entypo name="address" size={20} color="black" />
-              <Text>{warehouses.address}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <MaterialIcons name="category" size={20} color="black" />
-              <Text>{warehouses.category.name}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <FontAwesome name="money" size={20} color="black" />
-              <Text> {warehouses.monney}</Text>
-            </View>
-            <View style={AppStyle.StyleProfile.items}>
-              <Entypo name="owner" size={20} color="black" />
-              <Text> {warehouses.owner.username}</Text>
-              {/* <Text>{userInfo.others.username}</Text> */}
+            <View style={styles.container}>
+              <Image
+                style={styles.image}
+                source={{ uri: warehouses.owner.avatar }}
+              />
+              <View style={styles.detailContainer}>
+                <Text style={styles.title}>
+                  <FontAwesome5 name="warehouse" size={20} color="black" />
+                  Tên Kho: {warehouses.wareHouseName}
+                </Text>
+                <Text style={styles.title}>
+                  <Entypo name="address" size={20} color="black" />
+                  Địa Chỉ: {warehouses.address}
+                </Text>
+                <Text style={styles.title}>
+                  <MaterialIcons name="category" size={20} color="black" />
+                  Loại kho: {warehouses.category.name}
+                </Text>
+                <Text style={styles.title}>
+                  <FontAwesome name="money" size={20} color="black" />
+                  Giá: {warehouses.monney}
+                </Text>
+                <Text style={styles.title}>
+                  Chủ Kho: {warehouses.wareHouseName}
+                </Text>
+                {/* <Text style={styles.title}>Kho: {warehouses.owner.warehouses}</Text> */}
+              </View>
             </View>
           </>
         )}
-        <TouchableOpacity
-          style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("RentAWareHouse")}
-        >
-          <Text style={{ color: "#fff" }}>Thue Kho</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigationUser")}
-        >
-          <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[AppStyle.StyleProfile.btn_logout, styles.button]}
+            onPress={() => handleNavigateToRent(warehouses._id)} // giả sử _id là tên thuộc tính đúng cho ID của kho
+          >
+            <Text style={{ color: "#fff" }}>Thuê Kho</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[AppStyle.StyleProfile.btn_logout, styles.button]}
+            onPress={() => navigation.navigate("HomeNavigationUser")}
+          >
+            <Text style={{ color: "#fff" }}>Quay lại</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F5FCFF",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 18,
+    color: "#333",
+    marginBottom: 8,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 16,
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
+});
 
 export default DetailWarehouseScreen;

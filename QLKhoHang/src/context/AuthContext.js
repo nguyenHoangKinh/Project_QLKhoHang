@@ -27,7 +27,10 @@ export const AuthProvider = ({ children }) => {
   const [visible, setIsVisible] = useState(false);
   const [formErrorChangePass, setFormErrorChangePass] = useState("");
   const [formErrorLogin, setFormErrorLogin] = useState("");
-  console.log(userInfo);
+  const [account, setAccount] = useState([]);
+  const [accountde, setAccountDe] = useState({});
+
+  // console.log(userInfo);
   const signUP = (
     usernames,
     passwords,
@@ -504,6 +507,49 @@ export const AuthProvider = ({ children }) => {
       alert("load bai viet that bai!");
     }
   };
+  const ListAccOwners = () =>{
+    axios
+    .get(
+      `https://warehouse-management-api.vercel.app/v1/admin/list-owner-active`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      let account = res.data.owners;
+      setAccount(account);
+      // console.log(res.data.owners[0]._id);
+    })
+    .catch((e) => {
+      console.log(`get account error ${e.res}`);
+      if (e.response.data.success === false) {
+        alert(e.response.data.message);
+        logout()
+      }
+    });
+  };
+
+  const ListAccOwnersDe = () =>{
+    axios
+    .get(
+      `https://warehouse-management-api.vercel.app/v1/admin/list-owner-not-active`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      let accountde = res.data.owners;
+      setAccountDe(accountde);
+    })
+    .catch((e) => {
+      console.log(`get account error ${e.res}`);
+    });
+  }
+
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -518,6 +564,8 @@ export const AuthProvider = ({ children }) => {
         checkUpdate,
         DetailOrder,
         checkSignUp,
+        account,
+        accountde,
         ListOrder,
         checkDetail,
         showImgBlog,
@@ -538,6 +586,10 @@ export const AuthProvider = ({ children }) => {
         setCheck,
         ListBlog,
         setIsVisible,
+        setAccount,
+        setAccountDe,
+        ListAccOwners,
+        ListAccOwnersDe,
         getProfile,
         setIdOrder,
         DetailBlog,

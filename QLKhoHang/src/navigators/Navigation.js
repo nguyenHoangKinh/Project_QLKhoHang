@@ -28,6 +28,7 @@ import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
 import UploadImageProfile from "../components/UploadImageProfile"
 import Button from "../components/Button"
 import DetailAcount from "../components/Admin/DetailAccount"
+import RentAWareHouse from "../components/order/RentAWareHouse"
 
 const Stack = createNativeStackNavigator();
 
@@ -168,6 +169,11 @@ const Navigation = () => {
         <Stack.Screen
           name="ListComments"
           component={ListComments}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RentAWareHouse"
+          component={RentAWareHouse}
           options={{ headerShown: false }}
         />
         

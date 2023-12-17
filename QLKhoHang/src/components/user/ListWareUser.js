@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
   View,
+  Image,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
@@ -17,7 +18,8 @@ export default function ListWareUser({ navigation }) {
   const [check, setCheck] = useState(false);
   const [warehousecateName, setWarehouseCatename] = useState({});
   const [list, setList] = useState({});
-  const { userInfo, setListWare,logout } = useContext(AuthContext);
+  const { userInfo, setListWare, logout } = useContext(AuthContext);
+
   useEffect(() => {
     axios
       .get(
@@ -39,91 +41,84 @@ export default function ListWareUser({ navigation }) {
         console.log(`get warehouseUser error ${e.res}`);
         if (e.response.data.success === false) {
           alert(e.response.data.message);
-          logout()
+          logout();
         }
       });
   }, []);
 
-
-  const handleSearchCate = (text) => {
-    if (text) {
-      let searchList = warehouse.filter((searchWarehouse) =>
-        searchWarehouse.category.name.toLowerCase().includes(text.toLowerCase())
-      );
-
-      setList(searchList);
-      setCheck(false);
-    } else {
-      setList(warehouse);
-      setCheck(false);
-    }
-  };
-
-  // Render todo
   const renderTodos = ({ item, index }) => {
     return (
-      <View style={AppStyle.StyleWarehouse.warehouse_view}>
+      <View style={styles.item}>
         <TouchableOpacity
-          style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>
             navigation.navigate("DetailWareHouseUser", setListWare(item._id))
           }
         >
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Tên Kho Hàng: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.wareHouseName}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Dia Chi: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.address}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Loại kho: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.category.name}
-              {setWarehouseCatename(item.category.name)}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Giá: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.monney}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Chủ Kho: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.owner.username}
-            </Text>
-          </Text>
+          <View style={styles.rowContainer}>
+            <Image style={styles.image} source={{ uri: item.owner.avatar }} />
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Tên Kho: {item.wareHouseName}</Text>
+              <Text style={styles.title}>Dia Chi: {item.address}</Text>
+              <Text style={styles.title}>
+                Loại kho: {item.category.name}
+                {setWarehouseCatename(item.category.name)}
+              </Text>
+              <Text style={styles.title}>Giá: {item.monney}</Text>
+              <Text style={styles.title}>Chủ Kho: {item.owner.username}</Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </View>
     );
   };
 
   return (
-    <View>
-      <View className=" h-1/6 ">
-        <TextInput
-          className="top-16"
-          style={AppStyle.StyleWarehouse.search}
-          placeholder="Tìm kiếm"
-          // value={userInput}
-          onChangeText={(text) => {
-            //handleSearch(text);
-            handleSearchCate(text);
-          }}
-        />
-      </View>
-      <View className=" h-5/6 ">
-        <View className="m-5">
+    <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <View style={styles.list}>
           <FlatList data={list} renderItem={renderTodos} />
         </View>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5FCFF",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  searchBarContainer: {
+    backgroundColor: "#fff",
+    borderBottomColor: "transparent",
+    borderTopColor: "transparent",
+    paddingHorizontal: 16,
+  },
+  searchBarInputContainer: {
+    backgroundColor: "#e0e0e0",
+  },
+  list: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  item: {
+    borderBottomWidth: 1,
+    borderBottomColor: "green",
+    padding: 16,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
+  },
+  title: {
+    fontSize: 18,
+    color: "#333",
+  },
+});
