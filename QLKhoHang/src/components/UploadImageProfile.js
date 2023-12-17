@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import Button from './Button';

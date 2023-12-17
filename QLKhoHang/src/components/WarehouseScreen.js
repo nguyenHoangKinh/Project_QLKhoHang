@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ScrollView, Alert } from "react-native";
+import { FlatList, Text, TextInput, TouchableOpacity, View, Image, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
 import axios from "axios";

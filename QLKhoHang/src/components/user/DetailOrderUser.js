@@ -74,7 +74,7 @@ export default function SeeOrderDetails({ route, navigation }) {
             Tên chủ kho: {checkDetail ? DetailOrder.Order.owner.username : ""}
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
-            Tên kho: {checkDetail ? DetailOrder.Order.name : ""}
+            Diện tích thuê: {checkDetail ? DetailOrder.Order.capacity : ""} %
           </Text>
           <Text className="text-yellow-950  mr-3 p-4">
             Thời gian thuê: {checkDetail ? DetailOrder.Order.rentalTime : ""}
@@ -91,7 +91,7 @@ export default function SeeOrderDetails({ route, navigation }) {
             </Text>
           </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="py-3 bg-blue-300 rounded-xl top-5"
           // onPress={() => {
           //   OrderDetail()
@@ -100,7 +100,7 @@ export default function SeeOrderDetails({ route, navigation }) {
           <Text className="text-xl font-bold text-center text-gray-700">
             Hủy Đơn
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

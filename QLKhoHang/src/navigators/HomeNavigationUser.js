@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, Platform, View } from "react-native";
 import HomeScreen from "../components/HomeScreen";
-import ListBlogUser from "../components/ListBlogUser";
+import ListBlogUser from "../components/user/ListBlogUser";
 import ProfileScreen from "../components/ProfileScreen";
 import OrderScreenUser from "./TabOrderUser";
-import StatisticsScreen from "../components/StatisticsScreen";
+import ListChatUser from "../components/user/ListChatsUserScreen";
 import WarehouseScreen from "../components/WarehouseScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -97,8 +97,8 @@ const HomeNavigationUser = () => {
         }}
       />
       <Tab.Screen
-        name="Statistics"
-        component={StatisticsScreen}
+        name="ListChatUser"
+        component={ListChatUser}
         options={{
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => {

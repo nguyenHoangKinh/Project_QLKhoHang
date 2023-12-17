@@ -23,6 +23,23 @@ export default function SeeOrderDetails({ route, navigation }) {
   useEffect(() => {
     OrderDetail(idDetai);
   }, []);
+
+  const statusOrder = () => {
+    console.log(DetailOrder.Order._id)
+    axios.put(`https://warehouse-management-api.vercel.app/v1/order/activate`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+      params: {
+        id_order: DetailOrder.Order._id,
+      },
+    }).then((res) => {
+      console.log(res)
+    }).catch((e) => {
+      console.log(`get order error ${e.res}`);
+    });
+  };
+
   return (
     <View
       className="flex-1 bg-white"
@@ -91,6 +108,17 @@ export default function SeeOrderDetails({ route, navigation }) {
             </Text>
           </View>
         </View>
+        <TouchableOpacity
+          className="py-3 bg-blue-300 rounded-xl top-5" style={{marginBottom: 10}}
+          onPress={() => {
+            statusOrder()
+          }}
+        >
+          <Text className="text-xl font-bold text-center text-gray-700">
+            Xác nhận đơn hàng
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           className="py-3 bg-blue-300 rounded-xl top-5"
           // onPress={() => {

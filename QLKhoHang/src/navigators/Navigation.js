@@ -15,7 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomeNavigationOwner from "./HomeNavigationOwner";
 import EditProfileScreen from "../components/EditProfileScreen";
 import ProfileScreen from "../components/ProfileScreen";
-import DetaiBlogUser from "../components/DetaiBlogUser";
+import DetaiBlogUser from "../components/user/DetaiBlogUser";
 import OrderScreenUser1 from "../components/user/OrderScreenUserUnfinished";
 import OrderScreenUser2 from "../components/user/OrderScreenUserComplete";
 import SeeWarehouseDetails from "../components/user/DetailOrderUser";
@@ -25,16 +25,18 @@ import UpdateWarehouseScreen from "../components/UpdateWarehouseScreen";
 import DetailWarehouseScreem from "../components/DetailWarehouseScreem";
 import DetailWarehouseUserScreen from "../components/user/DetailWareHouseUser";
 import WarehouseScreem from "../components/WarehouseScreen";
-import ListAccountActive from "../components/Admin/ListAccountActive"
-import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin"
-import UploadImageProfile from "../components/UploadImageProfile"
-import Button from "../components/Button"
-import DetailAcount from "../components/Admin/DetailAccount"
-import ListBlogOwner from "../components/ListBlogOwner"
-import UpdateBlog from "../components/UpdateBlog"
-import AddPostOwner from "../components/AddPostOwner"
-import UpdatePostOwner from "../components/UpdatePostOwner"
-// import ListComments from "../components/ListComments"
+import ListAccountActive from "../components/Admin/ListAccountActive";
+import HomeNavigationAdmin from "../navigators/HomeNavigationAdmin";
+import UploadImageProfile from "../components/UploadImageProfile";
+import Button from "../components/Button";
+import DetailAcount from "../components/Admin/DetailAccount";
+import ListBlogOwner from "../components/ListBlogOwner";
+import UpdateBlog from "../components/UpdateBlog";
+import AddPostOwner from "../components/AddPostOwner";
+import UpdatePostOwner from "../components/UpdatePostOwner";
+import UserChat from "../components/user/UserChat";
+import OwnerChat from "../components/owners/OwnerChat";
+import ChatMessagesScreen from "../components/ChatMessagesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -222,6 +224,21 @@ const Navigation = () => {
         <Stack.Screen
           name="OrderScreenUser2"
           component={OrderScreenUser2}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="UserChat"
+          component={UserChat}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="OwnerChat"
+          component={OwnerChat}
+          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="ChatMessagesScreen"
+          component={ChatMessagesScreen}
           options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
         />
       </Stack.Navigator>

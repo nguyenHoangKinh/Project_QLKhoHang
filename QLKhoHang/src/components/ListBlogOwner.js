@@ -4,7 +4,6 @@ import { FlatList, Text, Image, TouchableOpacity, View, Alert, TextInput, Modal 
 import { AntDesign, Ionicons, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
 import AppStyle from "../theme";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
 import axios from "axios";
 

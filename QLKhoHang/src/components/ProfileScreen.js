@@ -1,10 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import { useContext, useState, useEffect } from "react";
 import { ScrollView, Text, Image, TouchableOpacity, View } from "react-native";
 import AppStyle from "../theme";
 import { Entypo } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";

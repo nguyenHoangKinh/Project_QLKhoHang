@@ -58,7 +58,7 @@ const StyleProfile = StyleSheet.create({
     shadowOpacity: 80,
     elevation: 15,
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
     backgroundColor: "#000",
   },
   btn_upload: {
