@@ -20,36 +20,36 @@ export default function UploadImageProfile({ navigation }) {
   const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
       });
 
       if (!result.canceled) {
-          const formData = new FormData();
-          formData.append('avatar', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
+        const formData = new FormData();
+        formData.append('avatar', { uri: result.assets[0].uri, name: 'file.jpg', type: 'image/jpeg' });
 
-          const cloudinaryResponse = await axios.put(
-              `https://warehouse-management-api.vercel.app/v1/auth/update-account`,
-              formData,
-              {
-                  headers: {
-                      'Content-Type': 'multipart/form-data',
-                      Authorization: `Bearer ${userInfo.accessToken}`,
-                  },
-                  params: {
-                    id: userInfo.others._id
-                  }
-              }
-          );
-          setSelectedImage(result.assets[0].uri)
-          Alert.alert("Cập nhật hình ảnh thành công");
-          navigation.navigate('EditProfileScreen', {avatar: selectedImage})
+        const cloudinaryResponse = await axios.put(
+          `https://warehouse-management-api.vercel.app/v1/auth/update-account`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${userInfo.accessToken}`,
+            },
+            params: {
+              id: userInfo.others._id
+            }
+          }
+        );
+        setSelectedImage(result.assets[0].uri)
+        Alert.alert("Cập nhật hình ảnh thành công");
+        navigation.navigate('EditProfileScreen', { avatar: selectedImage })
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error uploading image:', error);
+    }
   }
-}
 
   return (
     <View style={AppStyle.StyleImageUpload.container}>
@@ -57,7 +57,22 @@ export default function UploadImageProfile({ navigation }) {
         <ImageViewer placeholderImageSource={PlaceholderImage} selectedImage={selectedImage ? selectedImage : image} />
       </View>
       <View style={AppStyle.StyleImageUpload.footerContainer}>
-        <Button theme="primary" label="Chọn một hình ảnh" onPress={pickImage} />
+        <Button theme="primary" label="Chọn một hình ảnh" onPress={() =>
+          Alert.alert(
+            "",
+            "Bạn có muốn cập nhật hình ảnh không?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "OK", onPress: () => pickImage()
+              },
+            ],
+            { cancelable: false }
+          )
+        } />
         <TouchableOpacity label="Use this photo" onPress={
           () => navigation.navigate('EditProfileScreen')
         }>
