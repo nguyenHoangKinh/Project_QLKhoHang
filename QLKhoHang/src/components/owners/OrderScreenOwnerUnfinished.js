@@ -27,7 +27,7 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
   }, []);
 
   const FlatListData = (item) => {
-    if (item.status === 0) {
+    if (item.status == 0) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
