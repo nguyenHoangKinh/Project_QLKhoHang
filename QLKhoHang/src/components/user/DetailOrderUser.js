@@ -9,7 +9,6 @@ import axios from "axios";
 
 export default function SeeOrderDetails({ route, navigation }) {
   const { idDetai } = route.params;
-  // console.log(idDetai);
   const {
     OrderDetail,
     DetailOrder,
@@ -17,9 +16,7 @@ export default function SeeOrderDetails({ route, navigation }) {
     userInfo,
     checkDetail,
     setCheckDetail,
-    orderListUser,
   } = useContext(AuthContext);
-  // console.log(DetailOrder.Order);
   useEffect(() => {
     OrderDetail(idDetai);
   }, []);
@@ -33,9 +30,7 @@ export default function SeeOrderDetails({ route, navigation }) {
           <TouchableOpacity
             onPress={() => {
               navigation.goBack(),
-                orderListUser(userInfo.accessToken),
                 setDetailOrder({}),
-                // setIdOrder({}),
                 setCheckDetail(false);
             }}
             className="bg-blue-300 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
@@ -50,11 +45,6 @@ export default function SeeOrderDetails({ route, navigation }) {
           className="flex-row justify-center mt-3 mb-3"
           style={{ width: 390, height: 70 }}
         >
-          {/* <Image
-        //   className="bg-slate-950"
-            source={require("../assets/images/login.png")}
-            style={{ width: 390, height: 360 }}
-          /> */}
         </View>
       </SafeAreaView>
       <View
@@ -91,16 +81,6 @@ export default function SeeOrderDetails({ route, navigation }) {
             </Text>
           </View>
         </View>
-        {/* <TouchableOpacity
-          className="py-3 bg-blue-300 rounded-xl top-5"
-          // onPress={() => {
-          //   OrderDetail()
-          // }}
-        >
-          <Text className="text-xl font-bold text-center text-gray-700">
-            Hủy Đơn
-          </Text>
-        </TouchableOpacity> */}
       </View>
     </View>
   );

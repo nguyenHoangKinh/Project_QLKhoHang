@@ -31,11 +31,15 @@ import {
   FontAwesome,
   Ionicons,
 } from "@expo/vector-icons";
-import  io  from "socket.io-client";
+// import  {io}  from "socket.io-client";
+import {io} from "socket.io-client/dist/socket.io.js"
+
 
 const ChatMessagesScreen = () => {
-  const socket = io('https://warehouse-management-api.vercel.app');
-  socket.on('connection', () => {
+  const socket = io("http://192.168.1.3:3000", {jsonp:false})
+  // const socket = io('');
+  socket.emit('message', 'Hello Server');
+  socket.on('groupList', () => {
     console.log('Connected to server');
   });
   const {
@@ -61,7 +65,7 @@ const ChatMessagesScreen = () => {
   const [message, setMessage] = useState("");
 
   // console.log(idChat);
-  console.log(">>>>>>>>>idMess>>>>>>>>>",listMessages);
+  // console.log(">>>>>>>>>idMess>>>>>>>>>",listMessages);
   // const { userId, setUserId } = useContext(UserType);
 
   // const scrollViewRef = useRef(null);

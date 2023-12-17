@@ -2,6 +2,8 @@ import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
+import {ORDER_URL } from "../../config";
 import {
   FlatList,
   SafeAreaView,
@@ -15,41 +17,85 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenOwnerComplete({ navigation }) {
+export default function OrderScreenUserUnpaid({ navigation }) {
   const {
-    orderListOwner,
+    orderListUser,
+    ListOrderTrue,
+    logout,
+    setIsLoading,
     ListOrder,
-    setIdOrder,
     userInfo,
     SearchOrder,
-    DeleteOrderOwner,
   } = useContext(AuthContext);
-  const [modalVisible, setModalVisible] = useState(false);
-  useEffect(() => {
-    //call api
-    orderListOwner(userInfo.accessToken);
-  }, []);
-
+  const [ListOrderUser1, setListOrderUser1] = useState({});
+  const ListOrderUser = () => {
+    setIsLoading(true);
+    if (userInfo.accessToken) {
+      axios
+        .get(
+          `${ORDER_URL}/order/listOrderByUser?status=1`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          }
+        )
+        .then((res) => {
+          if (res && res.data) {
+            let order = res.data.data;
+            setListOrderUser1(order);
+          }
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.log(`update error ${e.response.data.message}`);
+          setIsLoading(false);
+          if (e.responsxe.data.success === false) {
+            alert(e.response.data.message);
+            logout();
+          }
+        });
+    } else {
+      alert("error access token undefined");
+    }
+  };
+useEffect(() => {
+  ListOrderUser()
+}, []);
+const DeleteOrderUser = (idOrder) => {
+  if (idOrder) {
+    axios
+      .delete(
+        ORDER_URL +
+          `/order/deleteOrderByOwner?id_order=${idOrder}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        ListOrderUser();
+      })
+      .catch((e) => {
+        if (e.response.data.success === false) {
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
+        }
+      });
+  } else {
+    alert("xoa that bai!");
+  }
+};
   const FlatListData = (item) => {
-    if (item.isActive == true) {
+    if (item.status == 1) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
           onPress={() => {
-            navigation.navigate("DetailOrderOwner", { idDetai: item._id });
+            navigation.navigate("DetailOrderUser", { idDetai: item._id });
           }}
         >
           <View className="" style={AppStyle.StyleOderList.item}>
             <View className="mt-3">
-              {/* <View className="flex flex-row">
-                <Text
-                  className="flex-initial"
-                  style={AppStyle.StyleOderList.text}
-                >
-                  Tên Đơn Hàng:
-                </Text>
-                <Text className="flex-initial text-base"> {item.name}</Text>
-              </View> */}
               <View className="flex flex-row">
                 <Text
                   className="flex-initial"
@@ -80,7 +126,9 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                 >
                   Thời Gian Thuê:{" "}
                 </Text>
-                <Text className="flex-initial  text-base">{item.rentalTime}</Text>
+                <Text className="flex-initial  text-base">
+                  {item.rentalTime}
+                </Text>
               </View>
             </View>
           </View>
@@ -97,7 +145,7 @@ export default function OrderScreenOwnerComplete({ navigation }) {
                   {
                     text: "OK",
                     onPress: () =>
-                      DeleteOrderOwner(userInfo.others._id, item._id),
+                    DeleteOrderUser(item._id),
                   },
                 ],
                 { cancelable: false }
@@ -109,29 +157,25 @@ export default function OrderScreenOwnerComplete({ navigation }) {
           </Pressable>
         </Pressable>
       );
-    }
+    } 
   };
 
   return (
     <>
-    {ListOrder != "" ? 
-    <FlatList
-        data={ListOrder}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) => FlatListData(item)}
-      />
-      : 
-      <Text className="flex text-center text-lg font-bold top-1/2" style={{color:"#16247d"}}>Không có Dơn Hàng!</Text>
-    }
-
-      {/* <TouchableOpacity
-        className="absolute bottom-10 right-8 rounded-full"
-        onPress={() => {
-          navigation.navigate("AddOrderScreen");
-        }}
-      >
-        <AntDesign name="pluscircleo" size={48} color="black" />
-      </TouchableOpacity> */}
+      {ListOrderUser1 != "" ? (
+        <FlatList
+          data={ListOrderUser1}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => FlatListData(item)}
+        />
+      ) : (
+        <Text
+          className="flex text-center text-lg font-bold top-1/2"
+          style={{ color: "#16247d" }}
+        >
+          Không có Dơn Hàng!
+        </Text>
+      )}
     </>
   );
 }

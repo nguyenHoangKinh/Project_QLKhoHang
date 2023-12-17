@@ -1,7 +1,7 @@
 import AppStyle from "../../theme";
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import {ORDER_URL } from "../../config";
 import {
@@ -17,46 +17,45 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OrderScreenOwnerUnfinished({ navigation }) {
+export default function OrderScreenOwnerPaid({ navigation }) {
   const {
-    setIsLoading,
-    ListOrderOwner0,
-    ListOrderOwnerStatus0,
-    ActivateOrderOwner,
+    ListOrderOwner2,
+    ListOrderOwnerStatus2,
+    ListOrderOwnerStatus3,
     logout,
     userInfo,
   } = useContext(AuthContext);
-  
-  useEffect(() => {
-    ListOrderOwnerStatus0()
-  }, []);
-  const DeleteOrderOwner = (idOrder) => {
-    if (idOrder) {
-      axios
-        .delete(
-          ORDER_URL +
-            `/order/deleteOrderByOwner?id_order=${idOrder}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.accessToken}`,
-            },
-          }
-        )
-        .then((res) => {
-          ListOrderOwnerStatus0();
-        })
-        .catch((e) => {
-          if (e.response.data.success === false) {
-            alert("bạn đã hết hạng đăng nhập");
-            logout();
-          }
-        });
-    } else {
-      alert("xoa that bai!");
-    }
-  };
+useEffect(() => {
+  ListOrderOwnerStatus2()
+}, []);
+const DeleteOrderOwner = (idOrder) => {
+  if (idOrder) {
+    axios
+      .delete(
+        ORDER_URL +
+          `/order/deleteOrderByOwner?id_order=${idOrder}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        ListOrderOwnerStatus2();
+        ListOrderOwnerStatus3();
+      })
+      .catch((e) => {
+        if (e.response.data.success === false) {
+          alert("bạn đã hết hạng đăng nhập");
+          logout();
+        }
+      });
+  } else {
+    alert("xoa that bai!");
+  }
+};
   const FlatListData = (item) => {
-    if (item.status == 0) {
+    if (item.status == 2) {
       return (
         <Pressable
           className="shadow-2xl mt-1 bg-white m-2"
@@ -104,7 +103,7 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
             onPress={() => {
               Alert.alert(
                 "",
-                "Are you sure you want to delete?",
+                "bạn muốn hủy đơn hàng này?",
                 [
                   {
                     text: "Cancel",
@@ -123,29 +122,6 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
           >
             <MaterialIcons name="delete" size={34} color="red" />
           </Pressable>
-          <Pressable
-            onPress={() => {
-              Alert.alert(
-                "",
-                "xác nhận đơn hàng!",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: () =>
-                    ActivateOrderOwner(item._id),
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}
-            className="absolute right-5 top-10"
-          >
-            <FontAwesome name="check-square" size={34} color="blue" />
-          </Pressable>
         </Pressable>
       );
     }
@@ -153,9 +129,9 @@ export default function OrderScreenOwnerUnfinished({ navigation }) {
 
   return (
     <>
-    {ListOrderOwner0 != "" ? 
+    {ListOrderOwner2 != "" ? 
     <FlatList
-        data={ListOrderOwner0}
+        data={ListOrderOwner2}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => FlatListData(item)}
       />

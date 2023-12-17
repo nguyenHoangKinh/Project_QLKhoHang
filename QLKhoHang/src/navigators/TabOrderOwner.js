@@ -2,19 +2,24 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import AppStyle from "../theme";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import OrderScreenUser1 from "../components/owners/OrderScreenOwnerComplete";
-import OrderScreenUser2 from "../components/owners/OrderScreenOwnerUnfinished";
+import OrderScreenOwnerUnfinished from "../components/owners/OrderScreenOwnerUnfinished";
+import OrderScreenOwnerUnpaid from "../components/owners/OrderScreenOwnerUnpaid"; 
+import OrderScreenOwnerPaid from "../components/owners/OrderScreenOwnerPaid"; 
+import OrderScreenOwnerInvoice from "../components/owners/OrderScreenOwnerInvoice";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
 import React, { useEffect, useState, useContext } from "react";
 const Tab = createMaterialTopTabNavigator();
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  FontAwesome5,
+  Entypo,
+} from "@expo/vector-icons";
 
 export default TabOrderOwner = () => {
   // const [modalVisible, setModalVisible] = useState(false);
-  const { orderListOwner, userInfo, SearchOrder } = useContext(AuthContext);
-  useEffect(() => {
-    orderListOwner(userInfo.accessToken);
-  }, []);
+  const { userInfo, SearchOrder } = useContext(AuthContext);
   return (
     <>
       <View className="w-full mb-5" style={AppStyle.StyleOderList.header}>
@@ -31,13 +36,13 @@ export default TabOrderOwner = () => {
             style={AppStyle.StyleOderList.search}
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={(text) => {
-              if (text.length > 0) {
-                SearchOrder(text);
-              } else {
-                orderListOwner(userInfo.accessToken);
-              }
-            }}
+            // onChangeText={(text) => {
+            //   if (text.length > 0) {
+            //     SearchOrder(text);
+            //   } else {
+            //     orderListOwner(userInfo.accessToken);
+            //   }
+            // }}
           />
         </View>
         <Pressable style={AppStyle.StyleOderList.listFilter}>
@@ -59,14 +64,80 @@ export default TabOrderOwner = () => {
         }}
       >
         <Tab.Screen
-          name="OrderScreenUser1"
-          component={OrderScreenUser1}
-          options={{ tabBarLabel: "Đơn Hoàng Thành" }}
+          name="chưa xác nhận"
+          component={OrderScreenOwnerUnfinished}
+          options={{
+          unmountOnBlur: true,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <MaterialCommunityIcons
+                  name="cart-outline"
+                  size={20}
+                  color={focused ? "#16247d" : "#16247d"}
+                />
+              </View>
+            );
+          },
+          tabBarLabelStyle: { fontSize: 8,fontWeight:"800" },
+        }}
         />
         <Tab.Screen
-          name="OrderScreenUser2"
-          component={OrderScreenUser2}
-          options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+          name="chưa thanh toán"
+          component={OrderScreenOwnerUnpaid}
+          options={{
+          unmountOnBlur: true,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <MaterialCommunityIcons
+                  name="cart-minus"
+                  size={20}
+                  color={focused ? "#16247d" : "#16247d"}
+                />
+              </View>
+            );
+          },
+          tabBarLabelStyle: { fontSize: 8,fontWeight:"800" },
+        }}
+        />
+        <Tab.Screen
+          name="đã thanh toán"
+          component={OrderScreenOwnerPaid}
+          options={{
+          unmountOnBlur: true,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <MaterialCommunityIcons
+                  name="cart-check"
+                  size={20}
+                  color={focused ? "#16247d" : "#16247d"}
+                />
+              </View>
+            );
+          },
+          tabBarLabelStyle: { fontSize: 8,fontWeight:"800" },
+        }}
+        />
+        <Tab.Screen
+          name="hoá đơn"
+          component={OrderScreenOwnerInvoice}
+          options={{
+          unmountOnBlur: true,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <FontAwesome5
+                  name="archive"
+                  size={20}
+                  color={focused ? "#16247d" : "#16247d"}
+                />
+              </View>
+            );
+          },
+          tabBarLabelStyle: { fontSize: 8,fontWeight:"800" },
+        }}
         />
       </Tab.Navigator>
     </>
