@@ -90,7 +90,7 @@ const RentAWareHouse = ({ route, navigation }) => {
         maxHeight={300}
         labelField="percent"
         valueField="id"
-        placeholder="Chọn dung tích"
+        placeholder="Chọn dung tich"
         searchPlaceholder="Search..."
         // value={userInfo.others.warehouses}
         onChange={(item) => {
@@ -124,13 +124,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    justifyContent: "center", // Căn giữa theo chiều dọc
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 16,
-    textAlign: "center", // Căn giữa theo chiều ngang
   },
   input: {
     height: 40,

@@ -53,9 +53,9 @@ const DetailWarehouseScreen = ({ navigation }) => {
         {warehouses && (
           <>
             <View style={styles.container}>
-              <Image
+            <Image
                 style={styles.image}
-                source={{ uri: warehouses.owner.avatar }}
+                source={{ uri: warehouses.imageWarehouse }}
               />
                <Text style={styles.title}>
                   Chủ Kho: {warehouses.owner.username}
@@ -83,6 +83,7 @@ const DetailWarehouseScreen = ({ navigation }) => {
                   <FontAwesome name="money" size={20} color="black" />
                   Giá: {warehouses.monney}
                 </Text>
+               
               </View>
             </View>
           </>
@@ -120,8 +121,8 @@ const styles = StyleSheet.create({
     paddingTop: 50, // Duy trì khoảng trống trên cùng của màn hình
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 300,
+    height: 200,
     borderRadius: 50,
     marginBottom: 16,
   },

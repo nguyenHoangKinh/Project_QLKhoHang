@@ -55,10 +55,10 @@ export default function ListWareUser({ navigation }) {
           }
         >
           <View style={styles.rowContainer}>
-            <Image
-              source={{ uri: item.owner.avatar }}
-              style={styles.image}
-            />
+          <Image
+                style={styles.image}
+                source={{ uri: item.imageWarehouse }}
+              />
             <View style={{ flex: 1 }}>
               <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
                 Dia Chi: <></>
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 90,
+    height: 100,
     borderRadius: 25,
     marginRight: 16,
   },
