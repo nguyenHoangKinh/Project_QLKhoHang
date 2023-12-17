@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCFF",
     padding: 16,
+    marginTop: 20
   },
   rowContainer: {
     flexDirection: "row",
