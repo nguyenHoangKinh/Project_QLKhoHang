@@ -46,6 +46,8 @@ const DetailWarehouseScreen = ({ navigation }) => {
   }, []);
 
   return (
+    <>
+    
     <View>
       <ScrollView style={{ marginTop: 50 }}>
         {warehouses && (
@@ -55,6 +57,15 @@ const DetailWarehouseScreen = ({ navigation }) => {
                 style={styles.image}
                 source={{ uri: warehouses.owner.avatar }}
               />
+               <Text style={styles.title}>
+                  Chủ Kho: {warehouses.owner.username}
+                </Text>
+                <Text style={styles.title}>
+                  Eamil: {warehouses.owner.email}
+                </Text>
+                <Text style={styles.title}>
+                  Phone: {warehouses.owner.phone}
+                </Text>
               <View style={styles.detailContainer}>
                 <Text style={styles.title}>
                   <FontAwesome5 name="warehouse" size={20} color="black" />
@@ -72,28 +83,31 @@ const DetailWarehouseScreen = ({ navigation }) => {
                   <FontAwesome name="money" size={20} color="black" />
                   Giá: {warehouses.monney}
                 </Text>
-                <Text style={styles.title}>
-                  Chủ Kho: {warehouses.wareHouseName}
-                </Text>
-                {/* <Text style={styles.title}>Kho: {warehouses.owner.warehouses}</Text> */}
               </View>
             </View>
           </>
         )}
-        <TouchableOpacity
-          style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("AddOrderScreen")}
-        >
-          <Text style={{ color: "#fff" }}>Thue Kho</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={AppStyle.StyleProfile.btn_logout}
-          onPress={() => navigation.navigate("HomeNavigationUser")}
-        >
-          <Text style={{ color: "#fff" }}>QUAY LẠI</Text>
-        </TouchableOpacity>
       </ScrollView>
     </View>
+    <View style={styles.buttonContainer}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() =>
+        navigation.navigate("RentAWareHouse", {
+          id_warehouse: warehouses._id,
+        })
+      }
+    >
+      <Text style={{ color: "#fff" }}>Thuê Kho</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => navigation.navigate("HomeNavigationUser")}
+    >
+      <Text style={{ color: "#fff" }}>Quay lại</Text>
+    </TouchableOpacity>
+  </View>
+  </>
   );
 };
 
@@ -103,6 +117,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F5FCFF",
+    paddingTop: 50, // Duy trì khoảng trống trên cùng của màn hình
   },
   image: {
     width: 100,
@@ -115,14 +130,16 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 8,
   },
+  button: {
+    backgroundColor: "blue",
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 8,
+  },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: 16,
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 8,
   },
 });
 

@@ -54,41 +54,50 @@ export default function ListWareUser({ navigation }) {
             navigation.navigate("DetailWareHouseUser", setListWare(item._id))
           }
         >
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Tên Kho Hàng: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.wareHouseName}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Dia Chi: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.address}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Loại kho: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.category.name}
-              {/* {setWarehouseCatename(item.category.name)} */}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Giá: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.monney}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Chủ Kho: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.owner.username}
-            </Text>
-          </Text>
+          <View style={styles.rowContainer}>
+            <Image
+              source={{ uri: item.owner.avatar }}
+              style={styles.image}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                Dia Chi: <></>
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.address}
+                </Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                Loại kho: <></>
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.category.name}
+                  {/* {setWarehouseCatename(item.category.name)} */}
+                </Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                Giá: <></>
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.monney}
+                </Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                Dung tich: <></>
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.capacity}
+                </Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                Dung tich con lai: <></>
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.currentCapacity}
+                </Text>
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
       </View>
     );
   };
+  
 
   return (
     <View style={styles.container}>
@@ -138,5 +147,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     color: "#333",
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 25,
+    marginRight: 16,
   },
 });

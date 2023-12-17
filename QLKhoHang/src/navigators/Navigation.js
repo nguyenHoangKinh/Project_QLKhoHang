@@ -37,6 +37,7 @@ import UpdatePostOwner from "../components/UpdatePostOwner";
 import UserChat from "../components/user/UserChat";
 import OwnerChat from "../components/owners/OwnerChat";
 import ChatMessagesScreen from "../components/ChatMessagesScreen";
+import RentAWareHouse from "../components/order/RentAWareHouse";
 
 const Stack = createNativeStackNavigator();
 
@@ -240,6 +241,11 @@ const Navigation = () => {
           name="ChatMessagesScreen"
           component={ChatMessagesScreen}
           options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
+        />
+        <Stack.Screen
+          name="RentAWareHouse"
+          component={RentAWareHouse}
+          //options={{ tabBarLabel: "Đơn Chưa Hoàng Thành" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
