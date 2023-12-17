@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Alert } from 'react-native';
+import { View, Alert, TouchableOpacity, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import Button from './Button';
@@ -57,16 +57,16 @@ export default function UploadImageProfile({ navigation }) {
         <ImageViewer placeholderImageSource={PlaceholderImage} selectedImage={selectedImage ? selectedImage : image} />
       </View>
       <View style={AppStyle.StyleImageUpload.footerContainer}>
-        <Button theme="primary" label="Choose a photo" onPress={pickImage} />
-        {/* <TouchableOpacity label="Use this photo" onPress={
-          () => navigation.navigate('EditProfileScreen', {avatar: selectedImage})
+        <Button theme="primary" label="Chọn một hình ảnh" onPress={pickImage} />
+        <TouchableOpacity label="Use this photo" onPress={
+          () => navigation.navigate('EditProfileScreen')
         }>
           <View style={AppStyle.StyleImageUpload.buttonContainer}>
             <View style={AppStyle.StyleImageUpload.button}>
-              <Text style={AppStyle.StyleImageUpload.buttonLabel}>Use this photo</Text>
+              <Text style={AppStyle.StyleImageUpload.buttonLabel}>Hủy</Text>
             </View>
           </View>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
     </View>
