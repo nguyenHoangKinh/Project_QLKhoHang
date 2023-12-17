@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "react-native-paper";
@@ -12,16 +13,32 @@ import { uuid } from "react-native-uuid";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import AppStyle from "../../theme";
+import CheckboxItem from "../Item/CheckboxItem";
+import { CheckBox } from "react-native-elements";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const TodoScreen = ({ navigation }) => {
   // Init local states
-  const [account, setAccount] = useState({});
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, logout, ListAccOwnersDe, accountde, setAccountDe } =
+    useContext(AuthContext);
+  //console.log(account)
+  const [allIds, setAllIds] = useState([]);
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
+    ListAccOwnersDe();
+  }, []);
+
+  useEffect(() => {
+    setAllIds(accountde.map(item => ({ ...item, selected: false })));
+  }, [accountde]);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>",account);
+  const acountActive = (id) => {
     axios
-      .get(
-        `https://warehouse-management-api.vercel.app/v1/admin/list-account-not-active`,
+      .put(
+        `https://warehouse-management-api.vercel.app/v1/admin/activate-account?id=${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${userInfo.accessToken}`,
@@ -29,67 +46,145 @@ const TodoScreen = ({ navigation }) => {
         }
       )
       .then((res) => {
-        let account = res.data.accounts;
-        setAccount(account);
+        let password = res.data;
+        //alert('Active tai khoan chu kho thanh cong');
+        ListAccOwners();
+        console.log(password.message);
       })
       .catch((e) => {
-        console.log(`get account error ${e.res}`);
+        console.log(`error ${e.response.data.message}`);
       });
-  }, []);
+  };
 
-  // Render items
+  const submitNAcount = () => {
+    const selectedIds = accountde
+      .filter((item) => item.selected)
+      .map((item) => item._id);
+
+    axios
+      .put(
+        `https://warehouse-management-api.vercel.app/v1/admin/activate-multiple-accounts`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.accessToken}`,
+          },
+          params: {
+            id: selectedIds,
+          },
+        }
+      )
+      .then((res) => {
+        //alert("Deactivate nhieu tai khoan thanh cong");
+        ListAccOwnersDe();
+      })
+      .catch((e) => {
+        console.log(`error ${e.response.data.message}`);
+      });
+  };
+
+  const handleCheckboxPress = (id) => {
+    setAccountDe((prevAccount) => {
+      return prevAccount.map((item) =>
+        item._id === id ? { ...item, selected: !item.selected } : item
+      );
+    });
+  };
+
   const renderTodos = ({ item, index }) => {
     return (
-      <View style={AppStyle.StyleWarehouse.warehouse_view}>
+      <View style={styles.item}>
         <TouchableOpacity
-          style={AppStyle.StyleWarehouse.name_warehouse}
           onPress={() =>
             navigation.navigate("DetailAcount", { idWarehouse: item._id })
           }
         >
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Tên Tài Khoản: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.username}
-            </Text>
-          </Text>
-          <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
-            Email: <></>
-            <Text style={AppStyle.StyleWarehouse.name_warehouse}>
-              {item.email}
-            </Text>
-          </Text>
+          <View style={styles.rowContainer}>
+            <Image source={{ uri: item.avatar }} style={styles.image} />
+            <View style={{ flex: 1 }}>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <FontAwesome5 name="user" size={20} color="black" />:
+                <Text style={styles.title}>{item.username}</Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <MaterialIcons name="email" size={20} color="black" />:
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.email}
+                </Text>
+              </Text>
+              <Text style={AppStyle.StyleWarehouse.tittle_warehouse}>
+                <FontAwesome5 name="phone" size={20} color="black" />:
+                <Text style={AppStyle.StyleWarehouse.name_warehouse}>
+                  {item.phone}
+                </Text>
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+            checked={!!item.selected} // Đảm bảo giá trị luôn là boolean
+            onPress={() => handleCheckboxPress(item._id)}
+          />
+          <IconButton
+            icon="update"
+            iconColor="black"
+            onPress={() => {
+              acountActive(item._id);
+            }}
+          />
+        </View>
       </View>
     );
   };
 
-  //   const handleSearch = (text) => {
-  //     if (text) {
-  //       let searchList = warehouse.filter((searchWarehouse) =>
-  //         searchWarehouse.wareHouseName.toLowerCase().includes(text.toLowerCase())
-  //       );
-
-  //       setSearchWarehouse(searchList)
-  //     } else {
-  //       setSearchWarehouse(warehouse)
-  //     }
-  //   }
-
   return (
-    <View style={{ marginHorizontal: 16, marginTop: 40, marginBottom: 60 }}>
-      <TextInput
-        style={AppStyle.StyleWarehouse.search}
-        placeholder="Tìm kiếm"
+    <View style={styles.container}>
+      <IconButton
+        icon="update"
+        iconColor="black"
+        onPress={() => submitNAcount()}
       />
-      <></>
       <FlatList
-        data={account}
+        data={accountde}
+        keyExtractor={(item) => item._id.toString()}
         renderItem={renderTodos}
-        style={{ marginTop: 20 }}
       />
     </View>
   );
 };
 
 export default TodoScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5FCFF",
+    padding: 16,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  item: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    padding: 16,
+    marginBottom: 8,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginRight: 16,
+  },
+  title: {
+    fontSize: 18,
+    color: "#333",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
+  },
+});
