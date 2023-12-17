@@ -17,6 +17,7 @@ export default function SeeOrderDetails({ route, navigation }) {
     checkDetail,
     setCheckDetail,
   } = useContext(AuthContext);
+  // console.log(DetailOrder.Order.warehouse.category.acreage);
   useEffect(() => {
     OrderDetail(idDetai);
   }, []);
@@ -61,12 +62,21 @@ export default function SeeOrderDetails({ route, navigation }) {
           </Text>
 
           <Text className="text-yellow-950  mr-3 p-4">
+            Mã đơn hàng: {checkDetail ? DetailOrder.Order._id : ""}
+          </Text>
+          <Text className="text-yellow-950  mr-3 p-3">
             Tên chủ kho: {checkDetail ? DetailOrder.Order.owner.username : ""}
           </Text>
-          <Text className="text-yellow-950  mr-3 p-4">
-            Diện tích thuê: {checkDetail ? DetailOrder.Order.capacity : ""} %
+          <Text className="text-yellow-950  mr-3 p-3">
+            SDT chủ kho: {checkDetail ? DetailOrder.Order.owner.phone : ""}
           </Text>
-          <Text className="text-yellow-950  mr-3 p-4">
+          <Text className="text-yellow-950  mr-3 p-3">
+            Đia chỉ chủ kho: {checkDetail ? DetailOrder.Order.owner.address : ""}
+          </Text>
+          <Text className="text-yellow-950  mr-3 p-3">
+            Diện tích thuê: {checkDetail ? DetailOrder.Order.capacity : ""}m3
+          </Text>
+          <Text className="text-yellow-950  mr-3 p-3">
             Thời gian thuê: {checkDetail ? DetailOrder.Order.rentalTime : ""}
           </Text>
         </View>
@@ -78,6 +88,18 @@ export default function SeeOrderDetails({ route, navigation }) {
             <Text className="text-gray-700 ml-2 w-55 ">
               Tên khách hàng:{" "}
               {checkDetail ? DetailOrder.Order.user.username : ""}
+            </Text>
+          </View>
+          <View className="flex flex-row justify-between pb-5">
+            <Text className="text-gray-700 ml-2 w-55 ">
+              SDT khách hàng:{" "}
+              {checkDetail ? DetailOrder.Order.user.phone : ""}
+            </Text>
+          </View>
+          <View className="flex flex-row justify-between pb-5">
+            <Text className="text-gray-700 ml-2 w-55 ">
+              Đia chỉ khách hàng:{" "}
+              {checkDetail ? DetailOrder.Order.user.address : ""}
             </Text>
           </View>
         </View>

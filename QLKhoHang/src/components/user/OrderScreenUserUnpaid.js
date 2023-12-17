@@ -101,6 +101,18 @@ const DeleteOrderUser = (idOrder) => {
                   className="flex-initial"
                   style={AppStyle.StyleOderList.text}
                 >
+                  Mã hóa đơn:
+                </Text>
+                <Text className="flex-initial  text-base">
+                  {" "}
+                  {item._id}
+                </Text>
+              </View>
+              <View className="flex flex-row">
+                <Text
+                  className="flex-initial"
+                  style={AppStyle.StyleOderList.text}
+                >
                   Tên Chủ Kho:
                 </Text>
                 <Text className="flex-initial  text-base">
