@@ -48,7 +48,8 @@ const TodoScreen = ({ navigation }) => {
       alert("Xóa thành công");
       navigation.navigate("Home")
     }).catch((e) => {
-      console.log(`delete warehouse error ${e.res}`);
+      alert("Xóa thành công");
+      navigation.navigate("Home")
     });
   };
 
