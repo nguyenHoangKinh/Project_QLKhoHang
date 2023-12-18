@@ -41,6 +41,8 @@ export const AuthProvider = ({ children }) => {
   const [numberLike, setNumberLike] = useState(0);
   const [numberLikes, setNumberLikes] = useState(0);
   const [index, setIndex] = useState("");
+  const [account, setAccount] = useState([]);
+  const [accountde, setAccountDe] = useState([]);
   //chats
   const [modalVisibleChat, setModalVisibleChat] = useState(false);
   const [modalVisibleMessChat, setModalVisibleMessChat] = useState(false);
@@ -929,7 +931,7 @@ export const AuthProvider = ({ children }) => {
       console.log(res.data.owners);
     })
     .catch((e) => {
-      console.log(`get account error ${e.res}`);
+      //console.log(`get account error ${e.res}`);
       if (e.response.data.success === false) {
         alert(e.response.data.message);
         logout()
